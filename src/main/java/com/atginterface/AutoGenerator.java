@@ -10,13 +10,10 @@ import java.io.IOException;
 
 public interface AutoGenerator {
 
-
-
     XWPFDocument chapter_one_generator(Chaptre1input input) throws IOException;
 
-    XWPFDocument chapter_two_generator(Chaptre2input input);
+    XWPFDocument chapter_two_generator(Chaptre2input input) throws IOException;
 
-    XWPFDocument chapter_three_generator(Chaptre3input input);
-
+    XWPFDocument chapter_three_generator(Chaptre3input input) throws IOException;
 
 }

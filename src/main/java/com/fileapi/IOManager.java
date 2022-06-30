@@ -2,13 +2,16 @@ package com.fileapi;
 
 import com.deepoove.poi.xwpf.NiceXWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.xmlbeans.ResourceLoader;
+import org.springframework.core.io.ClassPathResource;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class IOManager {
-
+    ResourceLoader loader;
     /**
      *
      * @param path  Windows形式。例子："F:\\test\\table2.docx"
@@ -16,8 +19,10 @@ public class IOManager {
      * @throws IOException
      */
     static public XWPFDocument readFile(String path) throws IOException {
-
-        return new NiceXWPFDocument(new FileInputStream(path));
+        ClassPathResource classPathResource = new ClassPathResource(path);
+        File file = classPathResource.getFile();
+        FileInputStream in = new FileInputStream(file);
+        return new NiceXWPFDocument(in);
     }
 
     /**

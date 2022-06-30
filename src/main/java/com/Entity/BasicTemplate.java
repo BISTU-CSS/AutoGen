@@ -17,6 +17,7 @@ public class BasicTemplate {
      * @param productName 产品名称列表
      */
     public BasicTemplate(QuestionNaire questionNaire, List<String> productName) {
+        c1 = new Chaptre1input();
         c1.system_name = questionNaire.question_1;
 
 
