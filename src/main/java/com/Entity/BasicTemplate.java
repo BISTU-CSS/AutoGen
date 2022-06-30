@@ -12,7 +12,7 @@ import java.util.List;
 public class BasicTemplate {
 
     public BasicTemplate(QuestionNaire questionNaire, List<String> productName) {
-        
+
 
     }
 
