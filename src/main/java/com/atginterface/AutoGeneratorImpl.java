@@ -13,7 +13,7 @@ public class AutoGeneratorImpl implements AutoGenerator{
 
     @Override
     public XWPFDocument chapter_one_generator(Chaptre1input input) throws IOException {
-        IOManager.readFile("/WordTemplate.1.docx");
+        IOManager.readFile("WordTemplate/1.docx");
 
         return null;
     }
