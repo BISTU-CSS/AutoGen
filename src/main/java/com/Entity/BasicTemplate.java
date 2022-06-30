@@ -2,8 +2,10 @@ package com.Entity;
 
 import com.Entity.cp1.Chaptre1input;
 import com.Entity.cp2.Chaptre2input;
+import com.Entity.cp2.fragment.SystemUserUsageTable;
 import com.Entity.cp3.Chaptre3input;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,8 +20,18 @@ public class BasicTemplate {
      */
     public BasicTemplate(QuestionNaire questionNaire, List<String> productName) {
         c1 = new Chaptre1input();
-        c1.system_name = questionNaire.question_1;
+        c2 = new Chaptre2input();
+        c3 = new Chaptre3input();
 
+        c1.system_name = questionNaire.question_1;
+        c2.system_name = questionNaire.question_1;
+        c3.system_name = questionNaire.question_1;
+
+        List<SystemUserUsageTable> sys_user = new ArrayList<>();
+        sys_user.add(new SystemUserUsageTable(1,"公司KK","人员CC","场景WW"));
+        sys_user.add(new SystemUserUsageTable(2,"达瓦达瓦","人员CC","场景WW"));
+        sys_user.add(new SystemUserUsageTable(3,"而且我认为去人","人员CC","场景WW"));
+        c2.systemUserUsageTableList = sys_user;
 
 
 

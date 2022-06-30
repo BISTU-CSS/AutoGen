@@ -1,5 +1,9 @@
 package com.Entity;
 
+import com.Entity.cp2.fragment.SystemUserUsageTable;
+
+import java.util.List;
+
 /**
  * 调研表
  */

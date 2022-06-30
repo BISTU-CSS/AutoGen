@@ -9,7 +9,6 @@ import com.deepoove.poi.config.Configure;
 import com.deepoove.poi.plugin.table.LoopRowTableRenderPolicy;
 import com.fileapi.IOManager;
 import com.officeapi.ReplaceSymbol;
-import com.officeapi.WordUtil;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 import java.io.IOException;
@@ -22,27 +21,26 @@ public class AutoGeneratorImpl implements AutoGenerator{
 
     @Override
     public XWPFDocument chapter_one_generator(Chaptre1input input) throws IOException {
-        XWPFDocument doc = IOManager.readFile("WordTemplate/" + "1.docx");
+        XWPFDocument doc = IOManager.readFile("WordTemplate/1.docx");
         //第一章仅需要系统名称
-        XWPFDocument result = WordUtil.replace_wildcards(doc,new HashMap<String, Object>(){{
-            put(ReplaceSymbol.system_name,input.system_name);
-        }});
-
-        return result;
+        XWPFTemplate template  = XWPFTemplate.compile(doc);
+        template.render(new HashMap<String, Object>(){{
+            put(ReplaceSymbol.system_name,input.system_name);}});
+        return template.getXWPFDocument();
     }
 
     @Override
     public XWPFDocument chapter_two_generator(Chaptre2input input) throws IOException {
         //TODO:预先需要选择对应的章节里面的内容（从数据库中）
-        XWPFDocument doc = IOManager.readFile("WordTemplate/" + "2.docx");
-
-        List<SystemUserUsageTable> sys_user = new ArrayList<>();
-        sys_user.add(new SystemUserUsageTable(1,"公司KK","人员CC","场景WW"));
-        XWPFDocument result = WordUtil.add_rowtable_loop(doc,"table213",  new HashMap<String, Object>() {{
-            put("table213", sys_user);
+        XWPFDocument doc = IOManager.readFile("WordTemplate/2.docx");
+        LoopRowTableRenderPolicy policy = new LoopRowTableRenderPolicy();
+        Configure config = Configure.builder().bind("table213", policy).build();
+        XWPFTemplate template = XWPFTemplate.compile(doc, config).render(new HashMap<String, Object>() {{
+            put("table213", input.systemUserUsageTableList);
+            put(ReplaceSymbol.system_name,input.system_name);
         }});
 
-        return result;
+        return template.getXWPFDocument();
     }
 
     @Override
