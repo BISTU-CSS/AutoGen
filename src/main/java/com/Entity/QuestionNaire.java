@@ -9,6 +9,6 @@ import java.util.List;
  */
 public class QuestionNaire {
     public String question_1;      //项目名称
-
+    public String question_2;       //公司名称
 
 }

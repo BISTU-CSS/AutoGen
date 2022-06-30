@@ -17,7 +17,7 @@ public class main {
         //获取调研表并处理
         QuestionNaire questionNaire = new QuestionNaire();
         questionNaire.question_1 = "北京市医疗";
-
+        questionNaire.question_2 = "北京市医院公司";
 
 
         BasicTemplate basicTemplate = new BasicTemplate(questionNaire,null);
@@ -25,7 +25,7 @@ public class main {
         AutoGenerator autogen = new AutoGeneratorImpl();
         //XWPFDocument ak = autogen.chapter_one_generator(basicTemplate.getC1());
         XWPFDocument ak = autogen.chapter_two_generator(basicTemplate.getC2());
-        IOManager.writeFile(ak,"22.docx");
+        IOManager.writeFile(ak,"example.docx");
 
 
     }
