@@ -4,11 +4,10 @@ import com.deepoove.poi.xwpf.NiceXWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class ExcelIOManager {
+public class IOManager {
 
     /**
      *
@@ -16,7 +15,7 @@ public class ExcelIOManager {
      * @return
      * @throws IOException
      */
-    XWPFDocument readFile(String path) throws IOException {
+    static public XWPFDocument readFile(String path) throws IOException {
 
         return new NiceXWPFDocument(new FileInputStream(path));
     }
@@ -27,7 +26,7 @@ public class ExcelIOManager {
      * @param path  Windows形式。例子："F:\\test\\new_doc.docx"
      * @throws IOException
      */
-    void writeFile(XWPFDocument doc,String path) throws IOException {
+    static public void writeFile(XWPFDocument doc,String path) throws IOException {
         FileOutputStream out = new FileOutputStream(path);
         doc.write(out);
         out.close();
