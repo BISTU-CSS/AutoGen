@@ -7,6 +7,7 @@ import com.Entity.cp3.Chaptre3input;
 import com.deepoove.poi.XWPFTemplate;
 import com.deepoove.poi.config.Configure;
 import com.deepoove.poi.plugin.table.LoopRowTableRenderPolicy;
+import com.deepoove.poi.xwpf.NiceXWPFDocument;
 import com.fileapi.IOManager;
 import com.officeapi.ReplaceSymbol;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -16,16 +17,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AutoGeneratorImpl implements AutoGenerator{
+public class AutoGeneratorImpl implements AutoGenerator {
 
 
     @Override
     public XWPFDocument chapter_one_generator(Chaptre1input input) throws IOException {
         XWPFDocument doc = IOManager.readFile("WordTemplate/1.docx");
         //第一章仅需要系统名称
-        XWPFTemplate template  = XWPFTemplate.compile(doc);
-        template.render(new HashMap<String, Object>(){{
-            put(ReplaceSymbol.system_name,input.system_name);}});
+        XWPFTemplate template = XWPFTemplate.compile(doc);
+        template.render(new HashMap<String, Object>() {{
+            put(ReplaceSymbol.system_name, input.system_name);
+        }});
         return template.getXWPFDocument();
     }
 
@@ -37,7 +39,7 @@ public class AutoGeneratorImpl implements AutoGenerator{
         Configure config = Configure.builder().bind("table213", policy).build();
         XWPFTemplate template = XWPFTemplate.compile(doc, config).render(new HashMap<String, Object>() {{
             put("table213", input.systemUserUsageTableList);
-            put(ReplaceSymbol.system_name,input.system_name);
+            put(ReplaceSymbol.system_name, input.system_name);
         }});
 
         return template.getXWPFDocument();
@@ -48,5 +50,7 @@ public class AutoGeneratorImpl implements AutoGenerator{
 
         return null;
     }
+
+
 
 }
