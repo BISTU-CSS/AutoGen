@@ -3,16 +3,19 @@ import com.Entity.QuestionNaire;
 import com.Entity.cp2.fragment.SystemUserUsageTable;
 import com.atginterface.AutoGenerator;
 import com.atginterface.AutoGeneratorImpl;
+import com.deepoove.poi.xwpf.NiceXWPFDocument;
 import com.fileapi.IOManager;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
 
         //获取调研表并处理
         QuestionNaire questionNaire = new QuestionNaire();
@@ -23,9 +26,9 @@ public class main {
         BasicTemplate basicTemplate = new BasicTemplate(questionNaire,null);
 
         AutoGenerator autogen = new AutoGeneratorImpl();
-        //XWPFDocument ak = autogen.chapter_one_generator(basicTemplate.getC1());
-        XWPFDocument ak = autogen.chapter_two_generator(basicTemplate.getC2());
-        IOManager.writeFile(ak,"example.docx");
+        XWPFDocument doc1 = autogen.chapter_one_generator(basicTemplate.getC1());
+        XWPFDocument doc2 = autogen.chapter_two_generator(basicTemplate.getC2());
+        IOManager.writeFile(doc2,"example2.docx");
 
 
     }
