@@ -15,4 +15,14 @@ public class ReplaceSymbol {
 
     //第四章会用到的
 
+
+    //第五章会用到的
+    public static String Applicability1 = "Applicability1"; //表5.4 适用/不适用  不适用说明
+    public static String Applicability2 = "Applicability2";
+    public static String Applicability3 = "Applicability3";
+    public static String explain1 = "explain1";
+    public static String explain2 = "explain2";
+    public static String explain3 = "explain3";
+
+
 }
