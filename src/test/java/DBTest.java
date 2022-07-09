@@ -47,7 +47,8 @@ public class DBTest {
                 "SM3杂凑性能≥400Mbps\n" +
                 "SM2密钥对生产性能≥14000TPS\n" +
                 "SM2签名性能≥12000TPS\n" +
-                "最大并发连接数≥5000","台","提供三年免费升级维保(超出维保期，维保期之后的维保费用为签订合同金额的12%）");
+                "最大并发连接数≥5000",2,"台","提供三年免费升级维保(超出维保期，维保期之后的维保费用为签订合同金额的12%）","单价","总价","备注");
+        deviceList.add(device);
         deviceList.add(device);
         deviceList.add(device);
         deviceList.add(device);

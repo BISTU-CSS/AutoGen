@@ -8,10 +8,14 @@ public class Device {
     private String gnsm;    //功能说明
     private String lb;      //类别
     private String pz;      //配置
+    private int sl;         //数量
     private String dw;      //单位
     private String zb;      //质保
+    private String dj;      //单价
+    private String zj;      //总价
+    private String bz;      //备注
 
-    public Device(int id, String cpmc, String pp, String cpckxh, String gnsm, String lb, String pz, String dw, String zb) {
+    public Device(int id, String cpmc, String pp, String cpckxh, String gnsm, String lb, String pz, int sl, String dw, String zb, String dj, String zj, String bz) {
         this.id = id;
         this.cpmc = cpmc;
         this.pp = pp;
@@ -19,11 +23,16 @@ public class Device {
         this.gnsm = gnsm;
         this.lb = lb;
         this.pz = pz;
+        this.sl = sl;
         this.dw = dw;
         this.zb = zb;
+        this.dj = dj;
+        this.zj = zj;
+        this.bz = bz;
     }
+
     public String[] toArray(){
-        String[] strs = {String.valueOf(id),cpmc,pp,cpckxh,gnsm,lb,pz,dw,zb};
+        String[] strs = {String.valueOf(id),cpmc,pp,cpckxh,gnsm,lb,pz, String.valueOf(sl),dw,zb,dj,zj,bz};
         return strs;
     }
 
@@ -99,6 +108,38 @@ public class Device {
         this.zb = zb;
     }
 
+    public int getSl() {
+        return sl;
+    }
+
+    public void setSl(int sl) {
+        this.sl = sl;
+    }
+
+    public String getDj() {
+        return dj;
+    }
+
+    public void setDj(String dj) {
+        this.dj = dj;
+    }
+
+    public String getZj() {
+        return zj;
+    }
+
+    public void setZj(String zj) {
+        this.zj = zj;
+    }
+
+    public String getBz() {
+        return bz;
+    }
+
+    public void setBz(String bz) {
+        this.bz = bz;
+    }
+
     @Override
     public String toString() {
         return "Device{" +
@@ -109,10 +150,12 @@ public class Device {
                 ", gnsm='" + gnsm + '\'' +
                 ", lb='" + lb + '\'' +
                 ", pz='" + pz + '\'' +
+                ", sl=" + sl +
                 ", dw='" + dw + '\'' +
                 ", zb='" + zb + '\'' +
+                ", dj='" + dj + '\'' +
+                ", zj='" + zj + '\'' +
+                ", bz='" + bz + '\'' +
                 '}';
     }
-
-
 }
