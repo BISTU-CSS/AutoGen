@@ -1,11 +1,10 @@
-package com.atginterface;
+package com.autogen.service.atgInterface;
 
 
-import com.Entity.cp1.Chaptre1input;
-import com.Entity.cp2.Chaptre2input;
-import com.Entity.cp3.Chaptre3input;
-import com.Entity.cp5.Chaptre5input;
-import com.deepoove.poi.xwpf.NiceXWPFDocument;
+import com.autogen.dao.entity.cp1.Chaptre1input;
+import com.autogen.dao.entity.cp2.Chaptre2input;
+import com.autogen.dao.entity.cp3.Chaptre3input;
+import com.autogen.dao.entity.cp5.Chaptre5input;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 import java.io.IOException;

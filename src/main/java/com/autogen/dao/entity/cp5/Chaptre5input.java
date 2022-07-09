@@ -1,6 +1,6 @@
-package com.Entity.cp5;
+package com.autogen.dao.entity.cp5;
 
-import com.Entity.cp5.fragment.Table53;
+import com.autogen.dao.entity.cp5.fragment.Table53;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.officeapi;
+package com.autogen.service.officeapi;
 
 /**
  * 替换两个大括弧中的替换符号名称

@@ -1,4 +1,4 @@
-package com.Entity.cp5.fragment;
+package com.autogen.dao.entity.cp5.fragment;
 
 public class Table53 {
 

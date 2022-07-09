@@ -1,7 +1,6 @@
-package com.officeapi;
+package com.autogen.service.officeapi;
 
-import com.Entity.Device;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import com.autogen.dao.entity.Device;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.RegionUtil;

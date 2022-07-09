@@ -1,4 +1,4 @@
-package com.Entity.cp2.fragment;
+package com.autogen.dao.entity.cp2.fragment;
 
 public class SystemUserUsageTable {
     public SystemUserUsageTable(int id, String company, String staff, String scene) {

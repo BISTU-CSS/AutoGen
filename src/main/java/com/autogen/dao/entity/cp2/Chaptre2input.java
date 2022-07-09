@@ -1,6 +1,6 @@
-package com.Entity.cp2;
+package com.autogen.dao.entity.cp2;
 
-import com.Entity.cp2.fragment.SystemUserUsageTable;
+import com.autogen.dao.entity.cp2.fragment.SystemUserUsageTable;
 
 import java.util.List;
 

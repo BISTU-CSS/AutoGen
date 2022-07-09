@@ -1,4 +1,4 @@
-package com.Entity;
+package com.autogen.dao.entity;
 
 public class Device {
     private int id;         //索引

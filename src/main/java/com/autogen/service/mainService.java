@@ -1,14 +1,18 @@
+package com.autogen.service;
+
 import com.autogen.dao.entity.BasicTemplate;
 import com.autogen.dao.entity.QuestionNaire;
 import com.autogen.service.atgInterface.AutoGenerator;
 import com.autogen.service.atgInterface.AutoGeneratorImpl;
 import com.autogen.service.fileapi.IOManager;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.springframework.stereotype.Service;
 
-public class main {
+import java.io.IOException;
 
-    public static void main(String[] args) throws Exception {
+public class mainService {
 
+    public static void main(String[] args) throws IOException {
         //获取调研表并处理
         QuestionNaire questionNaire = new QuestionNaire();
         questionNaire.question_1 = "北京市医疗";
@@ -23,8 +27,5 @@ public class main {
         XWPFDocument doc5 = autogen.chapter_five_generator(basicTemplate.getC5());
 
         IOManager.writeFile(doc2,"example2.docx");
-
-
-
     }
 }

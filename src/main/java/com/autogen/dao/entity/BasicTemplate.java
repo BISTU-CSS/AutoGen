@@ -1,12 +1,11 @@
-package com.Entity;
+package com.autogen.dao.entity;
 
-import com.Entity.cp1.Chaptre1input;
-import com.Entity.cp2.Chaptre2input;
-import com.Entity.cp2.fragment.SystemUserUsageTable;
-import com.Entity.cp3.Chaptre3input;
-import com.Entity.cp5.Chaptre5input;
-import com.Entity.cp5.fragment.Table53;
-import javafx.scene.control.Tab;
+import com.autogen.dao.entity.cp1.Chaptre1input;
+import com.autogen.dao.entity.cp5.Chaptre5input;
+import com.autogen.dao.entity.cp5.fragment.Table53;
+import com.autogen.dao.entity.cp2.Chaptre2input;
+import com.autogen.dao.entity.cp2.fragment.SystemUserUsageTable;
+import com.autogen.dao.entity.cp3.Chaptre3input;
 
 import java.util.ArrayList;
 import java.util.List;

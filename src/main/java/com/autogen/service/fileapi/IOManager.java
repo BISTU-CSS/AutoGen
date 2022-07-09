@@ -1,4 +1,4 @@
-package com.fileapi;
+package com.autogen.service.fileapi;
 
 import com.deepoove.poi.xwpf.NiceXWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;

@@ -1,10 +1,6 @@
-import com.Entity.Device;
-import com.officeapi.ExportDevice;
+import com.autogen.dao.entity.Device;
+import com.autogen.service.officeapi.ExportDevice;
 import com.util.DBUtil;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Before;
 import org.junit.Test;
 

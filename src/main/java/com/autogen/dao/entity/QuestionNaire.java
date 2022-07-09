@@ -1,8 +1,4 @@
-package com.Entity;
-
-import com.Entity.cp2.fragment.SystemUserUsageTable;
-
-import java.util.List;
+package com.autogen.dao.entity;
 
 /**
  * 调研表
