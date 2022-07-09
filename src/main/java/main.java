@@ -30,7 +30,7 @@ public class main {
         XWPFDocument doc2 = autogen.chapter_two_generator(basicTemplate.getC2());
         XWPFDocument doc5 = autogen.chapter_five_generator(basicTemplate.getC5());
 
-        IOManager.writeFile(doc5,"example5.docx");
+        IOManager.writeFile(doc2,"example2.docx");
 
 
 
