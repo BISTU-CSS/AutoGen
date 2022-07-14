@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class atgController {
 
-    @GetMapping("/hello")
-    String hello() {
-        return "hello";
+    @PostMapping("/getInput")
+    void getInput(String json) {
+
     }
 
 }
