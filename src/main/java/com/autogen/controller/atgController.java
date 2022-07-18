@@ -69,19 +69,21 @@ public class atgController {
     }
 
 
-    @RequestMapping("/download")
+    @RequestMapping("/api/download")
     public ResponseEntity<Object> download(@RequestBody JSONObject data) throws Exception {
         //提供下载的文件的路径
         QuestionNaire questionNaire = MyJSON.parsingJSON(data);
         service1.BasicTemplate(questionNaire,null);
         service1.generate();
-        FileSystemResource file = new FileSystemResource("complete_example.docx");
+        FileSystemResource file = new FileSystemResource("/home/ubuntu/Desktop/code_package/complete_example.docx");
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
         //这里定制下载文件的名称
         headers.add("Content-Disposition", String.format("attachment; filename=\"%s\"", file.getFilename()));
         headers.add("Pragma", "no-cache");
         headers.add("Expires", "0");
+        System.out.println(file.getFilename());
+        System.out.println(headers);
         return ResponseEntity.ok()
                 .headers(headers)
                 .contentLength(file.contentLength())

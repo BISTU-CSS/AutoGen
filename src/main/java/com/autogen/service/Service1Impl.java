@@ -274,7 +274,7 @@ public class Service1Impl implements Service1 {
         XWPFDocument doc7 = autoGenerator.chapter_seven_generator(getC7());
         XWPFDocument doc8 = autoGenerator.chapter_eight_generator(getC8());
         NiceXWPFDocument completeDoc = IOManager.mergeFile((NiceXWPFDocument) doc1, (NiceXWPFDocument) doc2, (NiceXWPFDocument) doc3, (NiceXWPFDocument) doc4, (NiceXWPFDocument) doc5, (NiceXWPFDocument) doc6, (NiceXWPFDocument) doc7, (NiceXWPFDocument) doc8);
-        IOManager.writeFile(completeDoc, "complete_example.docx");
+        IOManager.writeFile(completeDoc, "/home/ubuntu/Desktop/code_package/complete_example.docx");
     }
 
 

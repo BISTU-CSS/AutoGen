@@ -19,9 +19,9 @@ public class IOManager {
      * @throws IOException
      */
     static public XWPFDocument readFile(String path) throws IOException {
-        ClassPathResource classPathResource = new ClassPathResource(path);
-        File file = classPathResource.getFile();
-        FileInputStream in = new FileInputStream(file);
+//        ClassPathResource classPathResource = new ClassPathResource(path);
+//        File file = classPathResource.getFile();
+        FileInputStream in = new FileInputStream(path);
         return new NiceXWPFDocument(in);
     }
 

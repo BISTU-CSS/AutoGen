@@ -27,7 +27,7 @@ public class AutoGeneratorImpl implements AutoGenerator {
 
     @Override
     public XWPFDocument chapter_one_generator(Chaptre1input input) throws IOException {
-        XWPFDocument doc = IOManager.readFile("WordTemplate/1.docx");
+        XWPFDocument doc = IOManager.readFile("/etc/autogen/1.docx");
         //第一章仅需要系统名称
         XWPFTemplate template = XWPFTemplate.compile(doc);
         template.render(new HashMap<String, Object>() {{
@@ -39,7 +39,7 @@ public class AutoGeneratorImpl implements AutoGenerator {
     @Override
     public XWPFDocument chapter_two_generator(Chaptre2input input) throws IOException {
         //TODO:预先需要选择对应的章节里面的内容（从数据库中）
-        XWPFDocument doc = IOManager.readFile("WordTemplate/2.docx");
+        XWPFDocument doc = IOManager.readFile("/etc/autogen/2.docx");
         LoopRowTableRenderPolicy policy = new LoopRowTableRenderPolicy();
         Configure config = Configure.builder().bind("table213", policy).bind("table25", policy).build();
         XWPFTemplate template = XWPFTemplate.compile(doc, config).render(new HashMap<String, Object>() {{
@@ -62,7 +62,7 @@ public class AutoGeneratorImpl implements AutoGenerator {
     @Override
     public XWPFDocument chapter_three_generator(Chaptre3input input) throws IOException {
 
-        XWPFDocument doc = IOManager.readFile("WordTemplate/3.docx");
+        XWPFDocument doc = IOManager.readFile("/etc/autogen/3.docx");
         XWPFTemplate template = XWPFTemplate.compile(doc).render(new HashMap<String, Object>() {
             {
                 put(ReplaceSymbol.system_name, input.system_name);
@@ -115,7 +115,7 @@ public class AutoGeneratorImpl implements AutoGenerator {
 
     @Override
     public XWPFDocument chapter_four_generator(Chaptre4input input) throws IOException {
-        XWPFDocument doc = IOManager.readFile("WordTemplate/4.docx");
+        XWPFDocument doc = IOManager.readFile("/etc/autogen/4.docx");
         XWPFTemplate template = XWPFTemplate.compile(doc).render(new HashMap<String, Object>() {{
             put(ReplaceSymbol.system_name, input.system_name);
         }});
@@ -124,7 +124,7 @@ public class AutoGeneratorImpl implements AutoGenerator {
 
     @Override
     public XWPFDocument chapter_five_generator(Chaptre5input input) throws IOException {
-        XWPFDocument doc = IOManager.readFile("WordTemplate/5.docx");
+        XWPFDocument doc = IOManager.readFile("/etc/autogen/5.docx");
         LoopRowTableRenderPolicy policy = new LoopRowTableRenderPolicy();
         Configure config = Configure.builder().bind("table55", policy).build();
         XWPFTemplate template = XWPFTemplate.compile(doc, config).render(new HashMap<String, Object>() {{
@@ -158,7 +158,7 @@ public class AutoGeneratorImpl implements AutoGenerator {
 
     @Override
     public XWPFDocument chapter_six_generator(Chaptre6input input) throws IOException {
-        XWPFDocument doc = IOManager.readFile("WordTemplate/6.docx");
+        XWPFDocument doc = IOManager.readFile("/etc/autogen/6.docx");
         XWPFTemplate template = XWPFTemplate.compile(doc);
         template.render(new HashMap<String, Object>() {{
             put(ReplaceSymbol.system_name, input.system_name);
@@ -172,7 +172,7 @@ public class AutoGeneratorImpl implements AutoGenerator {
 
     @Override
     public XWPFDocument chapter_seven_generator(Chaptre7input input) throws IOException {
-        XWPFDocument doc = IOManager.readFile("WordTemplate/7.docx");
+        XWPFDocument doc = IOManager.readFile("/etc/autogen/7.docx");
         XWPFTemplate template = XWPFTemplate.compile(doc);
         template.render(new HashMap<String, Object>() {{
             put(ReplaceSymbol.system_name, input.system_name);
@@ -182,7 +182,7 @@ public class AutoGeneratorImpl implements AutoGenerator {
 
     @Override
     public XWPFDocument chapter_eight_generator(Chaptre8input input) throws IOException {
-        XWPFDocument doc = IOManager.readFile("WordTemplate/8.docx");
+        XWPFDocument doc = IOManager.readFile("/etc/autogen/8.docx");
         LoopRowTableRenderPolicy policy = new LoopRowTableRenderPolicy();
         Configure config = Configure.builder().bind("table8", policy).build();
         XWPFTemplate template = XWPFTemplate.compile(doc,config);
