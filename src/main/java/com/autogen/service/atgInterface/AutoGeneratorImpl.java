@@ -8,23 +8,19 @@ import com.autogen.dao.entity.cp5.Chaptre5input;
 import com.autogen.dao.entity.cp6.Chaptre6input;
 import com.autogen.dao.entity.cp7.Chaptre7input;
 import com.autogen.dao.entity.cp8.Chaptre8input;
+import com.autogen.service.fileapi.IOManager;
+import com.autogen.service.officeapi.ReplaceSymbol;
 import com.deepoove.poi.XWPFTemplate;
 import com.deepoove.poi.config.Configure;
 import com.deepoove.poi.data.NumberingFormat;
 import com.deepoove.poi.data.NumberingRenderData;
 import com.deepoove.poi.data.Numberings;
-import com.deepoove.poi.data.ParagraphRenderData;
 import com.deepoove.poi.plugin.table.LoopRowTableRenderPolicy;
-import com.autogen.service.fileapi.IOManager;
-import com.autogen.service.officeapi.ReplaceSymbol;
-import com.deepoove.poi.xwpf.NumFormat;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 public class AutoGeneratorImpl implements AutoGenerator {
 
@@ -60,7 +56,6 @@ public class AutoGeneratorImpl implements AutoGenerator {
         XWPFTemplate template2 = XWPFTemplate.compile(template.getXWPFDocument()).render(new HashMap<String, Object>() {{
             put(ReplaceSymbol.system_name, input.system_name);
         }});
-
         return template2.getXWPFDocument();
     }
 
@@ -112,7 +107,6 @@ public class AutoGeneratorImpl implements AutoGenerator {
                 input.list314b.forEach(s -> nb4b.addItem(s));
                 NumberingRenderData nrd4b = nb4b.create();
                 put(ReplaceSymbol.list314b, nrd4b);
-
 
             }
         });
@@ -169,9 +163,11 @@ public class AutoGeneratorImpl implements AutoGenerator {
         template.render(new HashMap<String, Object>() {{
             put(ReplaceSymbol.system_name, input.system_name);
             put(ReplaceSymbol.s6,input.s6);
-
         }});
-        return template.getXWPFDocument();
+        XWPFTemplate template2 = XWPFTemplate.compile(template.getXWPFDocument()).render(new HashMap<String, Object>() {{
+            put(ReplaceSymbol.system_name, input.system_name);
+        }});
+        return template2.getXWPFDocument();
     }
 
     @Override
