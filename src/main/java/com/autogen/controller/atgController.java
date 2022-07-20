@@ -30,33 +30,6 @@ import java.util.Map;
 
 @RestController
 public class atgController {
-
-
-
-
-    @PostMapping("/api/demo")
-    public String demo(@RequestBody() JSONObject data){
-        List<String>list = new ArrayList<>();
-        list.add("52-01-1");
-        list.add("52-01-2");
-        list.add("52-01-3");
-        list.add("52-01-4");
-        list.add("52-01-5");
-        list.add("52-02-1");
-        list.add("52-02-2");
-        list.add("52-02-3");
-        list.add("52-02-4");
-        list.add("52-02-5");
-        System.out.println(list);
-        for (String s : list){
-            if (s.indexOf("52-01") == 0){
-                System.out.println(s);
-            }
-        }
-        return "ok";
-    }
-//    @Autowired
-//    private ScenceMapper scenceMapper;
     @Autowired
     Service1 service1;
 
@@ -65,7 +38,6 @@ public class atgController {
         QuestionNaire questionNaire = MyJSON.parsingJSON(data);
         service1.BasicTemplate(questionNaire,null);
         service1.generate();
-
     }
 
 
@@ -84,6 +56,7 @@ public class atgController {
         headers.add("Expires", "0");
         System.out.println(file.getFilename());
         System.out.println(headers);
+
         return ResponseEntity.ok()
                 .headers(headers)
                 .contentLength(file.contentLength())
