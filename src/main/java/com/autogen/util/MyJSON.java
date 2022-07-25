@@ -8,9 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyJSON {
-    public static QuestionNaire parsingJSON(JSONObject data){
+    public static void parsingJSON(JSONObject data,QuestionNaire questionNaire){
         JSONObject jsonObject = data.getJSONObject("data");
-        QuestionNaire questionNaire = new QuestionNaire();
         questionNaire.setSys_name(jsonObject.getString("sys_name"));
         questionNaire.setWlhhj_sfjb(jsonObject.getString("wlhhj_sfjb"));
         questionNaire.setWlhhj_dzmj(jsonObject.getString("wlhhj_dzmj"));
@@ -51,6 +50,5 @@ public class MyJSON {
         }
         questionNaire.setTs_wlhtxaq(listts_wlhtxaq);
         questionNaire.setTs_mmyy(jsonObject.getString("ts_mmyy"));
-        return questionNaire;
     }
 }

@@ -1,4 +1,4 @@
-package com.autogen.dao.entity.cp8.fragment;
+package com.autogen.dao.entity.table;
 
 public class Table8 {
     public Table8(int id, String name, String brand, int num) {

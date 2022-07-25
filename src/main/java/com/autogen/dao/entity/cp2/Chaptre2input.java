@@ -1,7 +1,7 @@
 package com.autogen.dao.entity.cp2;
 
-import com.autogen.dao.entity.cp2.fragment.Table213;
-import com.autogen.dao.entity.cp2.fragment.Table25;
+import com.autogen.dao.entity.table.Table213;
+import com.autogen.dao.entity.table.Table25;
 
 import java.util.List;
 

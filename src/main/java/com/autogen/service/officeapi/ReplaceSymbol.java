@@ -37,12 +37,17 @@ public class ReplaceSymbol {
     //第五章会用到的
     //public static String system_name = "sysname";
     public static String s51 = "51";
-    public static String s531 = "531";
+    public static String list51 ="51list";
+    public static String s52 = "52";
+    public static String list52 = "52list";
+    public static String table52 = "table52";
     public static String wangluo = "wangluo";
-    public static String list531 = "531list";
-    public static String list533 = "533list";
-    public static String list534 = "534list";
+    public static String table53 = "table53";
+    public static String list54 = "54list";
+    public static String table54 = "table54";
+    public static String list55 = "55list";
     public static String table55 = "table55";
+    public static String table58 = "table58";
 
 
     //第六章会用到的

@@ -1,4 +1,4 @@
-package com.autogen.dao.entity.cp2.fragment;
+package com.autogen.dao.entity.table;
 
 public class Table213 {
     public Table213(int id, String company, String staff, String scene) {

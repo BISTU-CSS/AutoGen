@@ -17,7 +17,6 @@ import com.deepoove.poi.data.NumberingRenderData;
 import com.deepoove.poi.data.Numberings;
 import com.deepoove.poi.plugin.table.LoopRowTableRenderPolicy;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -124,32 +123,34 @@ public class AutoGeneratorImpl implements AutoGenerator {
 
     @Override
     public XWPFDocument chapter_five_generator(Chaptre5input input) throws IOException {
-        XWPFDocument doc = IOManager.readFile("/etc/autogen/5.docx");
+        //XWPFDocument doc = IOManager.readFile("/etc/autogen/5.docx");
+        XWPFDocument doc = IOManager.readFile("src/main/resources/WordTemplate/5.docx");
         LoopRowTableRenderPolicy policy = new LoopRowTableRenderPolicy();
-        Configure config = Configure.builder().bind("table55", policy).build();
+        Configure config = Configure.builder().bind("table52", policy).bind("table53",policy).bind("table54",policy)
+                .bind("table55",policy).bind("table58",policy).build();
         XWPFTemplate template = XWPFTemplate.compile(doc, config).render(new HashMap<String, Object>() {{
             put(ReplaceSymbol.system_name, input.system_name);
             put(ReplaceSymbol.s51,input.s51);
-            put(ReplaceSymbol.s531,input.s531);
-
+            put(ReplaceSymbol.list51,input.list51);
+            put(ReplaceSymbol.s52,input.s52);
+            put(ReplaceSymbol.table52,input.table52List);
             Numberings.NumberingBuilder nb1 = Numberings.of(NumberingFormat.DECIMAL);
-            input.list531.forEach(s -> nb1.addItem(s));
+            input.list52.forEach(s -> nb1.addItem(s));
             NumberingRenderData nrd1 = nb1.create();
-            put(ReplaceSymbol.list531, nrd1);
-
-            put(ReplaceSymbol.wangluo,input.list532);
-
+            put(ReplaceSymbol.list52, nrd1);
+            put(ReplaceSymbol.wangluo,input.list53);
+            put(ReplaceSymbol.table53,input.table53List);
             Numberings.NumberingBuilder nb3 = Numberings.of(NumberingFormat.DECIMAL);
-            input.list533.forEach(s -> nb3.addItem(s));
+            input.list54.forEach(s -> nb3.addItem(s));
             NumberingRenderData nrd3 = nb3.create();
-            put(ReplaceSymbol.list533, nrd3);
-
+            put(ReplaceSymbol.list54, nrd3);
+            put(ReplaceSymbol.table54,input.table54List);
             Numberings.NumberingBuilder nb4 = Numberings.of(NumberingFormat.DECIMAL);
-            input.list534.forEach(s -> nb4.addItem(s));
+            input.list55.forEach(s -> nb4.addItem(s));
             NumberingRenderData nrd4 = nb4.create();
-            put(ReplaceSymbol.list534, nrd4);
-
+            put(ReplaceSymbol.list55, nrd4);
             put(ReplaceSymbol.table55,input.table55List);
+            put(ReplaceSymbol.table58,input.table58List);
 
 
         }});

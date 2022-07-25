@@ -5,22 +5,18 @@ import com.autogen.dao.entity.QuestionNaire;
 import com.autogen.dao.entity.ScencePo;
 import com.autogen.dao.entity.cp1.Chaptre1input;
 import com.autogen.dao.entity.cp2.Chaptre2input;
-import com.autogen.dao.entity.cp2.fragment.Table213;
-import com.autogen.dao.entity.cp2.fragment.Table25;
+import com.autogen.dao.entity.table.*;
 import com.autogen.dao.entity.cp3.Chaptre3input;
 import com.autogen.dao.entity.cp4.Chaptre4input;
 import com.autogen.dao.entity.cp5.Chaptre5input;
-import com.autogen.dao.entity.cp5.fragment.Table55;
 import com.autogen.dao.entity.cp5.fragment.WangLuo;
 import com.autogen.dao.entity.cp6.Chaptre6input;
 import com.autogen.dao.entity.cp7.Chaptre7input;
 import com.autogen.dao.entity.cp8.Chaptre8input;
-import com.autogen.dao.entity.cp8.fragment.Table8;
 import com.autogen.service.atgInterface.AutoGenerator;
 import com.autogen.service.atgInterface.AutoGeneratorImpl;
 import com.autogen.service.fileapi.IOManager;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.deepoove.poi.data.NumberingRenderData;
 import com.deepoove.poi.data.Numberings;
 import com.deepoove.poi.xwpf.NiceXWPFDocument;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -93,40 +88,67 @@ public class Service1Impl implements Service1 {
 
         //第五章
         c5.system_name = questionNaire.sys_name;
-        List<Table55> table55List = new ArrayList<>();
-        table55List.add(new Table55(1, "服务器密码机", "功能", "硬件", 2, "备注"));
-        table55List.add(new Table55(2, "时间戳服务器", "功能", "硬件", 2, "备注"));
-        table55List.add(new Table55(3, "签名验签服务器", "功能", "硬件", 2, "备注"));
-        c5.table55List = table55List;
-        c5.s531 = (String) map.get("531");
+        c5.s52 = (String) map.get("52");
         c5.s51 = (String) map.get("51");
-        c5.list531 = (List<String>) map.get("*531list");
+        List<String> list51 = new ArrayList<>();
+        list51.add("[这里获取网页传入产品id，从数据库筛选产品描述填入]");
+        list51.add("[这里获取网页传入产品id，从数据库筛选产品描述填入]");
+        list51.add("[这里获取网页传入产品id，从数据库筛选产品描述填入]");
+        c5.list51 = list51;
+        c5.list52 = (List<String>) map.get("*52list");
+        List<Table5Util> table52 = new ArrayList<>();
+        table52.add(new Table5Util(1,"物理和环境安全","机房1"));
+        table52.add(new Table5Util(2,"物理和环境安全","机房2"));
+        c5.table52List = table52;
 
         Numberings.NumberingBuilder nb1 = Numberings.ofDecimalParentheses();
         Numberings.NumberingBuilder nb2 = Numberings.ofDecimalParentheses();
         WangLuo data1 = new WangLuo();
         WangLuo data2 = new WangLuo();
-        List<WangLuo> list532 = new ArrayList<>();
+        List<WangLuo> list53 = new ArrayList<>();
+        int count = 1;
         for (String s : questionNaire.ts_wlhtxaq) {
             if (s.indexOf("52-01") == 0) {
-                data1.setTongdao("XXX网IPSec VPN与IPSec VPN之间的通信信道");
+                if (s.indexOf("52-01-1") == 0){
+                    data1.setTongdao(count + "、XXX网IPSec VPN与IPSec VPN之间的通信信道");
+                    count++;
+                }
                 nb1.addItem(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*netlist").eq("scence", s)).getDescription());
             } else if (s.indexOf("52-02") == 0) {
-                data2.setTongdao("互联网VPN客户端与内网SSL VPN之间的通信信道");
+                if (s.indexOf("52-02-1") == 0){
+                    data2.setTongdao(count + "、互联网VPN客户端与内网SSL VPN之间的通信信道");
+                    count++;
+                }
                 nb2.addItem(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*netlist").eq("scence", s)).getDescription());
             }
         }
         data1.setNetlist(nb1.create());
         data2.setNetlist(nb2.create());
-        list532.add(data1);
-        list532.add(data2);
+        list53.add(data1);
+        list53.add(data2);
+        c5.list53 = list53;
+        List<Table5Util> table53 = new ArrayList<>();
+        table53.add(new Table5Util(1,"网络和通信安全","通道1"));
+        table53.add(new Table5Util(2,"网络和通信安全","通道2"));
+        c5.table53List = table53;
 
-        c5.list532 = list532;
+        c5.list54 = (List<String>) map.get("*54list");
+        List<Table5Util> table54 = new ArrayList<>();
+        table54.add(new Table5Util(1,"设备和计算安全","设备1"));
+        table54.add(new Table5Util(2,"设备和计算安全","设备2"));
+        c5.table54List = table54;
 
+        c5.list55 = (List<String>) map.get("*55list");
+        List<Table5Util> table55 = new ArrayList<>();
+        table55.add(new Table5Util(1,"应用和数据安全","设备1"));
+        table55.add(new Table5Util(2,"应用和数据安全","设备2"));
+        c5.table55List = table55;
 
-        c5.list533 = (List<String>) map.get("*533list");
-
-        c5.list534 = (List<String>) map.get("*534list");
+        List<Table58> table58List = new ArrayList<>();
+        table58List.add(new Table58(1, "服务器密码机", "基础设施区", "SM1/2/3/4", 2, "功能描述"));
+        table58List.add(new Table58(2, "时间戳服务器", "基础设施区", "SM1/2/3/4", 2, "功能描述"));
+        table58List.add(new Table58(3, "签名验签服务器", "基础设施区", "SM1/2/3/4", 2, "功能描述"));
+        c5.table58List = table58List;
 
         //第六章
         c6.system_name = questionNaire.sys_name;
@@ -214,48 +236,48 @@ public class Service1Impl implements Service1 {
         list = new ArrayList<>();
         map.put("315", scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "315").eq("scence", questionNaire.ts_glzd)).getDescription());
         map.put("51", scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "51").eq("scence", questionNaire.ts_mmyy)).getDescription());
-        map.put("531", scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "531").eq("scence", questionNaire.wlhhj_sfjb)).getDescription());
-        list.add(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*531list").eq("scence", questionNaire.wlhhj_sfjb)).getDescription());
-        list.add(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*531list").eq("scence", questionNaire.wlhhj_dzmj)).getDescription());
-        list.add(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*531list").eq("scence", questionNaire.wlhhj_spjk)).getDescription());
-        map.put("*531list", list);
+        map.put("52", scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "52").eq("scence", questionNaire.wlhhj_sfjb)).getDescription());
+        list.add(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*52list").eq("scence", questionNaire.wlhhj_sfjb)).getDescription());
+        list.add(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*52list").eq("scence", questionNaire.wlhhj_dzmj)).getDescription());
+        list.add(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*52list").eq("scence", questionNaire.wlhhj_spjk)).getDescription());
+        map.put("*52list", list);
 
         list = new ArrayList<>();
-        list.add(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*533list").eq("scence", questionNaire.sbhjs_sfjb)).getDescription());
-        list.add(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*533list").eq("scence", questionNaire.sbhjs_ycgl)).getDescription());
-        list.add(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*533list").eq("scence", questionNaire.sbhjs_xtzy)).getDescription());
-        list.add(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*533list").eq("scence", questionNaire.sbhjs_zyxx)).getDescription());
-        list.add(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*533list").eq("scence", questionNaire.sbhjs_rzjl)).getDescription());
-        list.add(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*533list").eq("scence", questionNaire.sbhjs_zykz)).getDescription());
-        map.put("*533list", list);
+        list.add(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*54list").eq("scence", questionNaire.sbhjs_sfjb)).getDescription());
+        list.add(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*54list").eq("scence", questionNaire.sbhjs_ycgl)).getDescription());
+        list.add(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*54list").eq("scence", questionNaire.sbhjs_xtzy)).getDescription());
+        list.add(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*54list").eq("scence", questionNaire.sbhjs_zyxx)).getDescription());
+        list.add(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*54list").eq("scence", questionNaire.sbhjs_rzjl)).getDescription());
+        list.add(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*54list").eq("scence", questionNaire.sbhjs_zykz)).getDescription());
+        map.put("*54list", list);
         list = new ArrayList<>();
         StringBuilder out = new StringBuilder();
         String temp = "";
         for (int i = 0; i < questionNaire.yyhsj_sfjb.size(); i++) {
             if (i != 0) {
-                temp = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*534list").eq("scence", questionNaire.yyhsj_sfjb.get(i))).getDescription();
+                temp = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*55list").eq("scence", questionNaire.yyhsj_sfjb.get(i))).getDescription();
                 out.append(temp.substring(temp.indexOf("：") + 1));
             } else {
-                out = new StringBuilder(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*534list").eq("scence", questionNaire.yyhsj_sfjb.get(i))).getDescription());
+                out = new StringBuilder(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*55list").eq("scence", questionNaire.yyhsj_sfjb.get(i))).getDescription());
             }
         }
         list.add(out.toString());
-        list.add(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*534list").eq("scence", questionNaire.yyhsj_fwkz)).getDescription());
-        list.add(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*534list").eq("scence", questionNaire.yyhsj_xxzy)).getDescription());
+        list.add(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*55list").eq("scence", questionNaire.yyhsj_fwkz)).getDescription());
+        list.add(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*55list").eq("scence", questionNaire.yyhsj_xxzy)).getDescription());
         for (int i = 0; i < questionNaire.yyhsj_csjmx.size(); i++) {
             if (i != 0) {
-                temp = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*534list").eq("scence", questionNaire.yyhsj_csjmx.get(i))).getDescription();
+                temp = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*55list").eq("scence", questionNaire.yyhsj_csjmx.get(i))).getDescription();
                 out.append(temp.substring(temp.indexOf("：") + 1));
             } else {
-                out = new StringBuilder(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*534list").eq("scence", questionNaire.yyhsj_csjmx.get(i))).getDescription());
+                out = new StringBuilder(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*55list").eq("scence", questionNaire.yyhsj_csjmx.get(i))).getDescription());
             }
         }
         list.add(out.toString());
-        list.add(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*534list").eq("scence", questionNaire.yyhsj_ccjmx)).getDescription());
-        list.add(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*534list").eq("scence", questionNaire.yyhsj_cswzx)).getDescription());
-        list.add(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*534list").eq("scence", questionNaire.yyhsj_ccwzx)).getDescription());
-        list.add(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*534list").eq("scence", questionNaire.yyhsj_bkfr)).getDescription());
-        map.put("*534list", list);
+        list.add(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*55list").eq("scence", questionNaire.yyhsj_ccjmx)).getDescription());
+        list.add(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*55list").eq("scence", questionNaire.yyhsj_cswzx)).getDescription());
+        list.add(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*55list").eq("scence", questionNaire.yyhsj_ccwzx)).getDescription());
+        list.add(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*55list").eq("scence", questionNaire.yyhsj_bkfr)).getDescription());
+        map.put("*55list", list);
         map.put("6", scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "6").eq("scence", questionNaire.ts_glzd)).getDescription());
 
         return map;
@@ -265,16 +287,17 @@ public class Service1Impl implements Service1 {
     @Transactional
     public void generate() throws Exception {
         AutoGenerator autoGenerator = new AutoGeneratorImpl();
-        XWPFDocument doc1 = autoGenerator.chapter_one_generator(getC1());
-        XWPFDocument doc2 = autoGenerator.chapter_two_generator(getC2());
-        XWPFDocument doc3 = autoGenerator.chapter_three_generator(getC3());
-        XWPFDocument doc4 = autoGenerator.chapter_four_generator(getC4());
+//        XWPFDocument doc1 = autoGenerator.chapter_one_generator(getC1());
+//        XWPFDocument doc2 = autoGenerator.chapter_two_generator(getC2());
+//        XWPFDocument doc3 = autoGenerator.chapter_three_generator(getC3());
+//        XWPFDocument doc4 = autoGenerator.chapter_four_generator(getC4());
         XWPFDocument doc5 = autoGenerator.chapter_five_generator(getC5());
-        XWPFDocument doc6 = autoGenerator.chapter_six_generator(getC6());
-        XWPFDocument doc7 = autoGenerator.chapter_seven_generator(getC7());
-        XWPFDocument doc8 = autoGenerator.chapter_eight_generator(getC8());
-        NiceXWPFDocument completeDoc = IOManager.mergeFile((NiceXWPFDocument) doc1, (NiceXWPFDocument) doc2, (NiceXWPFDocument) doc3, (NiceXWPFDocument) doc4, (NiceXWPFDocument) doc5, (NiceXWPFDocument) doc6, (NiceXWPFDocument) doc7, (NiceXWPFDocument) doc8);
-        IOManager.writeFile(completeDoc, "/home/ubuntu/Desktop/code_package/complete_example.docx");
+//        XWPFDocument doc6 = autoGenerator.chapter_six_generator(getC6());
+//        XWPFDocument doc7 = autoGenerator.chapter_seven_generator(getC7());
+//        XWPFDocument doc8 = autoGenerator.chapter_eight_generator(getC8());
+        //NiceXWPFDocument completeDoc = IOManager.mergeFile((NiceXWPFDocument) doc1, (NiceXWPFDocument) doc2, (NiceXWPFDocument) doc3, (NiceXWPFDocument) doc4, (NiceXWPFDocument) doc5, (NiceXWPFDocument) doc6, (NiceXWPFDocument) doc7, (NiceXWPFDocument) doc8);
+        //IOManager.writeFile(completeDoc, "/home/ubuntu/Desktop/code_package/complete_example.docx");
+        IOManager.writeFile(doc5,"5_example.docx");
     }
 
 

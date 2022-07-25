@@ -1,6 +1,6 @@
 package com.autogen.dao.entity.cp8;
 
-import com.autogen.dao.entity.cp8.fragment.Table8;
+import com.autogen.dao.entity.table.Table8;
 
 import java.util.List;
 
