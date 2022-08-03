@@ -1,21 +1,16 @@
 package com.autogen;
 
 import com.autogen.dao.Mapper.ScenceMapper;
-import com.autogen.dao.entity.QuestionNaire;
-import com.autogen.dao.entity.ScencePo;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.*;
 
 
 @SpringBootTest
 public class ApplicationTests {
 //
-//    @Autowired
-//    private ScenceMapper scenceMapper;
+    @Autowired
+    private ScenceMapper scenceMapper;
 //    @Test
 //    void contextLoads() {
 ////        List<ScencePo> list = scenceMapper.selectList(new QueryWrapper<ScencePo>().eq("wildcard","222"));
@@ -49,15 +44,11 @@ public class ApplicationTests {
 //
 //    }
 //
-////    @Test
-////    void a() {
-////        QuestionNaire questionNaire =new QuestionNaire();
-////        questionNaire.setWlhhj_sfjb("11-10-1");
-////        BasicTemplate basicTemplate = new BasicTemplate();
-////        basicTemplate.selectDes(questionNaire);
-////
-////
-////    }
+    @Test
+    void a() {
+
+
+    }
 //
 //
 //    @Test

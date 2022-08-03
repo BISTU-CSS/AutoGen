@@ -21,14 +21,19 @@ public class ReplaceSymbol {
 
     //第三章会用到的
     //public static String system_name = "sysname";
-    public static String list311a = "311alist";
-    public static String list311b = "311blist";
-    public static String list312a = "312alist";
-    public static String list312b = "312blist";
-    public static String list313a = "313alist";
-    public static String list313b = "313blist";
-    public static String list314a = "314alist";
-    public static String list314b = "314blist";
+    public static String wulifengxian = "wulifengxian";
+    public static String wuliyingyong = "wuliyingyong";
+    public static String wangluofengxian = "wangluofengxian";
+    public static String wangluoyingyong = "wangluoyingyong";
+    public static String jisuanfengxian = "jisuanfengxian";
+    public static String jisuanyingyong = "jisuanyingyong";
+    public static String yingyongfengxian = "yingyongfengxian";
+    public static String yingyongyingyong = "yingyongyingyong";
+    public static String table311 = "table311";
+    public static String table312 = "table312";
+    public static String table313 = "table313";
+    public static String table314 = "table314";
+
     public static String s315 = "315";
 
     //第四章会用到的
@@ -36,16 +41,16 @@ public class ReplaceSymbol {
 
     //第五章会用到的
     //public static String system_name = "sysname";
+    public static String img51 = "img51";
     public static String s51 = "51";
-    public static String list51 ="51list";
-    public static String s52 = "52";
-    public static String list52 = "52list";
-    public static String table52 = "table52";
+    public static String list51 ="list51";
+    public static String wuli = "wuli";
     public static String wangluo = "wangluo";
+    public static String jisuan = "jisuan";
+    public static String yingyong = "yingyong";
+    public static String table52 = "table52";
     public static String table53 = "table53";
-    public static String list54 = "54list";
     public static String table54 = "table54";
-    public static String list55 = "55list";
     public static String table55 = "table55";
     public static String table58 = "table58";
 

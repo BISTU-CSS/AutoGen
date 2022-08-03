@@ -1,12 +1,13 @@
 package com.autogen.dao.entity.table;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Table213 {
-    public Table213(int id, String company, String staff, String scene) {
-        this.id = id;
-        this.company = company;
-        this.staff = staff;
-        this.scene = scene;
-    }
 
     private int id;
     private String company;    //使用单位

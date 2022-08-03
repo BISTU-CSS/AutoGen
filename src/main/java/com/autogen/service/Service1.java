@@ -1,6 +1,6 @@
 package com.autogen.service;
 
-import com.autogen.dao.entity.QuestionNaire;
+import com.autogen.dao.entity.input.QuestionNaire;
 
 import java.util.List;
 import java.util.Map;

@@ -1,7 +1,7 @@
 package com.autogen.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.autogen.dao.entity.QuestionNaire;
+import com.autogen.dao.entity.input.QuestionNaire;
 import com.autogen.service.Service1;
 import com.autogen.util.MyJSON;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,6 @@ public class atgController {
 
     @PostMapping("/json")
     public void json(@RequestBody JSONObject data) throws Exception {
-
         QuestionNaire questionNaire = new QuestionNaire();
         MyJSON.parsingJSON(data, questionNaire);
         service1.BasicTemplate(questionNaire, null);
@@ -41,8 +40,6 @@ public class atgController {
         headers.add("Content-Disposition", String.format("attachment; filename=\"%s\"", file.getFilename()));
         headers.add("Pragma", "no-cache");
         headers.add("Expires", "0");
-        System.out.println(file.getFilename());
-        System.out.println(headers);
 
         return ResponseEntity.ok()
                 .headers(headers)

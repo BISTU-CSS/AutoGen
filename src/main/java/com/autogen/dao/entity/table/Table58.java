@@ -12,6 +12,6 @@ public class Table58 {
     private String name;       // 产品名称
     private String location;   //部署位置
     private String algorithm;  //使用的密码算法
-    private int num;           //数量
+    private String num;           //数量
     private String function;   //用途
 }

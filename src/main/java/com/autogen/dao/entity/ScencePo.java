@@ -18,13 +18,13 @@ import java.io.Serializable;
 @Builder
 @Accessors(chain = true)
 @TableName("scence_des")
-public class ScencePo implements Serializable {
-    public static final long serialVersionUID = 1L;
+public class ScencePo {
 
     @TableId(value = "id",type =  IdType.AUTO)
     private int id;
     private String wildcard;    //通配符名称
     private String scence;      //场景
     private String description; //描述
+
 
 }

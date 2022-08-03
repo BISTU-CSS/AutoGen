@@ -1,13 +1,13 @@
 package com.autogen.dao.entity.table;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Table25 {
-    public Table25(int id, String product, String purpose, String harddisk, String num) {
-        this.id = id;
-        this.product = product;
-        this.purpose = purpose;
-        this.harddisk = harddisk;
-        this.num = num;
-    }
 
     private int id;
     private String product;
