@@ -1,16 +1,23 @@
 package com.autogen;
 
+import com.autogen.dao.Mapper.DeviceMapper;
 import com.autogen.dao.Mapper.ScenceMapper;
+import com.autogen.dao.entity.Device;
+import com.autogen.dao.entity.ScencePo;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 
 @SpringBootTest
 public class ApplicationTests {
 //
-    @Autowired
-    private ScenceMapper scenceMapper;
+//    @Autowired
+//    private ScenceMapper scenceMapper;
+//    private DeviceMapper deviceMapper;
 //    @Test
 //    void contextLoads() {
 ////        List<ScencePo> list = scenceMapper.selectList(new QueryWrapper<ScencePo>().eq("wildcard","222"));
@@ -44,43 +51,21 @@ public class ApplicationTests {
 //
 //    }
 //
-    @Test
-    void a() {
 
-
-    }
 //
 //
 //    @Test
-//    void aaa() {
-//        QuestionNaire questionNaire = new QuestionNaire();
-//        List<String>list = new ArrayList<>();
-//        list.add("52-01-1");
-//        list.add("52-01-2");
-//        list.add("52-01-3");
-//        list.add("52-01-4");
-//        list.add("52-01-5");
-//        list.add("52-02-1");
-//        list.add("52-02-2");
-//        list.add("52-02-3");
-//        list.add("52-02-4");
-//        list.add("52-02-5");
-//        System.out.println(list);
-//        questionNaire.setTs_wlhtxaq(list);
-//        List<String> listWlhtxaq = new ArrayList<>();
-//        Map<String,Integer> mapWlhtxaq = new HashMap<>();
-//        for (String s : questionNaire.ts_wlhtxaq){
-//            listWlhtxaq.add(s.substring(0,5));
+//    public void aaa() {
+//        ScencePo scencePo = new ScencePo();
+//        Device device = new Device();
+//
+//        scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", "11-00-1"));
+//        if (scencePo != null) {
+//            System.out.println(scencePo);
 //        }
-//        System.out.println(listWlhtxaq);
-//        for (String s : listWlhtxaq){
-//            Integer i = 1;
-//            if(mapWlhtxaq.get(s)!= null){
-//                i=mapWlhtxaq.get(s)+1;
-//            }
-//            mapWlhtxaq.put(s,i);
+//        device = deviceMapper.selectOne(new QueryWrapper<Device>().eq("id","1"));
+//        if (device != null){
+//            System.out.println(device);
 //        }
-//        System.out.println("重复数据的个数："+mapWlhtxaq);
-//        System.out.println(mapWlhtxaq.get("52-03"));
 //    }
 }

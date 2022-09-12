@@ -4,12 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class InputTable25 {
-    private String zclx;    //资产类型
-    private String yt;      //用途
-    private String yp;      //硬盘
-    private String sl;      //数量
+    private String sbmc;
+    private String ppxh;
+    private String sl;
+    private String czxt;
+    private String sjk;
+    private String ycyw;
+    private List<String> sfrz;
+    private String blj;
 }

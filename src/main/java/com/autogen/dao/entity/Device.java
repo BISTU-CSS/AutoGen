@@ -21,18 +21,16 @@ public class Device {
     private String name;    //产品名称
     private String brand;      //品牌
     private String model;  //产品参考型号
-    private String dev_function;    //功能说明
+    private String gnsm;    //功能说明
     private String type;      //类别
     private String configure;      //配置
-    private int num;         //数量
+    private String num;         //数量
     private String unit;      //单位
-    private String warranty;      //质保
     private String dj;      //单价
     private String zj;      //总价
     private String remark;      //备注
     private String yt;//用途
     private String ms;//描述
     private String location;//部署位置
-    private String algorithm;//算法
 
 }

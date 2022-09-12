@@ -13,5 +13,6 @@ public class Product {
     private String jbxh;
     private String lb;
     private String num;
-    private int price;
+    private String remark;
+
 }

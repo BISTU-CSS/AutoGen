@@ -22,9 +22,12 @@ public class ScencePo {
 
     @TableId(value = "id",type =  IdType.AUTO)
     private int id;
-    private String wildcard;    //通配符名称
     private String scence;      //场景
+    private String cpzh;        //产品组合
+    private String jl;          //结论
     private String description; //描述
+    private String cpzb;        //测评指标
+    private String dycp;        //单元测评
 
 
 }

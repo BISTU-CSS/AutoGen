@@ -5,13 +5,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class Table25 {
-
-    private int id;
-    private String product;
-    private String purpose;
-    private String harddisk;
-    private String num;
+    private String sbmc;
+    private String ppxh;
+    private String sl;
+    private String czxt;
+    private String sjk;
+    private String ycyw;
+    private String sfrz;
+    private String blj;
 }
