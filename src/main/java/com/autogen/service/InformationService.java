@@ -3,8 +3,10 @@ package com.autogen.service;
 import com.alibaba.fastjson.JSONObject;
 import com.autogen.dao.entity.Device;
 import com.autogen.dao.entity.Information;
+import com.autogen.dao.entity.input.Concent;
 import com.autogen.dao.entity.input.InputInformation;
 import com.autogen.dao.entity.input.Product;
+import com.autogen.dao.entity.table.Table59Util;
 
 import java.util.List;
 
@@ -40,4 +42,8 @@ public interface InformationService {
      * @param name 项目名称
      */
     public void exportSBQD(List<Product> productList,String name);
+
+
+
+
 }

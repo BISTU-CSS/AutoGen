@@ -9,5 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Table37 {
     private String ywyy;
+    private String sjlx;
     private String cpdx;
+    private String bhxq;
 }

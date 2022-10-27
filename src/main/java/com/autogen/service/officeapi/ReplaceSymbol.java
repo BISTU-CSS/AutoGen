@@ -20,6 +20,7 @@ public class ReplaceSymbol {
     public static String sys_xtfw = "xtfw";
     public static String sys_fwd = "fwd";
     public static String sys_ydd = "ydd";
+    public static String sys_djbh = "djbh";
     public static String table22 = "table22";
     public static String table23 = "table23";
     public static String table241 = "table241";
@@ -67,12 +68,12 @@ public class ReplaceSymbol {
     public static String table52 = "table52";
     public static String table53 = "table53";
     public static String table54 = "table54";
-    public static String table55 = "table55";
     public static String table57 = "table57";
     public static String table58 = "table58";
     public static String table59 = "table59";
     public static String table510 = "table510";
     public static String table511 = "table511";
+    public static String s582 = "s582";
 
 
     //第六章会用到的

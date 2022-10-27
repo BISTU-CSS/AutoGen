@@ -13,6 +13,7 @@ public class InputTable28 {
     private String ywyy;
     private String sjlx;
     private String sjnr;
+    private String bhxq;
     private String ccjm;
     private String sjl;
     private String csjm;

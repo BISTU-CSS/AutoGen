@@ -16,6 +16,7 @@ public class Chaptre2input {
     public String sys_xtfw;
     public String sys_fwd;
     public String sys_ydd;
+    public String sys_djbh;
     public List<InputTable22> table22List;
     public List<InputTable23> table23List;
     public List<InputTable24> table241List;

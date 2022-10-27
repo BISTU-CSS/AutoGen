@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Table35 {
     private String sblx;
-    private String sbmc;
+//    private String sbmc;
     private String cpdx;
+    private String sm;
 }

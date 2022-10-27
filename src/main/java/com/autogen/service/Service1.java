@@ -2,6 +2,7 @@ package com.autogen.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.autogen.dao.entity.input.*;
+import com.autogen.dao.entity.table.Table59Util;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -101,6 +102,17 @@ public interface Service1 {
      * @param jlList 结论列表
      */
     void table36Init(InputTable26 table26, List<String> zbList, List<String> yqList, List<String> fxdjList, List<String> syqkList, List<String> xtxzList, List<String> jlList);
+    /**
+     *初始化第三章设备和计算安全表格的数组
+     * @param concent 一条设备清单数据
+     * @param zbList 指标列表
+     * @param yqList 要求列表
+     * @param fxdjList 风险等级列表
+     * @param syqkList 适用情况列表
+     * @param xtxzList 系统现状列表
+     * @param jlList 结论列表
+     */
+    void table36Init(Concent concent, List<String> zbList, List<String> yqList, List<String> fxdjList, List<String> syqkList, List<String> xtxzList, List<String> jlList);
 
     /**
      *初始化第三章应用和数据安全表格的数组
@@ -184,4 +196,13 @@ public interface Service1 {
      */
     void table511Init(Concent concent, List<String> zbList, List<String> cpzbList, List<String> dycpList,int i);
 
+    /**
+     * 评估方案分数
+     * @param cpzbListList 用于保存四个层面每个测评指标的结果，例如物理和环境身份鉴别中包含机房一、机房二
+     * @param concent 用于计算各个层面测评对象数量
+     * @return 返回方案整体评估分数
+     */
+     String calculateScore(List<List<Table59Util>> cpzbListList, Concent concent);
+
+     String getScore(Map<String, Object> map);
 }

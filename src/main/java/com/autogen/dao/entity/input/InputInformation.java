@@ -20,4 +20,5 @@ public class InputInformation {
     private String xmsm;
     private String date;
     private String xgsj;
+    private String score;
 }

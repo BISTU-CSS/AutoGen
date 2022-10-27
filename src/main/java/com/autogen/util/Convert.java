@@ -1,6 +1,7 @@
 package com.autogen.util;
 
 import com.autogen.dao.entity.input.*;
+import org.apache.batik.gvt.CompositeGraphicsNode;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ public class Convert {
         List<String> sys_rzys = new ArrayList<String>() {{
             add("云平台已过密评");
             add("云平台尚未过密评");
+            add("");
         }};
         List<String> mpjb_fwd = new ArrayList<String>() {{
             add("HTTPS");
@@ -168,7 +170,9 @@ public class Convert {
             add("Oracle");
             add("MySQL");
             add("SQL Server");
-            add("NewSQL");
+            add("MongoDB");
+            add("DB2");
+            add("PostgreSQL");
             add("无");
         }};
         List<String> sys_sfrz = new ArrayList<String>() {{
@@ -205,7 +209,11 @@ public class Convert {
             add("法律法规规定的其他重要数");
             add("访问控制信息");
         }};
-        questionNaire.setSys_sshy(setString(questionNaire.getSys_sshy(), sys_sshy));
+        if ("10".equals(questionNaire.getSys_sshy())){
+            questionNaire.setSys_sshy(questionNaire.getSys_sshy_qt());
+        }else {
+            questionNaire.setSys_sshy(setString(questionNaire.getSys_sshy(), sys_sshy));
+        }
         questionNaire.setSys_xmlx(setString(questionNaire.getSys_xmlx(), sys_xmlx));
         questionNaire.setSys_xtjs(setString(questionNaire.getSys_xtjs(), sys_xtjs));
         questionNaire.setSys_dbjb(setString(questionNaire.getSys_dbjb(), sys_dbjb));
@@ -213,7 +221,7 @@ public class Convert {
         questionNaire.setSys_mmzd(setString(questionNaire.getSys_mmzd(), sys_mmzd));
         questionNaire.setSys_ysbs(setString(questionNaire.getSys_ysbs(), sys_ysbs));
         questionNaire.setSys_rzys(setString(questionNaire.getSys_rzys(), sys_rzys));
-        questionNaire.setSys_rzys(setString(questionNaire.getSys_rzys(), sys_rzys));
+//        questionNaire.setSys_rzys(setString(questionNaire.getSys_rzys(), sys_rzys));
         questionNaire.setMpjb_fwd(setString(questionNaire.getMpjb_fwd(), mpjb_fwd));
         questionNaire.setMpjb_ydd(setList(questionNaire.getMpjb_ydd(), mpjb_ydd));
         List<InputTable22> table22List = new ArrayList<>();
@@ -301,6 +309,7 @@ public class Convert {
             table28.setYwyy(questionNaire.getInputTable28List().get(i).getYwyy());
             table28.setSjlx(setString(questionNaire.getInputTable28List().get(i).getSjlx(), sys_ywyy_sjlx));
             table28.setSjnr(questionNaire.getInputTable28List().get(i).getSjnr());
+            table28.setBhxq(questionNaire.getInputTable28List().get(i).getBhxq());
             table28.setCcjm(setString(questionNaire.getInputTable28List().get(i).getCcjm(), sys_ywyy_ccjm));
             table28.setSjl(questionNaire.getInputTable28List().get(i).getSjl());
             table28.setCsjm(setString(questionNaire.getInputTable28List().get(i).getCsjm(), sys_ywyy_csjm));
@@ -357,7 +366,6 @@ public class Convert {
         convertWlhtx(questionNaire, wlhtxList, sbqdList);
         convertSbhjx(questionNaire, sbhjsList, sbqdList);
         convertYyhsj(questionNaire, yyhsjList, sbqdList);
-
         concent.setWlhhjList(wlhhjList);
         concent.setWlhtxList(wlhtxList);
         concent.setSbhjsList(sbhjsList);
@@ -449,36 +457,36 @@ public class Convert {
             InputTable24 table24 = questionNaire.getInputTable24List().get(i);
             Wlhtx wlhtx = new Wlhtx();
             List<String> list = new ArrayList<>();
-            if (("1".equals(table24.getType()) && table24.getTxzt().contains("7")) || ("2".equals(table24.getType()) && table24.getTxzt().contains("5"))) {
-                wlhtx.setWlhtx_xdmc("系统与其他业务系统之间的通信信道");
+            if (("1".equals(table24.getType()) && table24.getTxzt().contains("系统")) || ("2".equals(table24.getType()) && table24.getTxzt().contains("系统"))) {
+                wlhtx.setWlhtx_xdmc(table24.getCpdx());
                 list.add("52-02-1");
                 list.add("52-02-2");
                 list.add("52-02-3");
                 list.add("52-02-4");
                 list.add("52-02-5");
-            } else if (("1".equals(table24.getType()) && table24.getTxzt().contains("8")) || ("2".equals(table24.getType()) && table24.getTxzt().contains("6"))) {
-                wlhtx.setWlhtx_xdmc("机房到机房之间的通信信道");
+            } else if (("1".equals(table24.getType()) && table24.getTxzt().contains("机房")) || ("2".equals(table24.getType()) && table24.getTxzt().contains("机房"))) {
+                wlhtx.setWlhtx_xdmc(table24.getCpdx());
                 list.add("52-01-1");
                 list.add("52-01-2");
                 list.add("52-01-3");
                 list.add("52-01-4");
                 list.add("52-01-5");
-            } else if (("1".equals(table24.getType()) && table24.getTxzt().contains("6")) || ("2".equals(table24.getType()) && table24.getTxzt().contains("4"))) {
-                wlhtx.setWlhtx_xdmc("物联网设备与系统之间的通信信道");
+            } else if (("1".equals(table24.getType()) && table24.getTxzt().contains("设备")) || ("2".equals(table24.getType()) && table24.getTxzt().contains("设备"))) {
+                wlhtx.setWlhtx_xdmc(table24.getCpdx());
                 list.add("52-03-1");
                 list.add("52-03-2");
                 list.add("52-03-3");
                 list.add("52-03-4");
                 list.add("52-03-5");
             } else if ("1".equals(table24.getType()) && "1".equals(table24.getTxzt())) {
-                wlhtx.setWlhtx_xdmc("互联网运维人员与系统之间的通信信道");
+                wlhtx.setWlhtx_xdmc(table24.getCpdx());
                 list.add("52-05-1");
                 list.add("52-05-2");
                 list.add("52-05-3");
                 list.add("52-05-4");
                 list.add("52-05-5");
             } else if ("2".equals(table24.getType()) && "1".equals(table24.getTxzt())) {
-                wlhtx.setWlhtx_xdmc("办公内网运维人员与系统之间的通信信道");
+                wlhtx.setWlhtx_xdmc(table24.getCpdx());
                 list.add("52-06-1");
                 list.add("52-06-2");
                 list.add("52-06-3");
@@ -486,14 +494,14 @@ public class Convert {
                 list.add("52-06-5");
             } else if ("1".equals(table24.getType()) && "2".equals(table24.getTxzt())) {
                 if (sbqdStrList.contains("SSL VPN安全网关")) {
-                    wlhtx.setWlhtx_xdmc("互联网PC浏览器与系统之间的通信信道");
+                    wlhtx.setWlhtx_xdmc(table24.getCpdx());
                     list.add("52-07-1");
                     list.add("52-07-2");
                     list.add("52-07-3");
                     list.add("52-07-4");
                     list.add("52-07-5");
                 } else {
-                    wlhtx.setWlhtx_xdmc("互联网PC浏览器与系统之间的通信信道");
+                    wlhtx.setWlhtx_xdmc(table24.getCpdx());
                     list.add("52-08-1");
                     list.add("52-08-2");
                     list.add("52-08-3");
@@ -502,14 +510,14 @@ public class Convert {
                 }
             } else if ("2".equals(table24.getType()) && "2".equals(table24.getTxzt())) {
                 if (sbqdStrList.contains("可信浏览器")){
-                    wlhtx.setWlhtx_xdmc("办公内网PC浏览器与系统之间的通信信道");
+                    wlhtx.setWlhtx_xdmc(table24.getCpdx());
                     list.add("52-10-1");
                     list.add("52-10-2");
                     list.add("52-10-3");
                     list.add("52-10-4");
                     list.add("52-10-5");
                 }else if (!sbqdStrList.contains("可信浏览器") && sbqdStrList.contains("SSL VPN安全网关")){
-                    wlhtx.setWlhtx_xdmc("办公内网PC浏览器与系统之间的通信信道");
+                    wlhtx.setWlhtx_xdmc(table24.getCpdx());
                     list.add("52-09-1");
                     list.add("52-09-2");
                     list.add("52-09-3");
@@ -525,7 +533,7 @@ public class Convert {
                 }
 
             } else if ("1".equals(table24.getType()) && "3".equals(table24.getTxzt())) {
-                wlhtx.setWlhtx_xdmc("互联网PC客户端与系统之间的通信信道");
+                wlhtx.setWlhtx_xdmc(table24.getCpdx());
                 list.add("52-11-1");
                 list.add("52-11-2");
                 list.add("52-11-3");
@@ -533,21 +541,21 @@ public class Convert {
                 list.add("52-11-5");
             } else if ("1".equals(table24.getType()) && "4".equals(table24.getTxzt())) {
                 if (sbqdStrList.contains("SSL VPN安全网关") && sbqdStrList.contains("协同签名系统")) {
-                    wlhtx.setWlhtx_xdmc("移动端APP与系统之间的通信信道");
+                    wlhtx.setWlhtx_xdmc(table24.getCpdx());
                     list.add("52-14-1");
                     list.add("52-14-2");
                     list.add("52-14-3");
                     list.add("52-14-4");
                     list.add("52-14-5");
                 } else if (sbqdStrList.contains("SSL VPN安全网关")) {
-                    wlhtx.setWlhtx_xdmc("移动端APP与系统之间的通信信道");
+                    wlhtx.setWlhtx_xdmc(table24.getCpdx());
                     list.add("52-13-1");
                     list.add("52-13-2");
                     list.add("52-13-3");
                     list.add("52-13-4");
                     list.add("52-13-5");
                 } else if (sbqdStrList.contains("协同签名系统")) {
-                    wlhtx.setWlhtx_xdmc("移动端APP与系统之间的通信信道");
+                    wlhtx.setWlhtx_xdmc(table24.getCpdx());
                     list.add("52-14-1");
                     list.add("52-14-2");
                     list.add("52-14-3");
@@ -562,14 +570,14 @@ public class Convert {
                     list.add("52-01-5");
                 }
             } else if ("1".equals(table24.getType()) && "5".equals(table24.getTxzt())) {
-                wlhtx.setWlhtx_xdmc("互联网PC客户端与系统之间的通信信道");
+                wlhtx.setWlhtx_xdmc(table24.getCpdx());
                 list.add("52-15-1");
                 list.add("52-15-2");
                 list.add("52-15-3");
                 list.add("52-15-4");
                 list.add("52-15-5");
             } else if ("2".equals(table24.getType()) && "3".equals(table24.getTxzt())) {
-                wlhtx.setWlhtx_xdmc("互联网PC客户端与系统之间的通信信道");
+                wlhtx.setWlhtx_xdmc(table24.getCpdx());
                 list.add("52-12-1");
                 list.add("52-12-2");
                 list.add("52-12-3");
@@ -612,11 +620,32 @@ public class Convert {
             }
             if ("1".equals(table25.getBlj())) {
                 sbhjs.setSbhjs_ycgl("32-01-1");
-                sbhjs.setSbhjs_xtzy("33-00-1");
             } else {
-                sbhjs.setSbhjs_ycgl("32-02-1");
-                sbhjs.setSbhjs_xtzy("33-01-1");
+                sbhjs.setSbhjs_ycgl("32-03-1");
             }
+            List<String>list = new ArrayList<>();
+            if (table25.getCzxt().equals("1")){
+                list.add("33-00-1");
+            }else if (table25.getCzxt().equals("2")){
+                list.add("33-01-1");
+            }else if (table25.getCzxt().equals("3")){
+                list.add("33-02-1");
+            }
+            if (table25.getSjk().equals("1")){
+                list.add("33-03-1");
+            }else if (table25.getSjk().equals("3")){
+                list.add("33-04-1");
+            }else if (table25.getSjk().equals("2")){
+                list.add("33-05-1");
+            }else if (table25.getSjk().equals("4")){
+                list.add("33-06-1");
+            }else if (table25.getSjk().equals("5")){
+                list.add("33-07-1");
+            }else if (table25.getSjk().equals("6")){
+                list.add("33-08-1");
+            }
+            list.add("33-09-1");
+            sbhjs.setSbhjs_xtzy(list);
             sbhjs.setSbhjs_zyxx("34-00-1");
             sbhjs.setSbhjs_rzjl("35-00-1");
             sbhjs.setSbhjs_zykz("36-00-1");
@@ -642,16 +671,54 @@ public class Convert {
                 }
                 if ("1".equals(table26.getBlj())) {
                     sbhjs.setSbhjs_ycgl("32-01-1");
-                    sbhjs.setSbhjs_xtzy("33-00-1");
                 } else {
-                    sbhjs.setSbhjs_ycgl("32-02-1");
-                    sbhjs.setSbhjs_xtzy("33-01-1");
+                    sbhjs.setSbhjs_ycgl("32-03-1");
                 }
+                List<String>list = new ArrayList<>();
+                list.add("33-10-1");
+                sbhjs.setSbhjs_xtzy(list);
                 sbhjs.setSbhjs_zyxx("34-00-1");
                 sbhjs.setSbhjs_rzjl("35-00-1");
-                sbhjs.setSbhjs_zykz("36-00-1");
+                sbhjs.setSbhjs_zykz("36-01-1");
                 sbhjsList.add(sbhjs);
             }
+        }
+        //循环设备清单
+        for (int i = 0; i < sbqdStrList.size(); i++) {
+                Sbhjs sbhjs = new Sbhjs();
+                sbhjs.setSbhjs_sbmc(sbqdStrList.get(i));
+                if (sbhjs.getSbhjs_sbmc().equals("国密安全密码应用中间件")||sbhjs.getSbhjs_sbmc().equals("国密数字证书")
+                        ||sbhjs.getSbhjs_sbmc().equals("智能密码钥匙")||sbhjs.getSbhjs_sbmc().equals("可信浏览器")
+                        ||sbhjs.getSbhjs_sbmc().equals("密码设备管理平台")||sbhjs.getSbhjs_sbmc().equals("云安全管理平台（CSMP）")
+                        ||sbhjs.getSbhjs_sbmc().equals("国密视频监控系统")||sbhjs.getSbhjs_sbmc().equals("安全门禁系统")
+                        ||sbhjs.getSbhjs_sbmc().equals("密码应用技术服务")){
+                    continue;
+                }
+                if (sbqdStrList.contains("国密堡垒机")) {
+                    sbhjs.setSbhjs_sfjb("31-01-1");
+                } else {
+                    if ("1".equals(questionNaire.getInputTable25List().get(0).getBlj())) {
+                        sbhjs.setSbhjs_sfjb("31-00-1");
+                    } else if ("2".equals(questionNaire.getInputTable25List().get(0).getBlj())) {
+                        if (sbqdStrList.contains("签名验签服务器")) {
+                            sbhjs.setSbhjs_sfjb("31-02-1");
+                        } else {
+                            sbhjs.setSbhjs_sfjb("31-03-1");
+                        }
+                    }
+                }
+                if ("1".equals(questionNaire.getInputTable25List().get(0).getBlj())) {
+                    sbhjs.setSbhjs_ycgl("32-01-1");
+                } else {
+                    sbhjs.setSbhjs_ycgl("32-03-1");
+                }
+                List<String>list = new ArrayList<>();
+                list.add("33-10-1");
+                sbhjs.setSbhjs_xtzy(list);
+                sbhjs.setSbhjs_zyxx("34-00-1");
+                sbhjs.setSbhjs_rzjl("35-00-1");
+                sbhjs.setSbhjs_zykz("36-01-1");
+                sbhjsList.add(sbhjs);
         }
     }
 
@@ -683,9 +750,12 @@ public class Convert {
                         if (!sfjbList.contains("41-03-1")){
                             sfjbList.add("41-03-1");
                         }
-                    }else {
-                        sfjbList.add("0-0-0");
                     }
+                    //其他情况不判断，可能存在问题
+//                    else {
+//                        System.out.println("questionNaire.getSys_sshy():"+questionNaire.getSys_sshy()+"-----table22.getYh():"+table22.getYh());
+//                        sfjbList.add("0-0-0");
+//                    }
                 }
             }
             if (sbqdStrList.contains("可信浏览器")) {
@@ -696,6 +766,7 @@ public class Convert {
             }
             yyhsj.setYyhsj_sfjb(sfjbList);
             Boolean flag = true;
+            List<String> ccjmx = new ArrayList<>();
             for (int j = 0; j < questionNaire.getInputTable28List().size(); j++) {
                 InputTable28 table28 = questionNaire.getInputTable28List().get(j);
                 if (table27.getYwyy().equals(table28.getYwyy())){
@@ -711,27 +782,44 @@ public class Convert {
                 if (flag) {
                     yyhsj.setYyhsj_xxzy("43-00-1");
                     zysjList.add("44-00-1");
-                    zysjList.add("44-01-1");
+                    for (int k = 0;k<questionNaire.getInputTable24List().size();k++){
+                        InputTable24 inputTable24 = questionNaire.getInputTable24List().get(k);
+                        if (inputTable24.getTxzt().contains("机房") || inputTable24.getTxzt().contains("系统")){
+                            zysjList.add("44-01-1");
+                            break;
+                        }
+                    }
+
                     yyhsj.setYyhsj_csjmx(zysjList);
-                    if ("1".equals(table28.getCcjm())) {
-                        yyhsj.setYyhsj_ccjmx("45-00-1");
-                    } else if ("2".equals(table28.getCcjm())) {
-                        yyhsj.setYyhsj_ccjmx("45-01-1");
-                    } else if ("3".equals(table28.getCcjm())) {
-                        yyhsj.setYyhsj_ccjmx("45-02-1");
-                    }
                     yyhsj.setYyhsj_cswzx("46-00-1");
-                    if ("1".equals(table28.getCcjm())) {
-                        yyhsj.setYyhsj_ccwzx("47-00-1");
-                    } else if ("2".equals(table28.getCcjm())) {
-                        yyhsj.setYyhsj_ccwzx("47-01-1");
-                    } else if ("3".equals(table28.getCcjm())) {
-                        yyhsj.setYyhsj_ccwzx("47-02-1");
-                    }
+                    ccjmx.add(table28.getCcjm());
+//                    if ("1".equals(table28.getCcjm())) {
+//                        yyhsj.setYyhsj_ccjmx("45-00-1");
+//                    } else if ("2".equals(table28.getCcjm())) {
+//                        yyhsj.setYyhsj_ccjmx("45-01-1");
+//                    } else if ("3".equals(table28.getCcjm())) {
+//                        yyhsj.setYyhsj_ccjmx("45-02-1");
+//                    }
+//
+//                    if ("1".equals(table28.getCcjm())) {
+//                        yyhsj.setYyhsj_ccwzx("47-00-1");
+//                    } else if ("2".equals(table28.getCcjm())) {
+//                        yyhsj.setYyhsj_ccwzx("47-01-1");
+//                    } else if ("3".equals(table28.getCcjm())) {
+//                        yyhsj.setYyhsj_ccwzx("47-02-1");
+//                    }
                     flag = false;
                 }
             }
         }
+            if (ccjmx.contains("2")||ccjmx.contains("3")){
+                yyhsj.setYyhsj_ccjmx("45-01-1");
+                yyhsj.setYyhsj_ccwzx("47-01-1");
+            }else {
+                yyhsj.setYyhsj_ccjmx("45-00-1");
+                yyhsj.setYyhsj_ccwzx("47-00-1");
+            }
+
             if ("1".equals(table27.getBkfr())){
                 yyhsj.setYyhsj_bkfr("48-00-1");
             }else if ("2".equals(table27.getBkfr())){

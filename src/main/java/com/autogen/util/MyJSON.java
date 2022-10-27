@@ -11,6 +11,7 @@ public class MyJSON {
     public static void parsingJSON(JSONObject data, QuestionNaire questionNaire){
         JSONObject jsonObject = data.getJSONObject("data");
         questionNaire.setSys_sshy(jsonObject.getString("sys_sshy"));
+        questionNaire.setSys_sshy_qt(jsonObject.getString("sys_sshy_qt"));
         questionNaire.setSys_xmlx(jsonObject.getString("sys_xmlx"));
 
         questionNaire.setSys_name(jsonObject.getString("sys_name"));
@@ -21,10 +22,10 @@ public class MyJSON {
         questionNaire.setSys_mmzd(jsonObject.getString("sys_mmzd"));
         questionNaire.setSys_ysbs(jsonObject.getString("sys_ysbs"));
         questionNaire.setSys_rzys(jsonObject.getString("sys_rzys"));
-//        questionNaire.setSys_xtfw(jsonObject.getString("sys_xtfw"));
-
         questionNaire.setMpjb_fwd(jsonObject.getString("mpjb_fwd"));
         questionNaire.setMpjb_ydd(addList(jsonObject,"mpjb_ydd"));
+        questionNaire.setSys_djbh(jsonObject.getString("sys_djbh"));
+
         questionNaire.setMpjb_sfrz(addList(jsonObject,"mpjb_sfrz"));
         questionNaire.setMpjb_fwfs(addList(jsonObject,"mpjb_fwfs"));
         questionNaire.setMpjb_yjzd(jsonObject.getString("mpjb_yjzd"));

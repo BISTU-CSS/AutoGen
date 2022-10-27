@@ -16,6 +16,7 @@ public class QuestionNaire {
 
 
     private String sys_sshy;                         //所属行业
+    private String sys_sshy_qt;                      //其他所属行业
     private String sys_xmlx;                         //系统类型（技术框架）
     //基础情况
     private String sys_name;                         //系统名称
@@ -26,7 +27,7 @@ public class QuestionNaire {
     private String sys_mmzd;                         //密码制度
     private String sys_ysbs;                         //云上部署
     private String sys_rzys;                         //若在云上
-//    private String sys_xtfw;                         //系统服务
+    private String sys_djbh;                         //定级编号
 
     //密评简表
     private String mpjb_fwd;                          //服务端

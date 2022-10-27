@@ -1,8 +1,10 @@
 package com.autogen.service;
 
 import com.autogen.dao.Mapper.DeviceMapper;
+import com.autogen.dao.Mapper.InformationMapper;
 import com.autogen.dao.Mapper.ScenceMapper;
 import com.autogen.dao.entity.Device;
+import com.autogen.dao.entity.Information;
 import com.autogen.dao.entity.ScencePo;
 import com.autogen.dao.entity.input.*;
 import com.autogen.dao.entity.cp1.Chaptre1input;
@@ -19,14 +21,21 @@ import com.autogen.service.atgInterface.AutoGeneratorImpl;
 import com.autogen.service.fileapi.IOManager;
 import com.autogen.util.Convert;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.deepoove.poi.data.NumberingRenderData;
+import com.deepoove.poi.data.Numberings;
+import com.deepoove.poi.data.TextRenderData;
 import com.deepoove.poi.xwpf.NiceXWPFDocument;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -37,6 +46,8 @@ public class Service1Impl implements Service1 {
     ScenceMapper scenceMapper;
     @Autowired
     DeviceMapper deviceMapper;
+    @Autowired
+    InformationMapper informationMapper;
 
 
     @Override
@@ -53,6 +64,7 @@ public class Service1Impl implements Service1 {
 
         Convert.convertToText(questionNaire);
         Map<String, Object> map = selectDes(questionNaire, concent);
+
 
         //第一章
         c1.sys_name = (String) map.get("sysname");
@@ -73,6 +85,7 @@ public class Service1Impl implements Service1 {
         c2.sys_xtfw = (String) map.get("xtfw");
         c2.sys_ydd = (String) map.get("ydd");
         c2.sys_fwd = (String) map.get("fwd");
+        c2.sys_djbh = (String) map.get("djbh");
         c2.table22List = (List<InputTable22>) map.get("table22");
         c2.table23List = (List<InputTable23>) map.get("table23");
         c2.table241List = (List<InputTable24>) map.get("table241");
@@ -114,6 +127,8 @@ public class Service1Impl implements Service1 {
         c5.table59List = (List<Table59Util>) map.get("table59");
         c5.table510List = (List<Table59Util>) map.get("table510");
         c5.table511List = (List<Table59Util>) map.get("table511");
+        c5.s582 = (NumberingRenderData) map.get("s582");
+
 //
 //        //第六章
         c6.system_name = (String) map.get("sysname");
@@ -140,8 +155,8 @@ public class Service1Impl implements Service1 {
         XWPFDocument doc7 = autoGenerator.chapter_seven_generator(getC7());
 //        XWPFDocument doc8 = autoGenerator.chapter_eight_generator(getC8());
         NiceXWPFDocument completeDoc = IOManager.mergeFile((NiceXWPFDocument) doc1, (NiceXWPFDocument) doc2, (NiceXWPFDocument) doc3, (NiceXWPFDocument) doc4, (NiceXWPFDocument) doc5, (NiceXWPFDocument) doc6, (NiceXWPFDocument) doc7);
-        IOManager.writeFile(completeDoc, "/home/ubuntu/Desktop/code_package/complete_example.docx");
-//        IOManager.writeFile(completeDoc, "example.docx");
+//        IOManager.writeFile(completeDoc, "/home/ubuntu/Desktop/code_package/complete_example.docx");
+        IOManager.writeFile(completeDoc, "example.docx");
     }
 
     @Override
@@ -167,6 +182,7 @@ public class Service1Impl implements Service1 {
         map.put("rzys", questionNaire.getSys_rzys());
         map.put("fwd", questionNaire.getMpjb_fwd());
         map.put("ydd", StringUtils.strip(questionNaire.getMpjb_ydd().toString(), "[]"));
+        map.put("djbh",questionNaire.getSys_djbh());
         List<Table22> table22List = new ArrayList<>();
         for (int i = 0; i < questionNaire.getInputTable22List().size(); i++) {
             Table22 table22 = new Table22();
@@ -311,7 +327,9 @@ public class Service1Impl implements Service1 {
             table32Init(questionNaire.getInputTable23List().get(i), zbList, yqList, fxdjList, syqkList, xtxzList, jlList);
             for (int j = 0; j < 3; j++) {
                 table3Util = new Table3Util();
-                table3Util.setCpdx(questionNaire.getInputTable23List().get(i).getJfmc());
+                if (j == 0) {
+                    table3Util.setCpdx(questionNaire.getInputTable23List().get(i).getJfmc());
+                }
                 table3Util.setZb(zbList.get(j));
                 table3Util.setYq(yqList.get(j));
                 table3Util.setFxdj(fxdjList.get(j));
@@ -344,7 +362,9 @@ public class Service1Impl implements Service1 {
             table34Init(questionNaire.getInputTable24List().get(i), zbList, yqList, fxdjList, syqkList, xtxzList, jlList);
             for (int j = 0; j < 5; j++) {
                 table3Util = new Table3Util();
-                table3Util.setCpdx(concent.getWlhtxList().get(i).getWlhtx_xdmc());
+                if (j == 0) {
+                    table3Util.setCpdx(concent.getWlhtxList().get(i).getWlhtx_xdmc());
+                }
                 table3Util.setZb(zbList.get(j));
                 table3Util.setYq(yqList.get(j));
                 table3Util.setFxdj(fxdjList.get(j));
@@ -360,7 +380,7 @@ public class Service1Impl implements Service1 {
         for (int i = 0; i < questionNaire.getInputTable25List().size(); i++) {
             Table35 table35 = new Table35();
             table35.setSblx("通用设备");
-            table35.setSbmc(questionNaire.getInputTable25List().get(i).getSbmc());
+//            table35.setSbmc(questionNaire.getInputTable25List().get(i).getSbmc());
             table35.setCpdx(questionNaire.getInputTable25List().get(i).getSbmc());
             table35List.add(table35);
         }
@@ -369,16 +389,21 @@ public class Service1Impl implements Service1 {
             if ("1".equals(questionNaire.getInputTable26List().get(i).getType())) {
                 table35.setSblx("密码产品/密码设备");
             } else if ("2".equals(questionNaire.getInputTable26List().get(i).getType())) {
-                table35.setSblx("具有密码功能的网络及安全设备(含云平台提供的虚拟VPN、堡垒机等)");
+                table35.setSblx("具有密码功能的网络及安全设备");
             } else if ("3".equals(questionNaire.getInputTable26List().get(i).getType())) {
                 table35.setSblx("采用密码技术的其他产品");
             } else if ("4".equals(questionNaire.getInputTable26List().get(i).getType())) {
-                table35.setSblx("没有密码功能的网络及安全设备（专用设备一般不作为测评对象）");
+                table35.setSblx("没有密码功能的网络及安全设备");
             } else if ("5".equals(questionNaire.getInputTable26List().get(i).getType())) {
                 table35.setSblx("虚拟设备和系统（专用设备一般不作为测评对象）");
             }
-            table35.setSbmc(questionNaire.getInputTable26List().get(i).getSbmc());
+//            table35.setSbmc(questionNaire.getInputTable26List().get(i).getSbmc());
             table35.setCpdx(questionNaire.getInputTable26List().get(i).getSbmc());
+            if (questionNaire.getInputTable26List().get(i).getSmzs().equals("是")){
+                table35.setSm("具有商密证书");
+            }else if (questionNaire.getInputTable26List().get(i).getSmzs().equals("否")){
+                table35.setSm("不具有商密证书");
+            }
             table35List.add(table35);
         }
         map.put("table35", table35List);
@@ -392,7 +417,9 @@ public class Service1Impl implements Service1 {
             table36Init(questionNaire.getInputTable25List().get(i), zbList, yqList, fxdjList, syqkList, xtxzList, jlList);
             for (int j = 0; j < 6; j++) {
                 table3Util = new Table3Util();
-                table3Util.setCpdx(questionNaire.getInputTable25List().get(i).getSbmc());
+                if (j == 0) {
+                    table3Util.setCpdx(questionNaire.getInputTable25List().get(i).getSbmc());
+                }
                 table3Util.setZb(zbList.get(j));
                 table3Util.setYq(yqList.get(j));
                 table3Util.setFxdj(fxdjList.get(j));
@@ -403,7 +430,7 @@ public class Service1Impl implements Service1 {
             }
         }
         for (int i = 0; i < questionNaire.getInputTable26List().size(); i++) {
-            if ("1".equals(questionNaire.getInputTable26List().get(i).getType()) || "2".equals(questionNaire.getInputTable26List().get(i).getType()) || "3".equals(questionNaire.getInputTable26List().get(i).getType())) {
+            if ("1".equals(questionNaire.getInputTable26List().get(i).getType()) || ("2".equals(questionNaire.getInputTable26List().get(i).getType()) && questionNaire.getInputTable26List().get(i).getSbmc().contains("堡垒机"))|| "3".equals(questionNaire.getInputTable26List().get(i).getType())) {
                 zbList = new ArrayList<>();
                 yqList = new ArrayList<>();
                 fxdjList = new ArrayList<>();
@@ -413,7 +440,9 @@ public class Service1Impl implements Service1 {
                 table36Init(questionNaire.getInputTable26List().get(i), zbList, yqList, fxdjList, syqkList, xtxzList, jlList);
                 for (int j = 0; j < 6; j++) {
                     table3Util = new Table3Util();
-                    table3Util.setCpdx(questionNaire.getInputTable26List().get(i).getSbmc());
+                    if (j == 0) {
+                        table3Util.setCpdx(questionNaire.getInputTable26List().get(i).getSbmc());
+                    }
                     table3Util.setZb(zbList.get(j));
                     table3Util.setYq(yqList.get(j));
                     table3Util.setFxdj(fxdjList.get(j));
@@ -426,18 +455,23 @@ public class Service1Impl implements Service1 {
         }
         map.put("table36", table36List);
         for (int i = 0; i < questionNaire.getInputTable27List().size(); i++) {
-            Table37 table37 = new Table37();
-            table37.setYwyy(questionNaire.getInputTable27List().get(i).getYwyy());
-            table37.setCpdx(questionNaire.getInputTable27List().get(i).getYwyy());
-            table37List.add(table37);
-        }
-        for (int i = 0; i < questionNaire.getInputTable28List().size(); i++) {
-            if (!questionNaire.getInputTable28List().get(i).getSjlx().equals("访问控制信息")) {
+            InputTable27 table27 = questionNaire.getInputTable27List().get(i);
+            boolean flag = true;
+            for (int j = 0; j < questionNaire.getInputTable28List().size(); j++) {
+                InputTable28 table28 = questionNaire.getInputTable28List().get(j);
                 Table37 table37 = new Table37();
-                table37.setYwyy(questionNaire.getInputTable28List().get(i).getSjlx());
-                table37.setCpdx("重要数据");
-                table37List.add(table37);
+                if (table27.getYwyy().equals(table28.getYwyy()) && !table28.getSjlx().equals("访问控制信息")) {
+                    if (flag) {
+                        table37.setYwyy(table27.getYwyy());
+                    }
+                    table37.setSjlx(table28.getSjlx());
+                    table37.setCpdx(table28.getSjnr());
+                    table37.setBhxq(table28.getBhxq());
+                    table37List.add(table37);
+                    flag = false;
+                }
             }
+
         }
         map.put("table37", table37List);
         for (int i = 0; i < questionNaire.getInputTable27List().size(); i++) {
@@ -450,7 +484,9 @@ public class Service1Impl implements Service1 {
             table38Init(questionNaire, i, zbList, yqList, fxdjList, syqkList, xtxzList, jlList);
             for (int j = 0; j < 8; j++) {
                 table3Util = new Table3Util();
-                table3Util.setCpdx(questionNaire.getInputTable27List().get(i).getYwyy());
+                if (j == 0) {
+                    table3Util.setCpdx(questionNaire.getInputTable27List().get(i).getYwyy());
+                }
                 table3Util.setZb(zbList.get(j));
                 table3Util.setYq(yqList.get(j));
                 table3Util.setFxdj(fxdjList.get(j));
@@ -487,7 +523,9 @@ public class Service1Impl implements Service1 {
             table51Init(concent, zbList, cpList, msList, jlList, i);
             for (int j = 0; j < 3; j++) {
                 Table5Util table5 = new Table5Util();
-                table5.setCpdx(concent.getWlhhjList().get(i).getWlhhj_jfmc());
+                if (j == 0) {
+                    table5.setCpdx(concent.getWlhhjList().get(i).getWlhhj_jfmc());
+                }
                 table5.setZb(zbList.get(j));
                 table5.setMmcp(cpList.get(j));
                 table5.setFams(msList.get(j));
@@ -504,7 +542,9 @@ public class Service1Impl implements Service1 {
             table52Init(concent, zbList, cpList, msList, jlList, i);
             for (int j = 0; j < 5; j++) {
                 Table5Util table5 = new Table5Util();
-                table5.setCpdx(concent.getWlhtxList().get(i).getWlhtx_xdmc());
+                if (j == 0) {
+                    table5.setCpdx(concent.getWlhtxList().get(i).getWlhtx_xdmc());
+                }
                 table5.setZb(zbList.get(j));
                 table5.setMmcp(cpList.get(j));
                 table5.setFams(msList.get(j));
@@ -521,7 +561,9 @@ public class Service1Impl implements Service1 {
             table53Init(concent, zbList, cpList, msList, jlList, i);
             for (int j = 0; j < 6; j++) {
                 Table5Util table5 = new Table5Util();
-                table5.setCpdx(concent.getSbhjsList().get(i).getSbhjs_sbmc());
+                if (j == 0) {
+                    table5.setCpdx(concent.getSbhjsList().get(i).getSbhjs_sbmc());
+                }
                 table5.setZb(zbList.get(j));
                 table5.setMmcp(cpList.get(j));
                 table5.setFams(msList.get(j));
@@ -538,7 +580,9 @@ public class Service1Impl implements Service1 {
             table54Init(concent, zbList, cpList, msList, jlList, i);
             for (int j = 0; j < 8; j++) {
                 Table5Util table5 = new Table5Util();
-                table5.setCpdx(concent.getYyhsjList().get(i).getYyhsj_ywmc());
+                if (j == 0) {
+                    table5.setCpdx(concent.getYyhsjList().get(i).getYyhsj_ywmc());
+                }
                 table5.setZb(zbList.get(j));
                 table5.setMmcp(cpList.get(j));
                 table5.setFams(msList.get(j));
@@ -547,10 +591,15 @@ public class Service1Impl implements Service1 {
             }
         }
         map.put("table54", table54List);
+        Numberings.NumberingBuilder nb = Numberings.ofDecimalParentheses();
+        List<String>list = new ArrayList<>();
         for (int i = 0; i < concent.getSbqd().size(); i++) {
             Table57 table57 = new Table57();
             Device device = deviceMapper.selectOne(new QueryWrapper<Device>().eq("name", concent.getSbqd().get(i).getName()));
             if (device != null) {
+                if (device.getName().equals("密码应用技术服务")){
+                    continue;
+                }
                 table57.setId(i + 1);
                 table57.setName(device.getName());
                 table57.setLocation(device.getLocation());
@@ -562,6 +611,7 @@ public class Service1Impl implements Service1 {
                 }
                 table57.setRemark(concent.getSbqd().get(i).getRemark());
                 table57List.add(table57);
+                list.add(device.getMs());
             } else {
                 table57.setId(i + 1);
                 table57.setName(concent.getSbqd().get(i).getName());
@@ -572,9 +622,13 @@ public class Service1Impl implements Service1 {
                 table57List.add(table57);
             }
         }
+        list.forEach(s -> nb.addItem(s));
+        NumberingRenderData renderData = nb.create();
+        map.put("s582",renderData);
         map.put("table57", table57List);
         List<String> cpzbList = null;
         List<String> dycpList = null;
+        List<List<Table59Util>> cpzbListList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < concent.getWlhhjList().size(); j++) {
                 zbList = new ArrayList<>();
@@ -594,6 +648,7 @@ public class Service1Impl implements Service1 {
                 table58List.add(table59Util);
             }
         }
+        cpzbListList.add(table58List);
         map.put("table58", table58List);
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < concent.getWlhtxList().size(); j++) {
@@ -614,6 +669,7 @@ public class Service1Impl implements Service1 {
                 table59List.add(table59Util);
             }
         }
+        cpzbListList.add(table59List);
         map.put("table59", table59List);
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < concent.getSbhjsList().size(); j++) {
@@ -634,6 +690,7 @@ public class Service1Impl implements Service1 {
                 table510List.add(table59Util);
             }
         }
+        cpzbListList.add(table510List);
         map.put("table510", table510List);
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < concent.getYyhsjList().size(); j++) {
@@ -654,13 +711,18 @@ public class Service1Impl implements Service1 {
                 table511List.add(table59Util);
             }
         }
+        cpzbListList.add(table511List);
         map.put("table511", table511List);
+        Information information = informationMapper.selectOne(new QueryWrapper<Information>().eq("xmmc", concent.getSys_name()));
+        if (information != null) {
+            informationMapper.update(null, new UpdateWrapper<Information>().set("score",calculateScore(cpzbListList,concent) ).eq("xmmc", concent.getSys_name()));
+        }
     }
 
     @Override
     @Transactional
     public void table32Init(InputTable23 table23, List<String> zbList, List<String> yqList, List<String> fxdjList, List<String> syqkList, List<String> xtxzList, List<String> jlList) {
-        zbList.add("身份鉴别");
+        zbList.add("*身份鉴别");
         zbList.add("电子门禁记录数据存储完整性");
         zbList.add("视频监控记录数据存储完整性");
         yqList.add("宜");
@@ -695,11 +757,11 @@ public class Service1Impl implements Service1 {
     @Override
     @Transactional
     public void table34Init(InputTable24 table24, List<String> zbList, List<String> yqList, List<String> fxdjList, List<String> syqkList, List<String> xtxzList, List<String> jlList) {
-        zbList.add("身份鉴别");
+        zbList.add("*身份鉴别");
         zbList.add("通信数据完整性");
-        zbList.add("通信过程中重要数据的机密性");
+        zbList.add("*通信过程中重要数据的机密性");
         zbList.add("网络边界访问控制信息的完整性");
-        zbList.add("安全接入认证");
+        zbList.add("*安全接入认证");
         yqList.add("应");
         yqList.add("宜");
         yqList.add("应");
@@ -736,8 +798,8 @@ public class Service1Impl implements Service1 {
     @Override
     @Transactional
     public void table36Init(InputTable25 table25, List<String> zbList, List<String> yqList, List<String> fxdjList, List<String> syqkList, List<String> xtxzList, List<String> jlList) {
-        zbList.add("身份鉴别");
-        zbList.add("远程管理通道安全");
+        zbList.add("*身份鉴别");
+        zbList.add("*远程管理通道安全");
         zbList.add("系统资源访问控制信息完整性");
         zbList.add("重要信息资源安全标记完整性");
         zbList.add("日志记录完整性");
@@ -782,8 +844,8 @@ public class Service1Impl implements Service1 {
     @Override
     @Transactional
     public void table36Init(InputTable26 table26, List<String> zbList, List<String> yqList, List<String> fxdjList, List<String> syqkList, List<String> xtxzList, List<String> jlList) {
-        zbList.add("身份鉴别");
-        zbList.add("远程管理通道安全");
+        zbList.add("*身份鉴别");
+        zbList.add("*远程管理通道安全");
         zbList.add("系统资源访问控制信息完整性");
         zbList.add("重要信息资源安全标记完整性");
         zbList.add("日志记录完整性");
@@ -826,16 +888,21 @@ public class Service1Impl implements Service1 {
     }
 
     @Override
+    public void table36Init(Concent concent, List<String> zbList, List<String> yqList, List<String> fxdjList, List<String> syqkList, List<String> xtxzList, List<String> jlList) {
+        //TODO
+    }
+
+    @Override
     @Transactional
     public void table38Init(QuestionNaire questionNaire, int i, List<String> zbList, List<String> yqList, List<String> fxdjList, List<String> syqkList, List<String> xtxzList, List<String> jlList) {
-        zbList.add("身份鉴别");
+        zbList.add("*身份鉴别");
         zbList.add("访问控制信息完整性");
         zbList.add("重要信息资源安全标记完整性");
-        zbList.add("重要数据传输机密性");
-        zbList.add("重要数据存储机密性");
+        zbList.add("*重要数据传输机密性");
+        zbList.add("*重要数据存储机密性");
         zbList.add("重要数据传输完整性");
-        zbList.add("重要数据存储完整性");
-        zbList.add("不可否认性");
+        zbList.add("*重要数据存储完整性");
+        zbList.add("*不可否认性");
         yqList.add("应");
         yqList.add("宜");
         yqList.add("宜");
@@ -852,94 +919,120 @@ public class Service1Impl implements Service1 {
         fxdjList.add("中");
         fxdjList.add("高");
         fxdjList.add("高");
-        InputTable28 table28 = questionNaire.getInputTable28List().get(i);
         InputTable27 table27 = questionNaire.getInputTable27List().get(i);
-        InputTable22 table22 = questionNaire.getInputTable22List().get(i);
+        InputTable28 table28 = new InputTable28();
+        InputTable22 table22 = new InputTable22();
+        boolean sfrz = false;
+        for (int j = 0; j < questionNaire.getInputTable22List().size(); j++) {
+            table22 = questionNaire.getInputTable22List().get(j);
+            if (table27.getYwyy().equals(table22.getYwyy()) && !table22.getSfrz().contains("U盘证书")) {
+                sfrz = true;
+                break;
+            }
+        }
         syqkList.add("适用");
-        if (table22.getSfrz().contains("U盘证书")) {
+        if (!sfrz) {
             xtxzList.add("系统采用合规的密码技术对登录用户进行身份鉴别");
             jlList.add("符合");
         } else {
             xtxzList.add("系统未采用合规的密码技术对登录用户进行身份鉴别");
             jlList.add("不符合");
         }
-
-        if ("国密".equals(table28.getCcjm())) {
-            syqkList.add("适用");
-            xtxzList.add("系统中访问控制信息采用了国密技术进行完整性保护");
-            jlList.add("符合");
-        } else if ("非国密".equals(table28.getCcjm())) {
-            syqkList.add("适用");
-            xtxzList.add("系统中访问控制信息已加密但未采用国密技术进行完整性保护");
-            jlList.add("不符合");
-        } else if ("未加密".equals(table28.getCcjm())) {
-            syqkList.add("适用");
-            xtxzList.add("系统中访问控制信息未采用密码技术进行完整性保护");
-            jlList.add("不符合");
+        for (int j = 0; j < questionNaire.getInputTable28List().size(); j++) {
+            table28 = questionNaire.getInputTable28List().get(j);
+            if (table27.getYwyy().equals(table28.getYwyy()) && table28.getSjlx().equals("访问控制信息")) {
+                if ("国密".equals(table28.getCcjm())) {
+                    syqkList.add("适用");
+                    xtxzList.add("系统中访问控制信息采用了国密技术进行完整性保护");
+                    jlList.add("符合");
+                } else if ("非国密".equals(table28.getCcjm())) {
+                    syqkList.add("适用");
+                    xtxzList.add("系统中访问控制信息已加密但未采用国密技术进行完整性保护");
+                    jlList.add("不符合");
+                } else if ("未加密".equals(table28.getCcjm())) {
+                    syqkList.add("适用");
+                    xtxzList.add("系统中访问控制信息未采用密码技术进行完整性保护");
+                    jlList.add("不符合");
+                }
+            }
         }
+
         syqkList.add("不适用");
         xtxzList.add("本系统不涉及重要信息资源安全标记");
         jlList.add("不适用");
-        if ("不涉及".equals(table28.getCsjm())) {
+
+        List<String> csjm = new ArrayList<>();
+        List<String> ccjm = new ArrayList<>();
+        for (int j = 0; j < questionNaire.getInputTable28List().size(); j++) {
+            table28 = questionNaire.getInputTable28List().get(j);
+            if (table27.getYwyy().equals(table28.getYwyy())&&!table28.getSjlx().equals("访问控制信息")) {
+                csjm.add(table28.getCsjm());
+                ccjm.add(table28.getCcjm());
+            }
+        }
+        if (csjm.contains("不涉及")){
             syqkList.add("不适用");
             xtxzList.add("本系统不涉及重要数据传输机密性");
             jlList.add("不适用");
-        } else if ("国密".equals(table28.getCsjm())) {
-            syqkList.add("适用");
-            xtxzList.add("系统中重要数据采用了国密技术进行保护");
-            jlList.add("符合");
-        } else if ("非国密".equals(table28.getCsjm())) {
-            syqkList.add("适用");
-            xtxzList.add("系统中重要数据未采用国密技术进行保护");
-            jlList.add("不符合");
-        } else if ("未加密".equals(table28.getCsjm())) {
+        }else if (csjm.contains("未加密")){
             syqkList.add("适用");
             xtxzList.add("系统中重要数据未采用密码技术进行保护");
             jlList.add("不符合");
-        }
-        if ("国密".equals(table28.getCcjm())) {
-            syqkList.add("不适用");
-            xtxzList.add("系统已经采用了合规的密码技术进行了存储机密性的保护");
-            jlList.add("不适用");
-        } else if ("非国密".equals(table28.getCcjm())) {
+        }else if (csjm.contains("非国密")){
             syqkList.add("适用");
-            xtxzList.add("系统中未采用了合规的密码技术进行了存储机密性的保护");
-            jlList.add("符合");
-        } else if ("未加密".equals(table28.getCcjm())) {
-            syqkList.add("适用");
-            xtxzList.add("系统中未采用了合规的密码技术进行了存储机密性的保护");
+            xtxzList.add("系统中重要数据未采用国密技术进行保护");
             jlList.add("不符合");
+        }else{
+            syqkList.add("适用");
+            xtxzList.add("系统中重要数据采用国密技术进行保护");
+            jlList.add("符合");
         }
-        if ("不涉及".equals(table28.getCsjm())) {
+        if (ccjm.contains("未加密")){
+            syqkList.add("适用");
+            xtxzList.add("系统中未采用合规的密码技术进行了存储机密性的保护");
+            jlList.add("不符合");
+        }else if (ccjm.contains("非国密")){
+            syqkList.add("适用");
+            xtxzList.add("系统中未采用合规的密码技术进行了存储机密性的保护");
+            jlList.add("不符合");
+        }else {
+            syqkList.add("适用");
+            xtxzList.add("系统已经采用合规的密码技术进行了存储机密性的保护");
+            jlList.add("符合");
+        }
+
+        if (csjm.contains("不涉及")){
             syqkList.add("不适用");
             xtxzList.add("本系统不涉及重要数据传输完整性");
             jlList.add("不适用");
-        } else if ("国密".equals(table28.getCsjm())) {
-            syqkList.add("适用");
-            xtxzList.add("系统中重要数据采用了国密技术进行保护");
-            jlList.add("符合");
-        } else if ("非国密".equals(table28.getCsjm())) {
-            syqkList.add("适用");
-            xtxzList.add("系统中重要数据未采用国密技术进行保护");
-            jlList.add("不符合");
-        } else if ("未加密".equals(table28.getCsjm())) {
+        }else if (csjm.contains("未加密")){
             syqkList.add("适用");
             xtxzList.add("系统中重要数据未采用密码技术进行保护");
             jlList.add("不符合");
-        }
-        if ("国密".equals(table28.getCcjm())) {
-            syqkList.add("不适用");
-            xtxzList.add("系统已经采用了合规的密码技术进行了存储机密性的保护");
-            jlList.add("不适用");
-        } else if ("非国密".equals(table28.getCcjm())) {
+        }else if (csjm.contains("非国密")){
             syqkList.add("适用");
-            xtxzList.add("系统中未采用了合规的密码技术进行了存储机密性的保护");
+            xtxzList.add("系统中重要数据未采用国密技术进行保护");
+            jlList.add("不符合");
+        }else{
+            syqkList.add("适用");
+            xtxzList.add("系统中重要数据采用了国密技术进行保护");
             jlList.add("符合");
-        } else if ("未加密".equals(table28.getCcjm())) {
+        }
+
+        if (ccjm.contains("未加密")){
             syqkList.add("适用");
             xtxzList.add("系统中未采用了合规的密码技术进行了存储机密性的保护");
             jlList.add("不符合");
+        }else if (ccjm.contains("非国密")){
+            syqkList.add("适用");
+            xtxzList.add("系统中未采用了合规的密码技术进行了存储机密性的保护");
+            jlList.add("符合");
+        }else {
+            syqkList.add("不适用");
+            xtxzList.add("系统已经采用了合规的密码技术进行了存储机密性的保护");
+            jlList.add("不适用");
         }
+
         if ("没有需求".equals(table27.getBkfr())) {
             syqkList.add("不适用");
             xtxzList.add("系统不需要保证不可否认性");
@@ -960,7 +1053,7 @@ public class Service1Impl implements Service1 {
     public void table51Init(Concent concent, List<String> zbList, List<String> cpList, List<String> msList, List<String> jlList, int i) {
         ScencePo scencePo = new ScencePo();
         Wlhhj wlhhj = concent.getWlhhjList().get(i);
-        zbList.add("身份鉴别");
+        zbList.add("*身份鉴别");
         zbList.add("电子门禁记录数据存储完整性");
         zbList.add("视频监控记录数据存储完整性");
         scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", wlhhj.getWlhhj_sfjb()));
@@ -999,11 +1092,11 @@ public class Service1Impl implements Service1 {
     public void table52Init(Concent concent, List<String> zbList, List<String> cpList, List<String> msList, List<String> jlList, int i) {
         ScencePo scencePo = new ScencePo();
         Wlhtx wlhtx = concent.getWlhtxList().get(i);
-        zbList.add("身份鉴别");
+        zbList.add("*身份鉴别");
         zbList.add("通信数据完整性");
-        zbList.add("通信过程中重要数据的机密性");
+        zbList.add("*通信过程中重要数据的机密性");
         zbList.add("网络边界访问控制信息的完整性");
-        zbList.add("安全接入认证");
+        zbList.add("*安全接入认证");
         for (int j = 0; j < 5; j++) {
             scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", wlhtx.getWlhtx_xd().get(j)));
             if (scencePo != null) {
@@ -1021,8 +1114,8 @@ public class Service1Impl implements Service1 {
     public void table53Init(Concent concent, List<String> zbList, List<String> cpList, List<String> msList, List<String> jlList, int i) {
         ScencePo scencePo = new ScencePo();
         Sbhjs sbhjs = concent.getSbhjsList().get(i);
-        zbList.add("身份鉴别");
-        zbList.add("远程管理通道安全");
+        zbList.add("*身份鉴别");
+        zbList.add("*远程管理通道安全");
         zbList.add("系统资源访问控制信息完整性");
         zbList.add("重要信息资源安全标记完整性");
         zbList.add("日志记录完整性");
@@ -1047,16 +1140,24 @@ public class Service1Impl implements Service1 {
             msList.add("数据查询出错");
             jlList.add("数据查询出错");
         }
-        scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", sbhjs.getSbhjs_xtzy()));
-        if (scencePo != null) {
-            cpList.add(scencePo.getCpzh());
-            msList.add(scencePo.getDescription());
-            jlList.add(scencePo.getJl());
-        } else {
-            cpList.add("数据查询出错");
-            msList.add("数据查询出错");
-            jlList.add("数据查询出错");
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (int j=0;j<sbhjs.getSbhjs_xtzy().size();j++){
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", sbhjs.getSbhjs_xtzy().get(j)));
+            if (scencePo != null) {
+                cpList.add(scencePo.getCpzh());
+                stringBuilder.append(j+1+"、");
+                stringBuilder.append(scencePo.getDescription());
+                jlList.add(scencePo.getJl());
+            } else {
+                cpList.add("数据查询出错");
+                msList.add("数据查询出错");
+                jlList.add("数据查询出错");
+            }
         }
+        String xtzy = new String(stringBuilder);
+        msList.add(xtzy);
+
         scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", sbhjs.getSbhjs_zyxx()));
         if (scencePo != null) {
             cpList.add(scencePo.getCpzh());
@@ -1092,14 +1193,14 @@ public class Service1Impl implements Service1 {
     public void table54Init(Concent concent, List<String> zbList, List<String> cpList, List<String> msList, List<String> jlList, int i) {
         ScencePo scencePo = new ScencePo();
         Yyhsj yyhsj = concent.getYyhsjList().get(i);
-        zbList.add("身份鉴别");
+        zbList.add("*身份鉴别");
         zbList.add("访问控制信息完整性");
         zbList.add("重要信息资源安全标记完整性");
-        zbList.add("重要数据传输机密性");
-        zbList.add("重要数据存储机密性");
+        zbList.add("*重要数据传输机密性");
+        zbList.add("*重要数据存储机密性");
         zbList.add("重要数据传输完整性");
-        zbList.add("重要数据存储完整性");
-        zbList.add("不可否认性");
+        zbList.add("*重要数据存储完整性");
+        zbList.add("*不可否认性");
         StringBuilder description = new StringBuilder("");
         String cpzh = "";
         String jl = "";
@@ -1108,11 +1209,13 @@ public class Service1Impl implements Service1 {
             if (scencePo != null) {
                 description.append(scencePo.getDescription());
                 jl = scencePo.getJl();
-                cpzh = scencePo.getCpzh();
+                cpzh += scencePo.getCpzh();
+                if (cpzh.contains("签名验签服务器")&&cpzh.contains("协同签名系统")){
+                    StringBuilder cpzhSb = new StringBuilder(cpzh);
+                    cpzhSb.insert(cpzhSb.indexOf("协同签名系统"),"、");
+                    cpzh = String.valueOf(cpzhSb);
+                }
             }
-        }
-        if (concent.getYyhsjList().get(i).getYyhsj_sfjb().contains("41-02-1")) {
-            cpzh += "、协同签名系统";
         }
         cpList.add(cpzh);
         msList.add(description.toString());
@@ -1201,7 +1304,7 @@ public class Service1Impl implements Service1 {
     public void table58Init(Concent concent, List<String> zbList, List<String> cpzbList, List<String> dycpList, int i) {
         ScencePo scencePo = new ScencePo();
         Wlhhj wlhhj = concent.getWlhhjList().get(i);
-        zbList.add("身份鉴别");
+        zbList.add("*身份鉴别");
         zbList.add("电子门禁记录数据存储完整性");
         zbList.add("视频监控记录数据存储完整性");
         scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", wlhhj.getWlhhj_sfjb()));
@@ -1234,11 +1337,11 @@ public class Service1Impl implements Service1 {
     public void table59Init(Concent concent, List<String> zbList, List<String> cpzbList, List<String> dycpList, int i) {
         ScencePo scencePo = new ScencePo();
         Wlhtx wlhtx = concent.getWlhtxList().get(i);
-        zbList.add("身份鉴别");
+        zbList.add("*身份鉴别");
         zbList.add("通信数据完整性");
-        zbList.add("通信过程中重要数据的机密性");
+        zbList.add("*通信过程中重要数据的机密性");
         zbList.add("网络边界访问控制信息的完整性");
-        zbList.add("安全接入认证");
+        zbList.add("*安全接入认证");
         for (int j = 0; j < 5; j++) {
             scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", wlhtx.getWlhtx_xd().get(j)));
             if (scencePo != null) {
@@ -1254,8 +1357,8 @@ public class Service1Impl implements Service1 {
     public void table510Init(Concent concent, List<String> zbList, List<String> cpzbList, List<String> dycpList, int i) {
         ScencePo scencePo = new ScencePo();
         Sbhjs sbhjs = concent.getSbhjsList().get(i);
-        zbList.add("身份鉴别");
-        zbList.add("远程管理通道安全");
+        zbList.add("*身份鉴别");
+        zbList.add("*远程管理通道安全");
         zbList.add("系统资源访问控制信息完整性");
         zbList.add("重要信息资源安全标记完整性");
         zbList.add("日志记录完整性");
@@ -1276,7 +1379,7 @@ public class Service1Impl implements Service1 {
             cpzbList.add("数据查询出错");
             dycpList.add("数据查询出错");
         }
-        scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", sbhjs.getSbhjs_xtzy()));
+        scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", sbhjs.getSbhjs_xtzy().get(0)));
         if (scencePo != null) {
             cpzbList.add(scencePo.getCpzb());
             dycpList.add(scencePo.getDycp());
@@ -1313,14 +1416,14 @@ public class Service1Impl implements Service1 {
     public void table511Init(Concent concent, List<String> zbList, List<String> cpzbList, List<String> dycpList, int i) {
         ScencePo scencePo = new ScencePo();
         Yyhsj yyhsj = concent.getYyhsjList().get(i);
-        zbList.add("身份鉴别");
+        zbList.add("*身份鉴别");
         zbList.add("访问控制信息完整性");
         zbList.add("重要信息资源安全标记完整性");
-        zbList.add("重要数据传输机密性");
-        zbList.add("重要数据存储机密性");
+        zbList.add("*重要数据传输机密性");
+        zbList.add("*重要数据存储机密性");
         zbList.add("重要数据传输完整性");
-        zbList.add("重要数据存储完整性");
-        zbList.add("不可否认性");
+        zbList.add("*重要数据存储完整性");
+        zbList.add("*不可否认性");
         scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", yyhsj.getYyhsj_sfjb().get(0)));
         if (scencePo != null) {
             cpzbList.add(scencePo.getCpzb());
@@ -1386,6 +1489,342 @@ public class Service1Impl implements Service1 {
             dycpList.add("数据查询出错");
         }
     }
+
+    @Override
+    @Transactional
+    public String calculateScore(List<List<Table59Util>> cpzbListList, Concent concent) {
+        List<BigDecimal> wlhhj = new ArrayList<>();
+        List<BigDecimal> wlhtx = new ArrayList<>();
+        List<BigDecimal> sbhjs = new ArrayList<>();
+        List<BigDecimal> yyhsj = new ArrayList<>();
+        BigDecimal total = new BigDecimal(0);
+        List<List<String>> list2D = new ArrayList<>();
+        for (int i = 0; i < cpzbListList.size(); i++) {
+            List<String> list = new ArrayList<>();
+            for (int j = 0; j < cpzbListList.get(i).size(); j++) {
+                if (cpzbListList.get(i).get(j).getCpzb().equals("不符合，缓解")) {
+                    list.add("0");
+                } else if (cpzbListList.get(i).get(j).getCpzb().equals("不符合")) {
+                    list.add("0");
+                } else if (cpzbListList.get(i).get(j).getCpzb().equals("部分符合")) {
+                    list.add("0.5");
+                } else if (cpzbListList.get(i).get(j).getCpzb().equals("符合")) {
+                    list.add("1");
+                } else if (cpzbListList.get(i).get(j).getCpzb().equals("不适用")) {
+                    list.add("*");
+                }
+            }
+            list2D.add(list);
+        }
+//        System.out.println(cpzbListList);
+//        System.out.println(list2D);
+        int num = concent.getWlhhjList().size();
+        BigDecimal b1 = calculateWlhhj(wlhhj, num, list2D);
+        num = concent.getWlhtxList().size();
+        BigDecimal b2 = calculateWlhtx(wlhtx, num, list2D);
+        num = concent.getSbhjsList().size();
+        BigDecimal b3 = calculateSbhjs(sbhjs, num, list2D);
+        num = concent.getYyhsjList().size();
+        BigDecimal b4 = calculateYyhsj(yyhsj, num, list2D);
+        total = total.add(b1).add(b2).add(b3).add(b4);
+//        total = total.add(b1).add(b2).add(b3).add(b4).add(new BigDecimal("25.5"));
+//        System.out.println(b1);
+//        System.out.println(b2);
+//        System.out.println(b3);
+//        System.out.println(b4);
+//        System.out.println(total);
+        return total.toString();
+    }
+
+    @Override
+    public String getScore(Map<String, Object> map) {
+        return (String) map.get("score");
+    }
+
+
+    public BigDecimal calculateWlhhj(List<BigDecimal> bigDecimalList, int num, List<List<String>> list2D) {
+        BigDecimal res = new BigDecimal("0").setScale(4, BigDecimal.ROUND_HALF_UP);
+        BigDecimal sum = new BigDecimal("0").setScale(4, BigDecimal.ROUND_HALF_UP);
+        //记录数组中每几个数据为一组
+        int count = 1;
+        //记录不适用的数据个数
+        int sub = 0;
+        //记录权重
+        double w[] = {1, 0.7, 0.7};
+        for (int i = 0; i < list2D.get(0).size(); i++) {
+            BigDecimal temp = null;
+            //相等时表示某一测评指标中所有测评对象分数求和将要完成
+            if (count == num) {
+                //如果某个测评指标中最后一个测评对象为不适用，判断他之前几个数据是否都是不适用，这个测评指标均不适用flag=false
+                if (list2D.get(0).get(i).equals("*")) {
+                    boolean flag = false;
+                    for (int j = i; j < num; j--) {
+                        if (!list2D.get(0).get(j).equals("*")) {
+                            flag = true;
+                        }
+                    }
+                    //不是所有测评对象都不适用则继续算分
+                    if (flag) {
+                        res = sum.divide(BigDecimal.valueOf((num - sub)), 4, RoundingMode.HALF_UP);
+                        bigDecimalList.add(res);
+                        count = 1;
+                        sum = new BigDecimal("0");
+                        sub = 0;
+                        continue;
+                    } else {
+                        //所有测评对象均不适用，标记“-1”
+                        bigDecimalList.add(new BigDecimal(-1));
+                        count = 1;
+                        sum = new BigDecimal("0");
+                        sub = 0;
+                        continue;
+                    }
+                } else {
+                    temp = new BigDecimal(list2D.get(0).get(i));
+                    sum = sum.add(temp);
+                    res = sum.divide(BigDecimal.valueOf((num - sub)), 4, RoundingMode.HALF_UP);
+                    bigDecimalList.add(res);
+                    count = 1;
+                    sum = new BigDecimal("0");
+                    sub = 0;
+                    continue;
+                }
+            }
+            //当前测评对象不是一组中的最后一个则简单判断适用情况，适用累加，不适用增加计数继续循环
+            if (list2D.get(0).get(i).equals("*")) {
+                count++;
+                sub++;
+                continue;
+            } else {
+                temp = new BigDecimal(list2D.get(0).get(i));
+                sum = sum.add(temp);
+                count++;
+            }
+        }
+        BigDecimal bigDecimal = new BigDecimal(0);
+        double temp = 0;
+        //bigDecimalList理论得到[0.5000, 0.5000, 0.5000],按照测评指标分组的测评对象平均分
+        for (int i = 0; i < bigDecimalList.size(); i++) {
+            BigDecimal bw = BigDecimal.valueOf(w[i]);
+            if (bigDecimalList.get(i).equals(-1)){
+                continue;
+            }else {
+                //平均分 * 权重
+                bigDecimal = bigDecimal.add(bigDecimalList.get(i).multiply(bw));
+                temp += w[i];
+            }
+        }
+        //（平均分 * 权重）累加的和，除权重累计的和
+        return bigDecimal.divide(BigDecimal.valueOf(temp), 4, RoundingMode.HALF_UP).multiply(new BigDecimal(10));
+    }
+
+    public BigDecimal calculateWlhtx(List<BigDecimal> bigDecimalList, int num, List<List<String>> list2D) {
+        BigDecimal res = new BigDecimal("0").setScale(4, BigDecimal.ROUND_HALF_UP);
+        BigDecimal sum = new BigDecimal("0").setScale(4, BigDecimal.ROUND_HALF_UP);
+        int count = 1;
+        int index = 0;
+        int sub = 0;
+        double w[] = {1, 0.7, 1, 0.4, 0.4};
+        for (int i = 0; i < list2D.get(1).size(); i++) {
+            BigDecimal temp = null;
+            if (count == num) {
+                if (list2D.get(1).get(i).equals("*")) {
+                    boolean flag = false;
+                    for (int j = i; j < num; j--) {
+                        if (!list2D.get(1).get(j).equals("*")) {
+                            flag = true;
+                        }
+                    }
+                    if (flag) {
+                        res = sum.divide(BigDecimal.valueOf((num - sub)), 4, RoundingMode.HALF_UP);
+                        bigDecimalList.add(res);
+                        count = 1;
+                        sum = new BigDecimal("0");
+                        index++;
+                        sub = 0;
+                        continue;
+                    } else {
+                        bigDecimalList.add(new BigDecimal(-1));
+                        count = 1;
+                        sum = new BigDecimal("0");
+                        index++;
+                        sub = 0;
+                        continue;
+                    }
+                } else {
+                    temp = new BigDecimal(list2D.get(1).get(i));
+                    sum = sum.add(temp);
+                    res = sum.divide(BigDecimal.valueOf((num - sub)), 4, RoundingMode.HALF_UP);
+                    bigDecimalList.add(res);
+                    count = 1;
+                    sum = new BigDecimal("0");
+                    index++;
+                    sub = 0;
+                    continue;
+                }
+            }
+            if (list2D.get(1).get(i).equals("*")) {
+                count++;
+                sub++;
+                continue;
+            } else {
+                temp = new BigDecimal(list2D.get(1).get(i));
+                sum = sum.add(temp);
+                count++;
+            }
+        }
+        BigDecimal bigDecimal = new BigDecimal(0);
+        double temp = 0;
+        for (int i = 0; i < bigDecimalList.size(); i++) {
+            BigDecimal bw = BigDecimal.valueOf(w[i]);
+            if (Objects.equals(bigDecimalList.get(i), new BigDecimal(-1))){
+                continue;
+            }else {
+                bigDecimal = bigDecimal.add(bigDecimalList.get(i).multiply(bw));
+                temp += w[i];
+            }
+        }
+        return bigDecimal.divide(BigDecimal.valueOf(temp), 4, RoundingMode.HALF_UP).multiply(new BigDecimal(20));
+    }
+
+    public BigDecimal calculateSbhjs(List<BigDecimal> bigDecimalList, int num, List<List<String>> list2D) {
+        BigDecimal res = new BigDecimal("0").setScale(4, BigDecimal.ROUND_HALF_UP);
+        BigDecimal sum = new BigDecimal("0").setScale(4, BigDecimal.ROUND_HALF_UP);
+        int count = 1;
+        int index = 0;
+        int sub = 0;
+        double w[] = {1, 1, 0.4, 0.4, 0.4, 0.7};
+        for (int i = 0; i < list2D.get(2).size(); i++) {
+            BigDecimal temp = null;
+            if (count == num) {
+                if (list2D.get(2).get(i).equals("*")) {
+                    boolean flag = false;
+                    for (int j = i; j < num; j--) {
+                        if (!list2D.get(2).get(j).equals("*")) {
+                            flag = true;
+                        }
+                    }
+                    if (flag) {
+                        res = sum.divide(BigDecimal.valueOf((num - sub)), 4, RoundingMode.HALF_UP);
+                        bigDecimalList.add(res);
+                        count = 1;
+                        sum = new BigDecimal("0");
+                        index++;
+                        sub = 0;
+                        continue;
+                    } else {
+                        bigDecimalList.add(new BigDecimal(-1));
+                        count = 1;
+                        sum = new BigDecimal("0");
+                        index++;
+                        sub = 0;
+                        continue;
+                    }
+                } else {
+                    temp = new BigDecimal(list2D.get(2).get(i));
+                    sum = sum.add(temp);
+                    res = sum.divide(BigDecimal.valueOf((num - sub)), 4, RoundingMode.HALF_UP);
+                    bigDecimalList.add(res);
+                    count = 1;
+                    sum = new BigDecimal("0");
+                    index++;
+                    sub = 0;
+                    continue;
+                }
+            }
+            if (list2D.get(2).get(i).equals("*")) {
+                count++;
+                sub++;
+                continue;
+            } else {
+                temp = new BigDecimal(list2D.get(2).get(i));
+                sum = sum.add(temp);
+                count++;
+            }
+        }
+        BigDecimal bigDecimal = new BigDecimal(0);
+        double temp = 0;
+        for (int i = 0; i < bigDecimalList.size(); i++) {
+            BigDecimal bw = BigDecimal.valueOf(w[i]);
+            if (Objects.equals(bigDecimalList.get(i), new BigDecimal(-1))){
+                continue;
+            }else {
+                bigDecimal = bigDecimal.add(bigDecimalList.get(i).multiply(bw));
+                temp += w[i];
+            }
+        }
+        return bigDecimal.divide(BigDecimal.valueOf(temp), 4, RoundingMode.HALF_UP).multiply(new BigDecimal(10));
+    }
+
+    public BigDecimal calculateYyhsj(List<BigDecimal> bigDecimalList, int num, List<List<String>> list2D) {
+        BigDecimal res = new BigDecimal("0").setScale(4, BigDecimal.ROUND_HALF_UP);
+        BigDecimal sum = new BigDecimal("0").setScale(4, BigDecimal.ROUND_HALF_UP);
+        int count = 1;
+        int index = 0;
+        int sub = 0;
+        double w[] = {1, 0.4, 0.4, 1, 1, 0.7, 0.7, 1};
+        for (int i = 0; i < list2D.get(3).size(); i++) {
+            BigDecimal temp = null;
+            if (count == num) {
+                if (list2D.get(3).get(i).equals("*")) {
+                    boolean flag = false;
+                    for (int j = i; j < num; j--) {
+                        if (!list2D.get(3).get(j).equals("*")) {
+                            flag = true;
+                        }
+                    }
+                    if (flag) {
+                        res = sum.divide(BigDecimal.valueOf((num - sub)), 4, RoundingMode.HALF_UP);
+                        bigDecimalList.add(res);
+                        count = 1;
+                        sum = new BigDecimal("0");
+                        index++;
+                        sub = 0;
+                        continue;
+                    } else {
+                        bigDecimalList.add(new BigDecimal(-1));
+                        count = 1;
+                        sum = new BigDecimal("0");
+                        index++;
+                        sub = 0;
+                        continue;
+                    }
+                } else {
+                    temp = new BigDecimal(list2D.get(3).get(i));
+                    sum = sum.add(temp);
+                    res = sum.divide(BigDecimal.valueOf((num - sub)), 4, RoundingMode.HALF_UP);
+                    bigDecimalList.add(res);
+                    count = 1;
+                    sum = new BigDecimal("0");
+                    index++;
+                    sub = 0;
+                    continue;
+                }
+            }
+            if (list2D.get(3).get(i).equals("*")) {
+                count++;
+                sub++;
+                continue;
+            } else {
+                temp = new BigDecimal(list2D.get(3).get(i));
+                sum = sum.add(temp);
+                count++;
+            }
+        }
+        BigDecimal bigDecimal = new BigDecimal(0);
+        double temp = 0;
+        for (int i = 0; i < bigDecimalList.size(); i++) {
+            BigDecimal bw = BigDecimal.valueOf(w[i]);
+            if (Objects.equals(bigDecimalList.get(i), new BigDecimal(-1))){
+                continue;
+            }else {
+                bigDecimal = bigDecimal.add(bigDecimalList.get(i).multiply(bw));
+                temp += w[i];
+            }
+        }
+        return bigDecimal.divide(BigDecimal.valueOf(temp), 4, RoundingMode.HALF_UP).multiply(new BigDecimal(30));
+    }
+
 
 
     public Chaptre1input getC1() {

@@ -25,4 +25,5 @@ public class Information {
     private String date;
     private String data;
     private String xgsj;
+    private String score;
 }

@@ -5,27 +5,34 @@ import com.autogen.dao.Mapper.DeviceMapper;
 import com.autogen.dao.Mapper.InformationMapper;
 import com.autogen.dao.entity.Device;
 import com.autogen.dao.entity.Information;
+import com.autogen.dao.entity.input.Concent;
 import com.autogen.dao.entity.input.InputInformation;
 import com.autogen.dao.entity.input.Product;
+import com.autogen.dao.entity.table.Table59Util;
 import com.autogen.service.officeapi.ExportDevice;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.apache.bcel.classfile.Module;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.w3c.dom.ls.LSException;
 
 import javax.swing.*;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.RoundingMode;
+import java.nio.file.CopyOption;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Slf4j
-public class InformationServiceImpl implements InformationService{
+public class InformationServiceImpl implements InformationService {
     @Autowired
     InformationMapper informationMapper;
     @Autowired
@@ -35,28 +42,28 @@ public class InformationServiceImpl implements InformationService{
     @Transactional
     public int createQuestionnaire(InputInformation inputInformation) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Information information = informationMapper.selectOne(new QueryWrapper<Information>().eq("xmmc",inputInformation.getXmmc()));
-            if (information != null){
-                return 1;
-            }else {
-                information = new Information();
-                information.setDate(sdf.format(new Date()));
-                information.setXgsj(sdf.format(new Date()));
-                information.setCjr(inputInformation.getCjr());
-                information.setXmmc(inputInformation.getXmmc());
-                information.setXmsm(inputInformation.getXmsm());
-                information.setZdls(inputInformation.getZdls());
-                informationMapper.insert(information);
-                return 0;
-            }
+        Information information = informationMapper.selectOne(new QueryWrapper<Information>().eq("xmmc", inputInformation.getXmmc()));
+        if (information != null) {
+            return 1;
+        } else {
+            information = new Information();
+            information.setDate(sdf.format(new Date()));
+            information.setXgsj(sdf.format(new Date()));
+            information.setCjr(inputInformation.getCjr());
+            information.setXmmc(inputInformation.getXmmc());
+            information.setXmsm(inputInformation.getXmsm());
+            information.setZdls(inputInformation.getZdls());
+            informationMapper.insert(information);
+            return 0;
+        }
     }
 
     @Override
     @Transactional
     public List<InputInformation> getQuestionnaireList() {
         List<InputInformation> resList = new ArrayList<>();
-        List<Information> informationList= informationMapper.selectList(new QueryWrapper<Information>().orderByDesc("xgsj"));
-        for (int i=0;i<informationList.size();i++){
+        List<Information> informationList = informationMapper.selectList(new QueryWrapper<Information>().orderByDesc("xgsj"));
+        for (int i = 0; i < informationList.size(); i++) {
             InputInformation inputInformation = new InputInformation();
             inputInformation.setCjr(informationList.get(i).getCjr());
             inputInformation.setXmmc(informationList.get(i).getXmmc());
@@ -64,6 +71,7 @@ public class InformationServiceImpl implements InformationService{
             inputInformation.setXmsm(informationList.get(i).getXmsm());
             inputInformation.setDate(informationList.get(i).getDate());
             inputInformation.setXgsj(informationList.get(i).getXgsj());
+            inputInformation.setScore(informationList.get(i).getScore());
             resList.add(inputInformation);
         }
         return resList;
@@ -72,11 +80,11 @@ public class InformationServiceImpl implements InformationService{
     @Override
     @Transactional
     public String getQuestionnaireResult(InputInformation inputInformation) {
-        Information information = informationMapper.selectOne(new QueryWrapper<Information>().eq("xmmc",inputInformation.getXmmc()));
+        Information information = informationMapper.selectOne(new QueryWrapper<Information>().eq("xmmc", inputInformation.getXmmc()));
         String str = information.getData();
-        if (str == null){
+        if (str == null) {
             return "error";
-        }else {
+        } else {
             return information.getData();
         }
     }
@@ -86,25 +94,26 @@ public class InformationServiceImpl implements InformationService{
     public int saveQuestionnaireResult(JSONObject data) {
         JSONObject jsonObject = data.getJSONObject("data");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Information information = informationMapper.selectOne(new QueryWrapper<Information>().eq("xmmc",jsonObject.getString("sys_name")));
-        if (information != null){
-            informationMapper.update(null,new UpdateWrapper<Information>().set("xgsj",sdf.format(new Date())).set("data",jsonObject.toString()).eq("xmmc",jsonObject.getString("sys_name")));
+        Information information = informationMapper.selectOne(new QueryWrapper<Information>().eq("xmmc", jsonObject.getString("sys_name")));
+        if (information != null) {
+            informationMapper.update(null, new UpdateWrapper<Information>().set("xgsj", sdf.format(new Date())).set("data", jsonObject.toString()).eq("xmmc", jsonObject.getString("sys_name")));
             return 0;
-        }else {
+        } else {
             return 1;
         }
     }
+
     @Override
     @Transactional
-    public void exportSBQD(List<Product> productList,String name){
+    public void exportSBQD(List<Product> productList, String name) {
         List<Device> deviceList = new ArrayList<>();
-        for (int i=0;i<productList.size();i++){
-            if (!"0".equals(productList.get(i).getNum())){
-                Device device = deviceMapper.selectOne(new QueryWrapper<Device>().eq("name",productList.get(i).getName()));
-                if (device != null){
-                    if ("9999".equals(productList.get(i).getNum())){
+        for (int i = 0; i < productList.size(); i++) {
+            if (!"0".equals(productList.get(i).getNum())) {
+                Device device = deviceMapper.selectOne(new QueryWrapper<Device>().eq("name", productList.get(i).getName()));
+                if (device != null) {
+                    if ("9999".equals(productList.get(i).getNum())) {
                         device.setNum("按需");
-                    }else {
+                    } else {
                         device.setNum(productList.get(i).getNum());
                     }
                     device.setRemark(productList.get(i).getRemark());
@@ -112,6 +121,9 @@ public class InformationServiceImpl implements InformationService{
                 }
             }
         }
-        ExportDevice.exportExcel(deviceList,name);
+        ExportDevice.exportExcel(deviceList, name);
     }
+
+
+
 }
