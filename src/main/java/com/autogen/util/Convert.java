@@ -569,7 +569,7 @@ public class Convert {
                     list.add("52-01-4");
                     list.add("52-01-5");
                 }
-            } else if ("1".equals(table24.getType()) && "5".equals(table24.getTxzt())) {
+            } else if (("1".equals(table24.getType()) && "5".equals(table24.getTxzt()))||table24.getTxzt().equals("微信公众号")) {
                 wlhtx.setWlhtx_xdmc(table24.getCpdx());
                 list.add("52-15-1");
                 list.add("52-15-2");

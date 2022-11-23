@@ -116,8 +116,9 @@ public class Service1Impl implements Service1 {
         c4.sys_name = (String) map.get("sysname");
 //
 //        //第五章
-//        c5.sys_name = questionNaire.sys_name;
+        c5.sys_name = (String) map.get("sysname");
         c5.img51 = (String) map.get("img51");
+        c5.s51 = (String) map.get("51");
         c5.table51List = (List<Table5Util>) map.get("table51");
         c5.table52List = (List<Table5Util>) map.get("table52");
         c5.table53List = (List<Table5Util>) map.get("table53");
@@ -155,8 +156,8 @@ public class Service1Impl implements Service1 {
         XWPFDocument doc7 = autoGenerator.chapter_seven_generator(getC7());
 //        XWPFDocument doc8 = autoGenerator.chapter_eight_generator(getC8());
         NiceXWPFDocument completeDoc = IOManager.mergeFile((NiceXWPFDocument) doc1, (NiceXWPFDocument) doc2, (NiceXWPFDocument) doc3, (NiceXWPFDocument) doc4, (NiceXWPFDocument) doc5, (NiceXWPFDocument) doc6, (NiceXWPFDocument) doc7);
-//        IOManager.writeFile(completeDoc, "/home/ubuntu/Desktop/code_package/complete_example.docx");
-        IOManager.writeFile(completeDoc, "example.docx");
+        IOManager.writeFile(completeDoc, "/home/ubuntu/Desktop/code_package/complete_example.docx");
+//        IOManager.writeFile(completeDoc, "example.docx");
     }
 
     @Override
@@ -182,7 +183,7 @@ public class Service1Impl implements Service1 {
         map.put("rzys", questionNaire.getSys_rzys());
         map.put("fwd", questionNaire.getMpjb_fwd());
         map.put("ydd", StringUtils.strip(questionNaire.getMpjb_ydd().toString(), "[]"));
-        map.put("djbh",questionNaire.getSys_djbh());
+        map.put("djbh", questionNaire.getSys_djbh());
         List<Table22> table22List = new ArrayList<>();
         for (int i = 0; i < questionNaire.getInputTable22List().size(); i++) {
             Table22 table22 = new Table22();
@@ -399,9 +400,9 @@ public class Service1Impl implements Service1 {
             }
 //            table35.setSbmc(questionNaire.getInputTable26List().get(i).getSbmc());
             table35.setCpdx(questionNaire.getInputTable26List().get(i).getSbmc());
-            if (questionNaire.getInputTable26List().get(i).getSmzs().equals("是")){
+            if (questionNaire.getInputTable26List().get(i).getSmzs().equals("是")) {
                 table35.setSm("具有商密证书");
-            }else if (questionNaire.getInputTable26List().get(i).getSmzs().equals("否")){
+            } else if (questionNaire.getInputTable26List().get(i).getSmzs().equals("否")) {
                 table35.setSm("不具有商密证书");
             }
             table35List.add(table35);
@@ -430,7 +431,7 @@ public class Service1Impl implements Service1 {
             }
         }
         for (int i = 0; i < questionNaire.getInputTable26List().size(); i++) {
-            if ("1".equals(questionNaire.getInputTable26List().get(i).getType()) || ("2".equals(questionNaire.getInputTable26List().get(i).getType()) && questionNaire.getInputTable26List().get(i).getSbmc().contains("堡垒机"))|| "3".equals(questionNaire.getInputTable26List().get(i).getType())) {
+            if ("1".equals(questionNaire.getInputTable26List().get(i).getType()) || ("2".equals(questionNaire.getInputTable26List().get(i).getType()) && questionNaire.getInputTable26List().get(i).getSbmc().contains("堡垒机")) || "3".equals(questionNaire.getInputTable26List().get(i).getType())) {
                 zbList = new ArrayList<>();
                 yqList = new ArrayList<>();
                 fxdjList = new ArrayList<>();
@@ -515,6 +516,34 @@ public class Service1Impl implements Service1 {
         List<String> cpList = null;
         List<String> msList = null;
         List<String> jlList = null;
+        String temp = "";
+        ScencePo scencePo = null;
+        if (concent.getSys_xmlx().equals("1")) {
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", "img51-1"));
+        } else if (concent.getSys_xmlx().equals("2")) {
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", "img51-2"));
+        } else if (concent.getSys_xmlx().equals("3") || concent.getSys_xmlx().equals("4")) {
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", "img51-3"));
+        }
+        if (scencePo != null) {
+            temp = scencePo.getDescription();
+            if ("img51-1".equals(scencePo.getScence())) {
+                map.put("img51", "/etc/autogen/image/img51-1.png");
+            } else if ("img51-2".equals(scencePo.getScence())) {
+                map.put("img51", "/etc/autogen/image/img51-2.png");
+            } else if ("img51-3".equals(scencePo.getScence())) {
+                map.put("img51", "/etc/autogen/image/img51-3.png");
+            }
+//            if ("img51-1".equals(scencePo.getScence())){
+//                map.put("img51","D:\\idea\\AutoGen\\src\\main\\resources\\img51-1.png");
+//            }else if ("img51-2".equals(scencePo.getScence())){
+//                map.put("img51","D:\\idea\\AutoGen\\src\\main\\resources\\img51-2.png");
+//            }else if ("img51-3".equals(scencePo.getScence())){
+//                map.put("img51","D:\\idea\\AutoGen\\src\\main\\resources\\img51-3.png");
+//            }
+        }
+        map.put("51", temp);
+
         for (int i = 0; i < concent.getWlhhjList().size(); i++) {
             zbList = new ArrayList<>();
             cpList = new ArrayList<>();
@@ -592,12 +621,12 @@ public class Service1Impl implements Service1 {
         }
         map.put("table54", table54List);
         Numberings.NumberingBuilder nb = Numberings.ofDecimalParentheses();
-        List<String>list = new ArrayList<>();
+        List<String> list = new ArrayList<>();
         for (int i = 0; i < concent.getSbqd().size(); i++) {
             Table57 table57 = new Table57();
             Device device = deviceMapper.selectOne(new QueryWrapper<Device>().eq("name", concent.getSbqd().get(i).getName()));
             if (device != null) {
-                if (device.getName().equals("密码应用技术服务")){
+                if (device.getName().equals("密码应用技术服务")) {
                     continue;
                 }
                 table57.setId(i + 1);
@@ -624,7 +653,7 @@ public class Service1Impl implements Service1 {
         }
         list.forEach(s -> nb.addItem(s));
         NumberingRenderData renderData = nb.create();
-        map.put("s582",renderData);
+        map.put("s582", renderData);
         map.put("table57", table57List);
         List<String> cpzbList = null;
         List<String> dycpList = null;
@@ -715,7 +744,7 @@ public class Service1Impl implements Service1 {
         map.put("table511", table511List);
         Information information = informationMapper.selectOne(new QueryWrapper<Information>().eq("xmmc", concent.getSys_name()));
         if (information != null) {
-            informationMapper.update(null, new UpdateWrapper<Information>().set("score",calculateScore(cpzbListList,concent) ).eq("xmmc", concent.getSys_name()));
+            informationMapper.update(null, new UpdateWrapper<Information>().set("score", calculateScore(cpzbListList, concent)).eq("xmmc", concent.getSys_name()));
         }
     }
 
@@ -965,69 +994,69 @@ public class Service1Impl implements Service1 {
         List<String> ccjm = new ArrayList<>();
         for (int j = 0; j < questionNaire.getInputTable28List().size(); j++) {
             table28 = questionNaire.getInputTable28List().get(j);
-            if (table27.getYwyy().equals(table28.getYwyy())&&!table28.getSjlx().equals("访问控制信息")) {
+            if (table27.getYwyy().equals(table28.getYwyy()) && !table28.getSjlx().equals("访问控制信息")) {
                 csjm.add(table28.getCsjm());
                 ccjm.add(table28.getCcjm());
             }
         }
-        if (csjm.contains("不涉及")){
+        if (csjm.contains("不涉及")) {
             syqkList.add("不适用");
             xtxzList.add("本系统不涉及重要数据传输机密性");
             jlList.add("不适用");
-        }else if (csjm.contains("未加密")){
+        } else if (csjm.contains("未加密")) {
             syqkList.add("适用");
             xtxzList.add("系统中重要数据未采用密码技术进行保护");
             jlList.add("不符合");
-        }else if (csjm.contains("非国密")){
+        } else if (csjm.contains("非国密")) {
             syqkList.add("适用");
             xtxzList.add("系统中重要数据未采用国密技术进行保护");
             jlList.add("不符合");
-        }else{
+        } else {
             syqkList.add("适用");
             xtxzList.add("系统中重要数据采用国密技术进行保护");
             jlList.add("符合");
         }
-        if (ccjm.contains("未加密")){
+        if (ccjm.contains("未加密")) {
             syqkList.add("适用");
             xtxzList.add("系统中未采用合规的密码技术进行了存储机密性的保护");
             jlList.add("不符合");
-        }else if (ccjm.contains("非国密")){
+        } else if (ccjm.contains("非国密")) {
             syqkList.add("适用");
             xtxzList.add("系统中未采用合规的密码技术进行了存储机密性的保护");
             jlList.add("不符合");
-        }else {
+        } else {
             syqkList.add("适用");
             xtxzList.add("系统已经采用合规的密码技术进行了存储机密性的保护");
             jlList.add("符合");
         }
 
-        if (csjm.contains("不涉及")){
+        if (csjm.contains("不涉及")) {
             syqkList.add("不适用");
             xtxzList.add("本系统不涉及重要数据传输完整性");
             jlList.add("不适用");
-        }else if (csjm.contains("未加密")){
+        } else if (csjm.contains("未加密")) {
             syqkList.add("适用");
             xtxzList.add("系统中重要数据未采用密码技术进行保护");
             jlList.add("不符合");
-        }else if (csjm.contains("非国密")){
+        } else if (csjm.contains("非国密")) {
             syqkList.add("适用");
             xtxzList.add("系统中重要数据未采用国密技术进行保护");
             jlList.add("不符合");
-        }else{
+        } else {
             syqkList.add("适用");
             xtxzList.add("系统中重要数据采用了国密技术进行保护");
             jlList.add("符合");
         }
 
-        if (ccjm.contains("未加密")){
+        if (ccjm.contains("未加密")) {
             syqkList.add("适用");
             xtxzList.add("系统中未采用了合规的密码技术进行了存储机密性的保护");
             jlList.add("不符合");
-        }else if (ccjm.contains("非国密")){
+        } else if (ccjm.contains("非国密")) {
             syqkList.add("适用");
             xtxzList.add("系统中未采用了合规的密码技术进行了存储机密性的保护");
             jlList.add("符合");
-        }else {
+        } else {
             syqkList.add("不适用");
             xtxzList.add("系统已经采用了合规的密码技术进行了存储机密性的保护");
             jlList.add("不适用");
@@ -1142,11 +1171,11 @@ public class Service1Impl implements Service1 {
         }
         StringBuilder stringBuilder = new StringBuilder();
 
-        for (int j=0;j<sbhjs.getSbhjs_xtzy().size();j++){
+        for (int j = 0; j < sbhjs.getSbhjs_xtzy().size(); j++) {
             scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", sbhjs.getSbhjs_xtzy().get(j)));
             if (scencePo != null) {
                 cpList.add(scencePo.getCpzh());
-                stringBuilder.append(j+1+"、");
+                stringBuilder.append(j + 1 + "、");
                 stringBuilder.append(scencePo.getDescription());
                 jlList.add(scencePo.getJl());
             } else {
@@ -1210,9 +1239,9 @@ public class Service1Impl implements Service1 {
                 description.append(scencePo.getDescription());
                 jl = scencePo.getJl();
                 cpzh += scencePo.getCpzh();
-                if (cpzh.contains("签名验签服务器")&&cpzh.contains("协同签名系统")){
+                if (cpzh.contains("签名验签服务器") && cpzh.contains("协同签名系统")) {
                     StringBuilder cpzhSb = new StringBuilder(cpzh);
-                    cpzhSb.insert(cpzhSb.indexOf("协同签名系统"),"、");
+                    cpzhSb.insert(cpzhSb.indexOf("协同签名系统"), "、");
                     cpzh = String.valueOf(cpzhSb);
                 }
             }
@@ -1606,9 +1635,9 @@ public class Service1Impl implements Service1 {
         //bigDecimalList理论得到[0.5000, 0.5000, 0.5000],按照测评指标分组的测评对象平均分
         for (int i = 0; i < bigDecimalList.size(); i++) {
             BigDecimal bw = BigDecimal.valueOf(w[i]);
-            if (bigDecimalList.get(i).equals(-1)){
+            if (bigDecimalList.get(i).equals(-1)) {
                 continue;
-            }else {
+            } else {
                 //平均分 * 权重
                 bigDecimal = bigDecimal.add(bigDecimalList.get(i).multiply(bw));
                 temp += w[i];
@@ -1677,9 +1706,9 @@ public class Service1Impl implements Service1 {
         double temp = 0;
         for (int i = 0; i < bigDecimalList.size(); i++) {
             BigDecimal bw = BigDecimal.valueOf(w[i]);
-            if (Objects.equals(bigDecimalList.get(i), new BigDecimal(-1))){
+            if (Objects.equals(bigDecimalList.get(i), new BigDecimal(-1))) {
                 continue;
-            }else {
+            } else {
                 bigDecimal = bigDecimal.add(bigDecimalList.get(i).multiply(bw));
                 temp += w[i];
             }
@@ -1746,9 +1775,9 @@ public class Service1Impl implements Service1 {
         double temp = 0;
         for (int i = 0; i < bigDecimalList.size(); i++) {
             BigDecimal bw = BigDecimal.valueOf(w[i]);
-            if (Objects.equals(bigDecimalList.get(i), new BigDecimal(-1))){
+            if (Objects.equals(bigDecimalList.get(i), new BigDecimal(-1))) {
                 continue;
-            }else {
+            } else {
                 bigDecimal = bigDecimal.add(bigDecimalList.get(i).multiply(bw));
                 temp += w[i];
             }
@@ -1815,16 +1844,15 @@ public class Service1Impl implements Service1 {
         double temp = 0;
         for (int i = 0; i < bigDecimalList.size(); i++) {
             BigDecimal bw = BigDecimal.valueOf(w[i]);
-            if (Objects.equals(bigDecimalList.get(i), new BigDecimal(-1))){
+            if (Objects.equals(bigDecimalList.get(i), new BigDecimal(-1))) {
                 continue;
-            }else {
+            } else {
                 bigDecimal = bigDecimal.add(bigDecimalList.get(i).multiply(bw));
                 temp += w[i];
             }
         }
         return bigDecimal.divide(BigDecimal.valueOf(temp), 4, RoundingMode.HALF_UP).multiply(new BigDecimal(30));
     }
-
 
 
     public Chaptre1input getC1() {

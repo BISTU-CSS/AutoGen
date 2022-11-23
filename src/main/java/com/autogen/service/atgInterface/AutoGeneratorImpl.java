@@ -12,10 +12,7 @@ import com.autogen.service.fileapi.IOManager;
 import com.autogen.service.officeapi.ReplaceSymbol;
 import com.deepoove.poi.XWPFTemplate;
 import com.deepoove.poi.config.Configure;
-import com.deepoove.poi.data.NumberingFormat;
-import com.deepoove.poi.data.NumberingRenderData;
-import com.deepoove.poi.data.Numberings;
-import com.deepoove.poi.data.TextRenderData;
+import com.deepoove.poi.data.*;
 import com.deepoove.poi.plugin.table.LoopRowTableRenderPolicy;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
@@ -25,8 +22,8 @@ import java.util.HashMap;
 
 public class AutoGeneratorImpl implements AutoGenerator {
 
-//    String path = "/etc/autogen/";
-    String path = "D:\\IDEA\\AutoGen\\src\\main\\resources\\WordTemplate\\";
+    String path = "/etc/autogen/";
+//    String path = "D:\\IDEA\\AutoGen\\src\\main\\resources\\WordTemplate\\";
     @Override
     public XWPFDocument chapter_one_generator(Chaptre1input input) throws IOException {
         XWPFDocument doc = IOManager.readFile(path + "1.docx");
@@ -125,8 +122,9 @@ public class AutoGeneratorImpl implements AutoGenerator {
         Configure config = Configure.builder().bind("table51", policy).bind("table52", policy).bind("table53",policy).bind("table54",policy)
                 .bind("table57",policy).bind("table58",policy).bind("table59", policy).bind("table510", policy).bind("table511", policy).build();
         XWPFTemplate template = XWPFTemplate.compile(doc, config).render(new HashMap<String, Object>() {{
-            put(ReplaceSymbol.sys_name, input.system_name);
-            //put(ReplaceSymbol.img51,Pictures.ofLocal(input.img51).create());
+            put(ReplaceSymbol.sys_name, input.sys_name);
+            put(ReplaceSymbol.s51, input.s51);
+            put(ReplaceSymbol.img51, Pictures.ofLocal(input.img51).create());
             put(ReplaceSymbol.table51,input.table51List);
             put(ReplaceSymbol.table52,input.table52List);
             put(ReplaceSymbol.table53,input.table53List);

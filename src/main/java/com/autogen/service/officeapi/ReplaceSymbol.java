@@ -61,9 +61,9 @@ public class ReplaceSymbol {
     //public static String sys_name = "sys_name";
 
     //第五章会用到的
-    //public static String sys_name = "sys_name";
+//    public static String sys_name = "sys_name";
     public static String img51 = "img51";
-
+    public static String s51 = "51";
     public static String table51 = "table51";
     public static String table52 = "table52";
     public static String table53 = "table53";

@@ -9,8 +9,9 @@ import com.deepoove.poi.data.TextRenderData;
 import java.util.List;
 
 public class Chaptre5input {
-    public String system_name;
+    public String sys_name;
     public String img51;
+    public String s51;
     public List<Table5Util> table51List;
     public List<Table5Util> table52List;
     public List<Table5Util> table53List;

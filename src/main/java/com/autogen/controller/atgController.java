@@ -63,8 +63,8 @@ public class atgController {
         service1.BasicTemplate(questionNaire, concent);
         service1.generate();
 
-//        FileSystemResource file = new FileSystemResource("/home/ubuntu/Desktop/code_package/complete_example.docx");
-        FileSystemResource file = new FileSystemResource("D:\\IDEA\\AutoGen\\example.docx");
+        FileSystemResource file = new FileSystemResource("/home/ubuntu/Desktop/code_package/complete_example.docx");
+//        FileSystemResource file = new FileSystemResource("D:\\IDEA\\AutoGen\\example.docx");
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
         //这里定制下载文件的名称
