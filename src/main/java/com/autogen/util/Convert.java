@@ -221,7 +221,6 @@ public class Convert {
         questionNaire.setSys_mmzd(setString(questionNaire.getSys_mmzd(), sys_mmzd));
         questionNaire.setSys_ysbs(setString(questionNaire.getSys_ysbs(), sys_ysbs));
         questionNaire.setSys_rzys(setString(questionNaire.getSys_rzys(), sys_rzys));
-//        questionNaire.setSys_rzys(setString(questionNaire.getSys_rzys(), sys_rzys));
         questionNaire.setMpjb_fwd(setString(questionNaire.getMpjb_fwd(), mpjb_fwd));
         questionNaire.setMpjb_ydd(setList(questionNaire.getMpjb_ydd(), mpjb_ydd));
         List<InputTable22> table22List = new ArrayList<>();
@@ -383,7 +382,7 @@ public class Convert {
             Wlhhj wlhhj = new Wlhhj();
             InputTable23 table23 = questionNaire.getInputTable23List().get(i);
             wlhhj.setWlhhj_jfmc(table23.getJfmc());
-            if (sbqdStrList.contains("国密电子门禁系统")) {
+            if (sbqdStrList.contains("安全门禁系统")) {
                 if ("1".equals(table23.getJflx()) && "1".equals(table23.getMj())) {
                     wlhhj.setWlhhj_sfjb("11-00-1");
                     wlhhj.setWlhhj_dzmj("12-00-1");

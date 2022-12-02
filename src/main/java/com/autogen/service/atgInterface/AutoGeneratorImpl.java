@@ -77,9 +77,6 @@ public class AutoGeneratorImpl implements AutoGenerator {
             put(ReplaceSymbol.s26, input.s26);
 
         }});
-//        XWPFTemplate template2 = XWPFTemplate.compile(template.getXWPFDocument()).render(new HashMap<String, Object>() {{
-//            put(ReplaceSymbol.sys_name, input.sys_name);
-//        }});
         return template.getXWPFDocument();
     }
 
@@ -167,7 +164,6 @@ public class AutoGeneratorImpl implements AutoGenerator {
     @Override
     public XWPFDocument chapter_eight_generator(Chaptre8input input) throws IOException {
         XWPFDocument doc = IOManager.readFile(path + "8.docx");
-//        XWPFDocument doc = IOManager.readFile("D:\\IDEA\\AutoGen\\src\\main\\resources\\WordTemplate\\8.docx");
         LoopRowTableRenderPolicy policy = new LoopRowTableRenderPolicy();
         Configure config = Configure.builder().bind("table8", policy).build();
         XWPFTemplate template = XWPFTemplate.compile(doc,config);

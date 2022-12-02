@@ -140,7 +140,7 @@ public class Service1Impl implements Service1 {
 //
 //        //第八章
         c8.system_name = (String) map.get("sysname");
-//        c8.table8List = (List<Table8>) map.get("table8");
+        c8.table8List = (List<Table57>) map.get("table8");
     }
 
     @Override
@@ -154,8 +154,8 @@ public class Service1Impl implements Service1 {
         XWPFDocument doc5 = autoGenerator.chapter_five_generator(getC5());
         XWPFDocument doc6 = autoGenerator.chapter_six_generator(getC6());
         XWPFDocument doc7 = autoGenerator.chapter_seven_generator(getC7());
-//        XWPFDocument doc8 = autoGenerator.chapter_eight_generator(getC8());
-        NiceXWPFDocument completeDoc = IOManager.mergeFile((NiceXWPFDocument) doc1, (NiceXWPFDocument) doc2, (NiceXWPFDocument) doc3, (NiceXWPFDocument) doc4, (NiceXWPFDocument) doc5, (NiceXWPFDocument) doc6, (NiceXWPFDocument) doc7);
+        XWPFDocument doc8 = autoGenerator.chapter_eight_generator(getC8());
+        NiceXWPFDocument completeDoc = IOManager.mergeFile((NiceXWPFDocument) doc1, (NiceXWPFDocument) doc2, (NiceXWPFDocument) doc3, (NiceXWPFDocument) doc4, (NiceXWPFDocument) doc5, (NiceXWPFDocument) doc6, (NiceXWPFDocument) doc7, (NiceXWPFDocument) doc8);
         IOManager.writeFile(completeDoc, "/home/ubuntu/Desktop/code_package/complete_example.docx");
 //        IOManager.writeFile(completeDoc, "example.docx");
     }
@@ -167,6 +167,34 @@ public class Service1Impl implements Service1 {
         cp2Des(map, questionNaire);
         cp3Des(map, questionNaire, concent);
         cp5Des(map, concent);
+        //第八章产品清单
+        List<Table57> table57List = new ArrayList<>();
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < concent.getSbqd().size(); i++) {
+            Table57 table57 = new Table57();
+            Device device = deviceMapper.selectOne(new QueryWrapper<Device>().eq("name", concent.getSbqd().get(i).getName()));
+            if (device != null) {
+                if (device.getName().equals("密码应用技术服务")) {
+                    continue;
+                }
+                table57.setId(i + 1);
+                table57.setName(device.getName());
+                if ("9999".equals(concent.getSbqd().get(i).getNum())) {
+                    table57.setNum("按需");
+                } else {
+                    table57.setNum(concent.getSbqd().get(i).getNum());
+                }
+                table57.setRemark(concent.getSbqd().get(i).getRemark());
+                table57List.add(table57);
+            } else {
+                table57.setId(i + 1);
+                table57.setName(concent.getSbqd().get(i).getName());
+                table57.setNum(concent.getSbqd().get(i).getNum());
+                table57.setRemark("数据查询出错");
+                table57List.add(table57);
+            }
+        }
+        map.put("table8", table57List);
         return map;
     }
 
@@ -1175,9 +1203,12 @@ public class Service1Impl implements Service1 {
             scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", sbhjs.getSbhjs_xtzy().get(j)));
             if (scencePo != null) {
                 cpList.add(scencePo.getCpzh());
+                if (j == 0 && scencePo.getDescription().equals("具有资质的密码设备满足此需求")) {
+                    stringBuilder.append("具有资质的密码设备满足此需求");
+                    break;
+                }
                 stringBuilder.append(j + 1 + "、");
                 stringBuilder.append(scencePo.getDescription());
-                jlList.add(scencePo.getJl());
             } else {
                 cpList.add("数据查询出错");
                 msList.add("数据查询出错");
@@ -1186,6 +1217,9 @@ public class Service1Impl implements Service1 {
         }
         String xtzy = new String(stringBuilder);
         msList.add(xtzy);
+        if (scencePo != null) {
+            jlList.add(scencePo.getJl());
+        }
 
         scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", sbhjs.getSbhjs_zyxx()));
         if (scencePo != null) {
@@ -1233,22 +1267,28 @@ public class Service1Impl implements Service1 {
         StringBuilder description = new StringBuilder("");
         String cpzh = "";
         String jl = "";
+        Set<String> set = new HashSet();
+        StringBuilder sb = new StringBuilder();
         for (int j = 0; j < yyhsj.getYyhsj_sfjb().size(); j++) {
             scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", yyhsj.getYyhsj_sfjb().get(j)));
             if (scencePo != null) {
-                description.append(scencePo.getDescription());
+                description.append(scencePo.getDescription()).append('\n');
                 jl = scencePo.getJl();
-                cpzh += scencePo.getCpzh();
-                if (cpzh.contains("签名验签服务器") && cpzh.contains("协同签名系统")) {
-                    StringBuilder cpzhSb = new StringBuilder(cpzh);
-                    cpzhSb.insert(cpzhSb.indexOf("协同签名系统"), "、");
-                    cpzh = String.valueOf(cpzhSb);
-                }
+                //利用set去重
+                set.addAll(Arrays.asList(scencePo.getCpzh().split("、")));
             }
         }
+        for (String str : set) {
+            if (!str.equals("-")) {
+                sb.append(str).append('、');
+            }
+        }
+        sb.deleteCharAt(sb.lastIndexOf("、"));
+        cpzh = String.valueOf(sb);
         cpList.add(cpzh);
         msList.add(description.toString());
         jlList.add(jl);
+
         scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", yyhsj.getYyhsj_fwkz()));
         if (scencePo != null) {
             cpList.add(scencePo.getCpzh());

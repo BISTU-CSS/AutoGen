@@ -45,8 +45,8 @@ public class atgController {
     @PostMapping("/test")
     public void test(@RequestBody JSONObject data) throws Exception {
         QuestionNaire questionNaire = new QuestionNaire();
-        Concent concent = new Concent();
-        MyJSON.parsingJSON(data, concent);
+        MyJSON.parsingJSON(data, questionNaire);
+        Concent concent = Convert.convertToSence(questionNaire);
         service1.BasicTemplate(questionNaire, concent);
         service1.generate();
     }
