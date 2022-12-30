@@ -58,8 +58,6 @@ public class atgController {
         MyJSON.parsingJSON(data, questionNaire);
         Concent concent = Convert.convertToSence(questionNaire);
 //        System.out.println(data);
-//        System.out.println(concent.getWlhtxList());
-//        System.out.println(concent.getWlhtxList().size());
         service1.BasicTemplate(questionNaire, concent);
         service1.generate();
 

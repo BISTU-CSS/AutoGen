@@ -456,21 +456,21 @@ public class Convert {
             InputTable24 table24 = questionNaire.getInputTable24List().get(i);
             Wlhtx wlhtx = new Wlhtx();
             List<String> list = new ArrayList<>();
-            if (("1".equals(table24.getType()) && table24.getTxzt().contains("系统")) || ("2".equals(table24.getType()) && table24.getTxzt().contains("系统"))) {
+            if (table24.getTxzt().contains("系统")) {
                 wlhtx.setWlhtx_xdmc(table24.getCpdx());
                 list.add("52-02-1");
                 list.add("52-02-2");
                 list.add("52-02-3");
                 list.add("52-02-4");
                 list.add("52-02-5");
-            } else if (("1".equals(table24.getType()) && table24.getTxzt().contains("机房")) || ("2".equals(table24.getType()) && table24.getTxzt().contains("机房"))) {
+            } else if (table24.getTxzt().contains("机房")) {
                 wlhtx.setWlhtx_xdmc(table24.getCpdx());
                 list.add("52-01-1");
                 list.add("52-01-2");
                 list.add("52-01-3");
                 list.add("52-01-4");
                 list.add("52-01-5");
-            } else if (("1".equals(table24.getType()) && table24.getTxzt().contains("设备")) || ("2".equals(table24.getType()) && table24.getTxzt().contains("设备"))) {
+            } else if (table24.getTxzt().contains("设备")) {
                 wlhtx.setWlhtx_xdmc(table24.getCpdx());
                 list.add("52-03-1");
                 list.add("52-03-2");
@@ -484,7 +484,7 @@ public class Convert {
                 list.add("52-05-3");
                 list.add("52-05-4");
                 list.add("52-05-5");
-            } else if ("2".equals(table24.getType()) && "1".equals(table24.getTxzt())) {
+            } else if (!("1".equals(table24.getType())) && "1".equals(table24.getTxzt())) {
                 wlhtx.setWlhtx_xdmc(table24.getCpdx());
                 list.add("52-06-1");
                 list.add("52-06-2");
@@ -507,7 +507,7 @@ public class Convert {
                     list.add("52-08-4");
                     list.add("52-08-5");
                 }
-            } else if ("2".equals(table24.getType()) && "2".equals(table24.getTxzt())) {
+            } else if (!("1".equals(table24.getType())) && "2".equals(table24.getTxzt())) {
                 if (sbqdStrList.contains("可信浏览器")){
                     wlhtx.setWlhtx_xdmc(table24.getCpdx());
                     list.add("52-10-1");
@@ -575,7 +575,7 @@ public class Convert {
                 list.add("52-15-3");
                 list.add("52-15-4");
                 list.add("52-15-5");
-            } else if ("2".equals(table24.getType()) && "3".equals(table24.getTxzt())) {
+            } else if (!("1".equals(table24.getType())) && "3".equals(table24.getTxzt())) {
                 wlhtx.setWlhtx_xdmc(table24.getCpdx());
                 list.add("52-12-1");
                 list.add("52-12-2");

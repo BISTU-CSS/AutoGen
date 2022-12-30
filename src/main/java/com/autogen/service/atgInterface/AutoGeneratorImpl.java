@@ -45,6 +45,7 @@ public class AutoGeneratorImpl implements AutoGenerator {
         LoopRowTableRenderPolicy policy2 = new LoopRowTableRenderPolicy(true);
         Configure config = Configure.builder().bind("table22", policy1).bind("table23",policy1)
                 .bind("table241",policy2).bind("table242",policy2)
+                .bind("table243",policy2).bind("table244",policy2)
                 .bind("table25",policy1)
                 .bind("table261",policy2).bind("table262",policy2)
                 .bind("table263",policy2).bind("table264",policy2).bind("table265",policy2)
@@ -66,6 +67,8 @@ public class AutoGeneratorImpl implements AutoGenerator {
             put(ReplaceSymbol.table23, input.table23List);
             put(ReplaceSymbol.table241, input.table241List);
             put(ReplaceSymbol.table242, input.table242List);
+            put(ReplaceSymbol.table243, input.table243List);
+            put(ReplaceSymbol.table244, input.table244List);
             put(ReplaceSymbol.table25, input.table25List);
             put(ReplaceSymbol.table261, input.table261List);
             put(ReplaceSymbol.table262, input.table262List);
@@ -75,7 +78,6 @@ public class AutoGeneratorImpl implements AutoGenerator {
             put(ReplaceSymbol.table27, input.table27List);
             put(ReplaceSymbol.table28, input.table28List);
             put(ReplaceSymbol.s26, input.s26);
-
         }});
         return template.getXWPFDocument();
     }

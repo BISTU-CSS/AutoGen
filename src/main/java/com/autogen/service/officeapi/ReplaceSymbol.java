@@ -25,6 +25,8 @@ public class ReplaceSymbol {
     public static String table23 = "table23";
     public static String table241 = "table241";
     public static String table242 = "table242";
+    public static String table243 = "table243";
+    public static String table244 = "table244";
     public static String table25 = "table25";
     public static String table261 = "table261";
     public static String table262 = "table262";

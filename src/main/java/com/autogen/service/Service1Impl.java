@@ -90,6 +90,8 @@ public class Service1Impl implements Service1 {
         c2.table23List = (List<InputTable23>) map.get("table23");
         c2.table241List = (List<InputTable24>) map.get("table241");
         c2.table242List = (List<InputTable24>) map.get("table242");
+        c2.table243List = (List<InputTable24>) map.get("table243");
+        c2.table244List = (List<InputTable24>) map.get("table244");
         c2.table25List = (List<InputTable25>) map.get("table25");
         c2.table261List = (List<InputTable26>) map.get("table261");
         c2.table262List = (List<InputTable26>) map.get("table262");
@@ -238,6 +240,8 @@ public class Service1Impl implements Service1 {
         map.put("table23", table23List);
         List<Table24> table241List = new ArrayList<>();
         List<Table24> table242List = new ArrayList<>();
+        List<Table24> table243List = new ArrayList<>();
+        List<Table24> table244List = new ArrayList<>();
         for (int i = 0; i < questionNaire.getInputTable24List().size(); i++) {
             Table24 table24 = new Table24();
             table24.setType(questionNaire.getInputTable24List().get(i).getType());
@@ -250,10 +254,16 @@ public class Service1Impl implements Service1 {
                 table241List.add(table24);
             } else if ("2".equals(table24.getType())) {
                 table242List.add(table24);
+            } else if ("3".equals(table24.getType())) {
+                table243List.add(table24);
+            } else if ("4".equals(table24.getType())) {
+                table244List.add(table24);
             }
         }
         map.put("table241", table241List);
         map.put("table242", table242List);
+        map.put("table243", table243List);
+        map.put("table244", table244List);
         List<Table25> table25List = new ArrayList<>();
         for (int i = 0; i < questionNaire.getInputTable25List().size(); i++) {
             Table25 table25 = new Table25();
@@ -373,8 +383,12 @@ public class Service1Impl implements Service1 {
             Table33 table33 = new Table33();
             if ("1".equals(questionNaire.getInputTable24List().get(i).getType())) {
                 table33.setWllx("互联网");
-            } else if ("2".equals(questionNaire.getInputTable24List().get(i).getType())) {
-                table33.setWllx("办公局域网");
+            }else if ("2".equals(questionNaire.getInputTable24List().get(i).getType())) {
+                table33.setWllx("内网");
+            }else if ("3".equals(questionNaire.getInputTable24List().get(i).getType())) {
+                table33.setWllx("专网");
+            }else if ("4".equals(questionNaire.getInputTable24List().get(i).getType())) {
+                table33.setWllx("政务内网");
             }
             table33.setTxzt(questionNaire.getInputTable24List().get(i).getTxzt());
             table33.setCpdx(concent.getWlhtxList().get(i).getWlhtx_xdmc());
