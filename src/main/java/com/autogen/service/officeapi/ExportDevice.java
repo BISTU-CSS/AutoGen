@@ -24,6 +24,7 @@ public class ExportDevice {
         sheet.setColumnWidth(1, 18 * 256);
         sheet.setColumnWidth(4, 70 * 256);
         sheet.setColumnWidth(6, 25 * 256);
+        sheet.setColumnWidth(7, 25 * 256);
         //style title 1
         XSSFCellStyle styleTitle1 = workbook.createCellStyle();
         styleTitle1.setAlignment(HorizontalAlignment.CENTER);
@@ -94,19 +95,31 @@ public class ExportDevice {
         Row row0 = sheet.createRow(0);
         Cell cell0 = row0.createCell(0);
         cell0.setCellValue(name+"密码应用方案设备清单");
-        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 11));
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 13));
         cell0.setCellStyle(styleTitle1);
-        addMergeCellBorder(new CellRangeAddress(0, 0, 0, 11), sheet);
+        addMergeCellBorder(new CellRangeAddress(0, 0, 0, 13), sheet);
         Row row1 = sheet.createRow(1);
+        Cell cell1 = row1.createCell(0);
+        cell1.setCellValue("重要说明：\n" +
+                "1、硬件设备部署时一般要求一主一备，但如果预算紧张，可以先建设一台，基本符合密评要求，但存在单点故障风险;\n" +
+                "2、产品支持远程免费部署，如果需要现场支持联系产线下实施费用。");
+        cell1.setCellStyle(styleEndTitle);
+        row1.setHeight((short) (6 * 256));
+        sheet.addMergedRegion(new CellRangeAddress(1, 1, 0, 13));
+        //冻结第一行的十四列
+        sheet.createFreezePane(1,1);
+        sheet.createFreezePane(1,2);
+        sheet.createFreezePane(14,3);
 
-        String[] title = {"序号", "产品名称", "品牌", "产品型号", "功能说明", "类别", "配置", "数量", "单位", "单价(万元)", "总价(万元)", "备注"};
+        Row row2 = sheet.createRow(2);
+        String[] title = {"序号", "名称", "推荐品牌", "型号", "功能说明", "形态", "部署要求", "配置", "数量", "单位", "单价(万元)", "总价(万元)", "维保", "备注"};
         for (int i = 0; i < title.length; i++) {
-            Cell cell1 = row1.createCell(i);
-            cell1.setCellValue(title[i]);
-            cell1.setCellStyle(styleTitle2);
+            Cell cell2 = row2.createCell(i);
+            cell2.setCellValue(title[i]);
+            cell2.setCellStyle(styleTitle2);
         }
         //从第二行开始创建
-        int rowNum = 2;
+        int rowNum = 3;
 
         for (int i = 0; i < deviceList.size(); i++) {
             Row row = sheet.createRow(rowNum++);
@@ -118,42 +131,42 @@ public class ExportDevice {
             list.add(device.getModel());
             list.add(device.getGnsm());
             list.add(device.getType());
+            list.add(device.getBsyq());
             list.add(device.getConfigure());
             list.add(String.valueOf(device.getNum()));
             list.add(device.getUnit());
             list.add(device.getDj());
             list.add(device.getZj());
+            list.add(device.getWb());
             list.add(device.getRemark());
             for (int j = 0; j < list.size(); j++) {
                 Cell cell = row.createCell(j);
                 cell.setCellValue(list.get(j));
-                if (j == 0 || j == 2 || j == 3 || j == 5 || j == 7 || j == 8) {
+                if (j == 0 || j == 2 || j == 3 || j == 5 || j == 8 || j == 9) {
                     cell.setCellStyle(styleText2);
                 } else {
                     cell.setCellStyle(styleText);
                 }
             }
         }
-        Row rowEnd = sheet.createRow(deviceList.size() + 2);
+        Row rowEnd = sheet.createRow(deviceList.size() + 3);
         Cell cellEnd = rowEnd.createCell(0);
         cellEnd.setCellValue("合计");
-        sheet.addMergedRegion(new CellRangeAddress(deviceList.size() + 2, deviceList.size() + 2, 0, 10));
+        sheet.addMergedRegion(new CellRangeAddress(deviceList.size() + 3, deviceList.size() + 3, 0, 12));
         Cell cell = rowEnd.getCell(0);
         cell.setCellStyle(styleEndTitle);
-        addMergeCellBorder(new CellRangeAddress(deviceList.size() + 2, deviceList.size() + 2, 0, 10), sheet);
+        addMergeCellBorder(new CellRangeAddress(deviceList.size() + 3, deviceList.size() + 3, 0, 12), sheet);
         rowEnd.createCell(11).setCellStyle(styleTitle2);
 
-        rowEnd = sheet.createRow(deviceList.size() + 3);
-        rowEnd.setHeight((short) (6 * 256));
+        rowEnd = sheet.createRow(deviceList.size() + 4);
+//        rowEnd.setHeight((short) (6 * 256));
         cellEnd = rowEnd.createCell(0);
 
-        cellEnd.setCellValue("备注：\n" +
-                "1、硬件设备部署时一般要求一主一备，但如果预算紧张，可以先建设一台，基本符合密评要求，但存在单点故障风险;\n" +
-                "2、定制开发需要结合每个项目实际场景需求来定，可以由信息系统开发商、密码产品供应商或第三方承担;");
-        sheet.addMergedRegion(new CellRangeAddress(deviceList.size() + 3, deviceList.size() + 3, 0, 11));
+        cellEnd.setCellValue("备注：");
+        sheet.addMergedRegion(new CellRangeAddress(deviceList.size() + 4, deviceList.size() + 4, 0, 13));
         cell = rowEnd.getCell(0);
         cell.setCellStyle(styleEndTitle);
-        addMergeCellBorder(new CellRangeAddress(deviceList.size() + 3, deviceList.size() + 3, 0, 11), sheet);
+        addMergeCellBorder(new CellRangeAddress(deviceList.size() + 4, deviceList.size() + 4, 0, 13), sheet);
 
         try {
             File file = new File("/home/ubuntu/Desktop/code_package/设备清单.xlsx");

@@ -107,9 +107,15 @@ public class InformationServiceImpl implements InformationService {
     @Transactional
     public void exportSBQD(List<Product> productList, String name) {
         List<Device> deviceList = new ArrayList<>();
+
         for (int i = 0; i < productList.size(); i++) {
             if (!"0".equals(productList.get(i).getNum())) {
-                Device device = deviceMapper.selectOne(new QueryWrapper<Device>().eq("name", productList.get(i).getName()));
+                Device device = null;
+                if (productList.get(i).getName().equals("服务器密码机")||productList.get(i).getName().equals("签名验签服务器")||productList.get(i).getName().equals("云服务器密码机")){
+                    device = deviceMapper.selectOne(new QueryWrapper<Device>().eq("name", productList.get(i).getName()).eq("model",productList.get(i).getJbxh()));
+                }else {
+                    device = deviceMapper.selectOne(new QueryWrapper<Device>().eq("name", productList.get(i).getName()));
+                }
                 if (device != null) {
                     if ("9999".equals(productList.get(i).getNum())) {
                         device.setNum("按需");

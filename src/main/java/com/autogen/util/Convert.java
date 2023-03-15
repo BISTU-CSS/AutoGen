@@ -538,7 +538,8 @@ public class Convert {
                 list.add("52-11-3");
                 list.add("52-11-4");
                 list.add("52-11-5");
-            } else if ("1".equals(table24.getType()) && "4".equals(table24.getTxzt())) {
+//            } else if ("1".equals(table24.getType()) && "4".equals(table24.getTxzt())) {
+            } else if ("4".equals(table24.getTxzt())) {
                 if (sbqdStrList.contains("SSL VPN安全网关") && sbqdStrList.contains("协同签名系统")) {
                     wlhtx.setWlhtx_xdmc(table24.getCpdx());
                     list.add("52-14-1");
@@ -568,7 +569,8 @@ public class Convert {
                     list.add("52-01-4");
                     list.add("52-01-5");
                 }
-            } else if (("1".equals(table24.getType()) && "5".equals(table24.getTxzt()))||table24.getTxzt().equals("微信公众号")) {
+//            } else if (("1".equals(table24.getType()) && "5".equals(table24.getTxzt()))||table24.getTxzt().equals("微信公众号")) {
+            } else if ("5".equals(table24.getTxzt())||table24.getTxzt().equals("微信公众号")) {
                 wlhtx.setWlhtx_xdmc(table24.getCpdx());
                 list.add("52-15-1");
                 list.add("52-15-2");

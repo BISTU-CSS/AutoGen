@@ -23,11 +23,13 @@ public class Device {
     private String model;  //产品参考型号
     private String gnsm;    //功能说明
     private String type;      //类别
+    private String bsyq;    //部署要求
     private String configure;      //配置
     private String num;         //数量
     private String unit;      //单位
     private String dj;      //单价
     private String zj;      //总价
+    private String wb;      //维保
     private String remark;      //备注
     private String yt;//用途
     private String ms;//描述

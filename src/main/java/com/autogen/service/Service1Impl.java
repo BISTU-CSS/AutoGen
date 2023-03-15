@@ -171,14 +171,19 @@ public class Service1Impl implements Service1 {
         cp5Des(map, concent);
         //第八章产品清单
         List<Table57> table57List = new ArrayList<>();
-        List<String> list = new ArrayList<>();
         for (int i = 0; i < concent.getSbqd().size(); i++) {
             Table57 table57 = new Table57();
-            Device device = deviceMapper.selectOne(new QueryWrapper<Device>().eq("name", concent.getSbqd().get(i).getName()));
+//            Device device = deviceMapper.selectOne(new QueryWrapper<Device>().eq("name", concent.getSbqd().get(i).getName()).eq("model",concent.getSbqd().get(i).getJbxh()));
+            Device device = null;
+            if (concent.getSbqd().get(i).getName().equals("服务器密码机")||concent.getSbqd().get(i).getName().equals("签名验签服务器")||concent.getSbqd().get(i).getName().equals("云服务器密码机")){
+                device = deviceMapper.selectOne(new QueryWrapper<Device>().eq("name", concent.getSbqd().get(i).getName()).eq("model",concent.getSbqd().get(i).getJbxh()));
+            }else {
+                device = deviceMapper.selectOne(new QueryWrapper<Device>().eq("name", concent.getSbqd().get(i).getName()));
+            }
             if (device != null) {
-                if (device.getName().equals("密码应用技术服务")) {
-                    continue;
-                }
+//                if (device.getName().equals("密码应用技术服务")) {
+//                    continue;
+//                }
                 table57.setId(i + 1);
                 table57.setName(device.getName());
                 if ("9999".equals(concent.getSbqd().get(i).getNum())) {
@@ -666,7 +671,13 @@ public class Service1Impl implements Service1 {
         List<String> list = new ArrayList<>();
         for (int i = 0; i < concent.getSbqd().size(); i++) {
             Table57 table57 = new Table57();
-            Device device = deviceMapper.selectOne(new QueryWrapper<Device>().eq("name", concent.getSbqd().get(i).getName()));
+//            Device device = deviceMapper.selectOne(new QueryWrapper<Device>().eq("name", concent.getSbqd().get(i).getName()).eq("model",concent.getSbqd().get(i).getJbxh()));
+            Device device = null;
+            if (concent.getSbqd().get(i).getName().equals("服务器密码机")||concent.getSbqd().get(i).getName().equals("签名验签服务器")||concent.getSbqd().get(i).getName().equals("云服务器密码机")){
+                device = deviceMapper.selectOne(new QueryWrapper<Device>().eq("name", concent.getSbqd().get(i).getName()).eq("model",concent.getSbqd().get(i).getJbxh()));
+            }else {
+                device = deviceMapper.selectOne(new QueryWrapper<Device>().eq("name", concent.getSbqd().get(i).getName()));
+            }
             if (device != null) {
                 if (device.getName().equals("密码应用技术服务")) {
                     continue;
@@ -842,7 +853,7 @@ public class Service1Impl implements Service1 {
         fxdjList.add("中");
         fxdjList.add("高");
         fxdjList.add("中");
-        fxdjList.add("中");
+        fxdjList.add("高");
         syqkList.add("适用");
         xtxzList.add("未采用密码技术对通信实体进行身份鉴别");
         jlList.add("不符合");
