@@ -382,14 +382,14 @@ public class Convert {
             Wlhhj wlhhj = new Wlhhj();
             InputTable23 table23 = questionNaire.getInputTable23List().get(i);
             wlhhj.setWlhhj_jfmc(table23.getJfmc());
-            if (sbqdStrList.contains("安全门禁系统")) {
-                if ("1".equals(table23.getJflx()) && "1".equals(table23.getMj())) {
+            if (sbqdStrList.contains("国密门禁系统")) {
+                if ("1".equals(table23.getJflx()) ) {
                     wlhhj.setWlhhj_sfjb("11-00-1");
                     wlhhj.setWlhhj_dzmj("12-00-1");
-                } else if ("3".equals(table23.getJflx()) && !"1".equals(table23.getMj())) {
+                } else if ("3".equals(table23.getJflx()) ) {
                     wlhhj.setWlhhj_sfjb("11-01-1");
                     wlhhj.setWlhhj_dzmj("12-01-1");
-                } else if ("2".equals(table23.getJflx()) && !"1".equals(table23.getMj())) {
+                } else if ("2".equals(table23.getJflx()) ) {
                     wlhhj.setWlhhj_sfjb("11-03-1");
                     wlhhj.setWlhhj_dzmj("12-03-1");
                 } else {
@@ -398,8 +398,8 @@ public class Convert {
                 }
             } else {
                 if ("1".equals(table23.getJflx()) && "1".equals(table23.getMj())) {
-                    wlhhj.setWlhhj_sfjb("11-00-2");
-                    wlhhj.setWlhhj_dzmj("12-00-2");
+                    wlhhj.setWlhhj_sfjb("11-04-1");
+                    wlhhj.setWlhhj_dzmj("12-04-1");
                 } else if ("3".equals(table23.getJflx()) && !"1".equals(table23.getMj())) {
                     wlhhj.setWlhhj_sfjb("11-01-2");
                     wlhhj.setWlhhj_dzmj("12-01-2");
@@ -417,19 +417,19 @@ public class Convert {
                     wlhhj.setWlhhj_dzmj("12-05-1");
                 }
             }
-            if (sbqdStrList.contains("国密视频监控系统")) {
-                if ("1".equals(table23.getJflx()) && "1".equals(table23.getSpjk())) {
+            if (sbqdStrList.contains("国密电子监控系统")) {
+                if ("1".equals(table23.getJflx()) ) {
                     wlhhj.setWlhhj_spjk("13-00-1");
-                } else if ("3".equals(table23.getJflx()) && !"1".equals(table23.getSpjk())) {
+                } else if ("3".equals(table23.getJflx()) ) {
                     wlhhj.setWlhhj_spjk("13-01-1");
-                } else if ("2".equals(table23.getJflx()) && !"1".equals(table23.getSpjk())) {
+                } else if ("2".equals(table23.getJflx()) ) {
                     wlhhj.setWlhhj_spjk("13-03-1");
                 } else {
                     wlhhj.setWlhhj_spjk("13-05-1");
                 }
             } else {
                 if ("1".equals(table23.getJflx()) && "1".equals(table23.getSpjk())) {
-                    wlhhj.setWlhhj_spjk("13-00-2");
+                    wlhhj.setWlhhj_spjk("13-04-1");
                 } else if ("3".equals(table23.getJflx()) && !"1".equals(table23.getSpjk())) {
                     wlhhj.setWlhhj_spjk("13-01-2");
                 } else if ("3".equals(table23.getJflx()) && "1".equals(table23.getSpjk())) {
@@ -442,8 +442,8 @@ public class Convert {
                     wlhhj.setWlhhj_spjk("13-05-1");
                 }
             }
-//            }
             wlhhjList.add(wlhhj);
+            System.out.println(wlhhjList);
         }
     }
 
