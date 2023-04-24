@@ -25,6 +25,11 @@ public class MyJSON {
         questionNaire.setMpjb_fwd(jsonObject.getString("mpjb_fwd"));
         questionNaire.setMpjb_ydd(addList(jsonObject,"mpjb_ydd"));
         questionNaire.setSys_djbh(jsonObject.getString("sys_djbh"));
+        questionNaire.setSys_xtjg(jsonObject.getString("sys_xtjg"));
+        questionNaire.setSys_dwdz(jsonObject.getString("sys_dwdz"));
+        questionNaire.setSys_sxsj(jsonObject.getString("sys_sxsj"));
+        questionNaire.setSys_dbsj(jsonObject.getString("sys_dbsj"));
+        questionNaire.setSys_cpjg(jsonObject.getString("sys_cpjg"));
 
         questionNaire.setMpjb_sfrz(addList(jsonObject,"mpjb_sfrz"));
         questionNaire.setMpjb_fwfs(addList(jsonObject,"mpjb_fwfs"));

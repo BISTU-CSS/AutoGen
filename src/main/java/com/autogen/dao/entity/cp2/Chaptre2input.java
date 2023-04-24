@@ -9,6 +9,11 @@ public class Chaptre2input {
     public String sys_unit;
     public String sys_xtjs;
     public String sys_dbjb;
+    public String sys_dwdz;
+    public String sys_sxsj;
+    public String sys_dbsj;
+    public String sys_cpjg;
+    public String sys_xtjg;
     public String sys_mpsc;
     public String sys_mmzd;
     public String sys_ysbs;

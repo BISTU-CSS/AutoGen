@@ -7,7 +7,6 @@ import com.autogen.dao.entity.cp4.Chaptre4input;
 import com.autogen.dao.entity.cp5.Chaptre5input;
 import com.autogen.dao.entity.cp6.Chaptre6input;
 import com.autogen.dao.entity.cp7.Chaptre7input;
-import com.autogen.dao.entity.cp8.Chaptre8input;
 import com.autogen.service.fileapi.IOManager;
 import com.autogen.service.officeapi.ReplaceSymbol;
 import com.deepoove.poi.XWPFTemplate;
@@ -22,8 +21,8 @@ import java.util.HashMap;
 
 public class AutoGeneratorImpl implements AutoGenerator {
 
-    String path = "/etc/autogen/";
-//    String path = "D:\\IDEA\\AutoGen\\src\\main\\resources\\WordTemplate\\";
+//    String path = "/etc/autogen/";
+    String path = "D:\\IDEA\\AutoGen\\src\\main\\resources\\WordTemplate\\";
     @Override
     public XWPFDocument chapter_one_generator(Chaptre1input input) throws IOException {
         XWPFDocument doc = IOManager.readFile(path + "1.docx");
@@ -54,6 +53,11 @@ public class AutoGeneratorImpl implements AutoGenerator {
             put(ReplaceSymbol.sys_name, input.sys_name);
             put(ReplaceSymbol.sys_unit, input.sys_unit);
             put(ReplaceSymbol.sys_xtjs, input.sys_xtjs);
+            put(ReplaceSymbol.sys_xtjg, input.sys_xtjg);
+            put(ReplaceSymbol.sys_dwdz, input.sys_dwdz);
+            put(ReplaceSymbol.sys_dbsj, input.sys_dbsj);
+            put(ReplaceSymbol.sys_sxsj, input.sys_sxsj);
+            put(ReplaceSymbol.sys_cpjg, input.sys_cpjg);
             put(ReplaceSymbol.sys_dbjb, input.sys_dbjb);
             put(ReplaceSymbol.sys_mpsc, input.sys_mpsc);
             put(ReplaceSymbol.sys_mmzd, input.sys_mmzd);
@@ -123,7 +127,7 @@ public class AutoGeneratorImpl implements AutoGenerator {
         XWPFTemplate template = XWPFTemplate.compile(doc, config).render(new HashMap<String, Object>() {{
             put(ReplaceSymbol.sys_name, input.sys_name);
             put(ReplaceSymbol.s51, input.s51);
-            put(ReplaceSymbol.img51, Pictures.ofLocal(input.img51).create());
+//            put(ReplaceSymbol.img51, Pictures.ofLocal(input.img51).create());
             put(ReplaceSymbol.table51,input.table51List);
             put(ReplaceSymbol.table52,input.table52List);
             put(ReplaceSymbol.table53,input.table53List);
@@ -156,17 +160,7 @@ public class AutoGeneratorImpl implements AutoGenerator {
     @Override
     public XWPFDocument chapter_seven_generator(Chaptre7input input) throws IOException {
         XWPFDocument doc = IOManager.readFile(path + "7.docx");
-        XWPFTemplate template = XWPFTemplate.compile(doc);
-        template.render(new HashMap<String, Object>() {{
-            put(ReplaceSymbol.sys_name, input.system_name);
-        }});
-        return template.getXWPFDocument();
-    }
-
-    @Override
-    public XWPFDocument chapter_eight_generator(Chaptre8input input) throws IOException {
-        XWPFDocument doc = IOManager.readFile(path + "8.docx");
-        LoopRowTableRenderPolicy policy = new LoopRowTableRenderPolicy();
+                LoopRowTableRenderPolicy policy = new LoopRowTableRenderPolicy();
         Configure config = Configure.builder().bind("table8", policy).build();
         XWPFTemplate template = XWPFTemplate.compile(doc,config);
         template.render(new HashMap<String, Object>() {{
@@ -175,5 +169,6 @@ public class AutoGeneratorImpl implements AutoGenerator {
         }});
         return template.getXWPFDocument();
     }
+
 
 }

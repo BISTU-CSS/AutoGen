@@ -26,6 +26,10 @@ public class Convert {
             add("云租户模式");
             add("云租户+云平台模式");
         }};
+        List<String> sys_xtjg = new ArrayList<String>() {{
+            add("C/S架构");
+            add("B/S架构");
+        }};
         List<String> sys_xtjs = new ArrayList<String>() {{
             add("未建设");
             add("正在建设");
@@ -215,6 +219,7 @@ public class Convert {
             questionNaire.setSys_sshy(setString(questionNaire.getSys_sshy(), sys_sshy));
         }
         questionNaire.setSys_xmlx(setString(questionNaire.getSys_xmlx(), sys_xmlx));
+        questionNaire.setSys_xtjg(setString(questionNaire.getSys_xtjg(), sys_xtjg));
         questionNaire.setSys_xtjs(setString(questionNaire.getSys_xtjs(), sys_xtjs));
         questionNaire.setSys_dbjb(setString(questionNaire.getSys_dbjb(), sys_dbjb));
         questionNaire.setSys_mpsc(setString(questionNaire.getSys_mpsc(), sys_mpsc));
@@ -342,6 +347,7 @@ public class Convert {
         Concent concent = new Concent();
         concent.setSys_sshy(questionNaire.getSys_sshy());
         concent.setSys_xmlx(questionNaire.getSys_xmlx());
+        concent.setSys_xtjg(questionNaire.getSys_xtjg());
         concent.setSys_name(questionNaire.getSys_name());
         concent.setSys_unit(questionNaire.getSys_unit());
         concent.setSys_dbjb(questionNaire.getSys_dbjb());
@@ -349,7 +355,10 @@ public class Convert {
         concent.setSys_mpsc(questionNaire.getSys_mpsc());
         concent.setSys_mmzd(questionNaire.getSys_mmzd());
         concent.setSys_ysbs(questionNaire.getSys_ysbs());
-        concent.setSys_rzys(questionNaire.getSys_rzys());
+        concent.setSys_dwdz(questionNaire.getSys_dwdz());
+        concent.setSys_sxsj(questionNaire.getSys_sxsj());
+        concent.setSys_dbsj(questionNaire.getSys_dbsj());
+        concent.setSys_cpjg(questionNaire.getSys_cpjg());
         List<Product> sbqdList = new ArrayList<>();
         List<Wlhhj> wlhhjList = new ArrayList<>();
         List<Wlhtx> wlhtxList = new ArrayList<>();
@@ -443,7 +452,6 @@ public class Convert {
                 }
             }
             wlhhjList.add(wlhhj);
-            System.out.println(wlhhjList);
         }
     }
 
@@ -679,7 +687,11 @@ public class Convert {
                 list.add("33-10-1");
                 sbhjs.setSbhjs_xtzy(list);
                 sbhjs.setSbhjs_zyxx("34-00-1");
-                sbhjs.setSbhjs_rzjl("35-00-1");
+                if ((table26.getType().equals("1")||table26.getType().equals("2"))&&table26.getSmzs().equals("1")){
+                    sbhjs.setSbhjs_rzjl("35-01-1");
+                }else {
+                    sbhjs.setSbhjs_rzjl("35-00-1");
+                }
                 sbhjs.setSbhjs_zykz("36-01-1");
                 sbhjsList.add(sbhjs);
             }
@@ -690,9 +702,9 @@ public class Convert {
                 sbhjs.setSbhjs_sbmc(sbqdStrList.get(i));
                 if (sbhjs.getSbhjs_sbmc().equals("国密安全密码应用中间件")||sbhjs.getSbhjs_sbmc().equals("国密数字证书")
                         ||sbhjs.getSbhjs_sbmc().equals("智能密码钥匙")||sbhjs.getSbhjs_sbmc().equals("可信浏览器")
-                        ||sbhjs.getSbhjs_sbmc().equals("密码设备管理平台")||sbhjs.getSbhjs_sbmc().equals("云安全管理平台（CSMP）")
-                        ||sbhjs.getSbhjs_sbmc().equals("国密视频监控系统")||sbhjs.getSbhjs_sbmc().equals("安全门禁系统")
-                        ||sbhjs.getSbhjs_sbmc().equals("密码应用技术服务")){
+                        ||sbhjs.getSbhjs_sbmc().equals("国密设备证书")||sbhjs.getSbhjs_sbmc().equals("云安全管理平台（CSMP）")
+                        ||sbhjs.getSbhjs_sbmc().equals("国密电子监控系统")||sbhjs.getSbhjs_sbmc().equals("国密门禁系统")
+                        ||sbhjs.getSbhjs_sbmc().equals("密码应用技术服务")||sbhjs.getSbhjs_sbmc().equals("国密SSL证书证书")){
                     continue;
                 }
                 if (sbqdStrList.contains("国密堡垒机")) {
@@ -717,7 +729,7 @@ public class Convert {
                 list.add("33-10-1");
                 sbhjs.setSbhjs_xtzy(list);
                 sbhjs.setSbhjs_zyxx("34-00-1");
-                sbhjs.setSbhjs_rzjl("35-00-1");
+                sbhjs.setSbhjs_rzjl("35-01-1");
                 sbhjs.setSbhjs_zykz("36-01-1");
                 sbhjsList.add(sbhjs);
         }

@@ -12,6 +12,11 @@ public class ReplaceSymbol {
     //第二章会用到的
     //public static String sys_name = "sys_name";
     public static String sys_xtjs = "xtjs";
+    public static String sys_dwdz = "dwdz";
+    public static String sys_sxsj = "sxsj";
+    public static String sys_dbsj = "dbsj";
+    public static String sys_cpjg = "cpjg";
+    public static String sys_xtjg = "xtjg";
     public static String sys_dbjb = "dbjb";
     public static String sys_mpsc = "mpsc";
     public static String sys_mmzd = "mmzd";

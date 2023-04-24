@@ -1,4 +1,4 @@
-package com.autogen.dao.entity;
+package com.autogen.util;
 
 import lombok.Data;
 

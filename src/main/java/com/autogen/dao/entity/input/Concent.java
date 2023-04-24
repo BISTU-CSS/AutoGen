@@ -20,10 +20,15 @@ public class Concent {
     private String sys_unit;                         //责任单位
     private String sys_dbjb;                         //等保级别
     private String sys_xtjs;                         //系统建设
+    private String sys_xtjg;                         //系统架构
     private String sys_mpsc;                         //密评首次
     private String sys_mmzd;                         //密码制度
     private String sys_ysbs;                         //云上部署
     private String sys_rzys;                         //若在云上
+    private String sys_dwdz;                         //单位地址
+    private String sys_sxsj;                         //上线时间
+    private String sys_dbsj;                         //等保时间
+    private String sys_cpjg;                         //测评机构
 //    private String sys_xtfw;                         //系统服务
 
 

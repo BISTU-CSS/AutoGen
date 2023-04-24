@@ -14,7 +14,6 @@ import com.autogen.dao.entity.cp4.Chaptre4input;
 import com.autogen.dao.entity.cp5.Chaptre5input;
 import com.autogen.dao.entity.cp6.Chaptre6input;
 import com.autogen.dao.entity.cp7.Chaptre7input;
-import com.autogen.dao.entity.cp8.Chaptre8input;
 import com.autogen.dao.entity.table.*;
 import com.autogen.service.atgInterface.AutoGenerator;
 import com.autogen.service.atgInterface.AutoGeneratorImpl;
@@ -60,7 +59,6 @@ public class Service1Impl implements Service1 {
         c5 = new Chaptre5input();
         c6 = new Chaptre6input();
         c7 = new Chaptre7input();
-        c8 = new Chaptre8input();
 
         Convert.convertToText(questionNaire);
         Map<String, Object> map = selectDes(questionNaire, concent);
@@ -86,6 +84,12 @@ public class Service1Impl implements Service1 {
         c2.sys_ydd = (String) map.get("ydd");
         c2.sys_fwd = (String) map.get("fwd");
         c2.sys_djbh = (String) map.get("djbh");
+        c2.sys_xtjg = (String) map.get("xtjg");
+        c2.sys_dwdz = (String) map.get("dwdz");
+        c2.sys_sxsj = (String) map.get("sxsj");
+        c2.sys_dbsj = (String) map.get("dbsj");
+        c2.sys_cpjg = (String) map.get("cpjg");
+
         c2.table22List = (List<InputTable22>) map.get("table22");
         c2.table23List = (List<InputTable23>) map.get("table23");
         c2.table241List = (List<InputTable24>) map.get("table241");
@@ -139,10 +143,8 @@ public class Service1Impl implements Service1 {
 
 //        //第七章
         c7.system_name = (String) map.get("sysname");
-//
-//        //第八章
-        c8.system_name = (String) map.get("sysname");
-        c8.table8List = (List<Table57>) map.get("table8");
+        c7.table8List = (List<Table57>) map.get("table8");
+
     }
 
     @Override
@@ -156,10 +158,10 @@ public class Service1Impl implements Service1 {
         XWPFDocument doc5 = autoGenerator.chapter_five_generator(getC5());
         XWPFDocument doc6 = autoGenerator.chapter_six_generator(getC6());
         XWPFDocument doc7 = autoGenerator.chapter_seven_generator(getC7());
-        XWPFDocument doc8 = autoGenerator.chapter_eight_generator(getC8());
-        NiceXWPFDocument completeDoc = IOManager.mergeFile((NiceXWPFDocument) doc1, (NiceXWPFDocument) doc2, (NiceXWPFDocument) doc3, (NiceXWPFDocument) doc4, (NiceXWPFDocument) doc5, (NiceXWPFDocument) doc6, (NiceXWPFDocument) doc7, (NiceXWPFDocument) doc8);
-        IOManager.writeFile(completeDoc, "/home/ubuntu/Desktop/code_package/complete_example.docx");
-//        IOManager.writeFile(completeDoc, "example.docx");
+//        XWPFDocument doc8 = autoGenerator.chapter_eight_generator(getC8());
+        NiceXWPFDocument completeDoc = IOManager.mergeFile((NiceXWPFDocument) doc1, (NiceXWPFDocument) doc2, (NiceXWPFDocument) doc3, (NiceXWPFDocument) doc4, (NiceXWPFDocument) doc5, (NiceXWPFDocument) doc6, (NiceXWPFDocument) doc7);
+//        IOManager.writeFile(completeDoc, "/home/ubuntu/Desktop/code_package/complete_example.docx");
+        IOManager.writeFile(completeDoc, "example.docx");
     }
 
     @Override
@@ -169,7 +171,7 @@ public class Service1Impl implements Service1 {
         cp2Des(map, questionNaire);
         cp3Des(map, questionNaire, concent);
         cp5Des(map, concent);
-        //第八章产品清单
+        //第七章产品清单
         List<Table57> table57List = new ArrayList<>();
         for (int i = 0; i < concent.getSbqd().size(); i++) {
             Table57 table57 = new Table57();
@@ -212,6 +214,7 @@ public class Service1Impl implements Service1 {
         map.put("sysunit", questionNaire.getSys_unit());
         map.put("xtjs", questionNaire.getSys_xtjs());
         map.put("dbjb", questionNaire.getSys_dbjb());
+        map.put("xtjg", questionNaire.getSys_xtjg());
         map.put("mpsc", questionNaire.getSys_mpsc());
         map.put("mmzd", questionNaire.getSys_mmzd());
         map.put("ysbs", questionNaire.getSys_ysbs());
@@ -219,6 +222,10 @@ public class Service1Impl implements Service1 {
         map.put("fwd", questionNaire.getMpjb_fwd());
         map.put("ydd", StringUtils.strip(questionNaire.getMpjb_ydd().toString(), "[]"));
         map.put("djbh", questionNaire.getSys_djbh());
+        map.put("dwdz", questionNaire.getSys_dwdz());
+        map.put("sxsj", questionNaire.getSys_sxsj());
+        map.put("dbsj", questionNaire.getSys_dbsj());
+        map.put("cpjg", questionNaire.getSys_cpjg());
         List<Table22> table22List = new ArrayList<>();
         for (int i = 0; i < questionNaire.getInputTable22List().size(); i++) {
             Table22 table22 = new Table22();
@@ -478,7 +485,9 @@ public class Service1Impl implements Service1 {
             }
         }
         for (int i = 0; i < questionNaire.getInputTable26List().size(); i++) {
-            if ("1".equals(questionNaire.getInputTable26List().get(i).getType()) || ("2".equals(questionNaire.getInputTable26List().get(i).getType()) && questionNaire.getInputTable26List().get(i).getSbmc().contains("堡垒机")) || "3".equals(questionNaire.getInputTable26List().get(i).getType())) {
+
+//            if ("1".equals(questionNaire.getInputTable26List().get(i).getType()) || ("2".equals(questionNaire.getInputTable26List().get(i).getType()) && questionNaire.getInputTable26List().get(i).getSbmc().contains("堡垒机")) || "3".equals(questionNaire.getInputTable26List().get(i).getType())) {
+            if ("1".equals(questionNaire.getInputTable26List().get(i).getType()) || "2".equals(questionNaire.getInputTable26List().get(i).getType()) || "3".equals(questionNaire.getInputTable26List().get(i).getType())) {
                 zbList = new ArrayList<>();
                 yqList = new ArrayList<>();
                 fxdjList = new ArrayList<>();
@@ -855,14 +864,14 @@ public class Service1Impl implements Service1 {
         fxdjList.add("中");
         fxdjList.add("高");
         syqkList.add("适用");
-        xtxzList.add("未采用密码技术对通信实体进行身份鉴别");
+        xtxzList.add("未采用合规的密码技术对通信实体进行身份鉴别");
         jlList.add("不符合");
         syqkList.add("适用");
-        xtxzList.add("未采用密码技术保证通信过程中数据的完整性");
+        xtxzList.add("未采用合规的密码技术保证通信过程中数据的完整性");
         jlList.add("不符合");
         if ("是".equals(table24.getZysj())) {
             syqkList.add("适用");
-            xtxzList.add("未采用密码技术保证通信过程中重要数据的机密性");
+            xtxzList.add("未采用合规的密码技术保证通信过程中重要数据的机密性");
             jlList.add("不符合");
         } else {
             syqkList.add("不适用");
@@ -870,10 +879,10 @@ public class Service1Impl implements Service1 {
             jlList.add("不适用");
         }
         syqkList.add("适用");
-        xtxzList.add("未采用密码技术对边界访问控制信息的完整性进行保护");
+        xtxzList.add("未采用合规的密码技术对边界访问控制信息的完整性进行保护");
         jlList.add("不符合");
         syqkList.add("不适用");
-        xtxzList.add("三级系统不作此需求");
+        xtxzList.add("本系统不涉及安全接入认证");
         jlList.add("不适用");
     }
 
@@ -900,26 +909,26 @@ public class Service1Impl implements Service1 {
         fxdjList.add("中");
         syqkList.add("适用");
         if ("1".equals(table25.getBlj())) {
-            xtxzList.add("以采用密码技术对登录设备的用户进行身份鉴别，保证用户身份的真实性");
+            xtxzList.add("已采用密码技术对登录设备的用户进行身份鉴别，保证用户身份的真实性");
             jlList.add("符合");
         } else {
-            xtxzList.add("未采用密码技术对登录设备的用户进行身份鉴别，保证用户身份的真实性");
+            xtxzList.add("未采用合规的密码技术对登录设备的用户进行身份鉴别，保证用户身份的真实性");
             jlList.add("不符合");
         }
         syqkList.add("适用");
-        xtxzList.add("未采用符合国家或密码行业要求的密码算法、密码技术");
+        xtxzList.add("未采用合规的密码技术建立远程管理通道");
         jlList.add("不符合");
         syqkList.add("适用");
-        xtxzList.add("未采用密码技术对系统访问控制信息的完整性进行保护");
+        xtxzList.add("未采用合规的密码技术对系统访问控制信息的完整性进行保护");
         jlList.add("不符合");
         syqkList.add("不适用");
         xtxzList.add("系统无重要信息资源安全标记");
         jlList.add("不适用");
         syqkList.add("适用");
-        xtxzList.add("未采用密码技术保证日志记录的完整性");
+        xtxzList.add("未采用合规的密码技术保证日志记录的完整性");
         jlList.add("不符合");
         syqkList.add("适用");
-        xtxzList.add("未使用密码技术实现可执行程序的完整性和来源的真实性");
+        xtxzList.add("未采用合规的密码技术实现可执行程序的完整性和来源的真实性");
         jlList.add("不符合");
     }
 
@@ -946,27 +955,42 @@ public class Service1Impl implements Service1 {
         fxdjList.add("中");
         syqkList.add("适用");
         if ("1".equals(table26.getBlj())) {
-            xtxzList.add("以采用密码技术对登录设备的用户进行身份鉴别，保证用户身份的真实性");
+            xtxzList.add("已采用合规的密码技术对登录设备的用户进行身份鉴别，保证用户身份的真实性");
             jlList.add("符合");
         } else {
-            xtxzList.add("未采用密码技术对登录设备的用户进行身份鉴别，保证用户身份的真实性");
+            xtxzList.add("未采用合规的密码技术对登录设备的用户进行身份鉴别，保证用户身份的真实性");
             jlList.add("不符合");
         }
         syqkList.add("适用");
-        xtxzList.add("未采用符合国家或密码行业要求的密码算法、密码技术");
+        xtxzList.add("未采用合规的密码技术建立远程管理通道");
         jlList.add("不符合");
         syqkList.add("适用");
-        xtxzList.add("未采用密码技术对系统访问控制信息的完整性进行保护");
-        jlList.add("不符合");
+        if ((table26.getType().equals("1")||table26.getType().equals("2"))&&table26.getSmzs().equals("是")){
+            xtxzList.add("具有资质的密码设备满足此需求");
+            jlList.add("符合");
+        }else {
+            xtxzList.add("未采用合规的密码技术对系统访问控制信息的完整性进行保护");
+            jlList.add("不符合");
+        }
         syqkList.add("不适用");
         xtxzList.add("系统无重要信息资源安全标记");
         jlList.add("不适用");
         syqkList.add("适用");
-        xtxzList.add("未采用密码技术保证日志记录的完整性");
-        jlList.add("不符合");
+        if ((table26.getType().equals("1")||table26.getType().equals("2"))&&table26.getSmzs().equals("是")){
+            xtxzList.add("具有资质的密码设备满足此需求");
+            jlList.add("符合");
+        }else {
+            xtxzList.add("未采用合规的密码技术保证日志记录的完整性");
+            jlList.add("不符合");
+        }
         syqkList.add("适用");
-        xtxzList.add("未使用密码技术实现可执行程序的完整性和来源的真实性");
-        jlList.add("不符合");
+        if ((table26.getType().equals("1")||table26.getType().equals("2"))&&table26.getSmzs().equals("是")){
+            xtxzList.add("具有资质的密码设备满足此需求");
+            jlList.add("符合");
+        }else {
+            xtxzList.add("未采用合规的密码技术实现可执行程序的完整性和来源的真实性");
+            jlList.add("不符合");
+        }
     }
 
     @Override
@@ -1058,11 +1082,11 @@ public class Service1Impl implements Service1 {
             jlList.add("不适用");
         } else if (csjm.contains("未加密")) {
             syqkList.add("适用");
-            xtxzList.add("系统中重要数据未采用密码技术进行保护");
+            xtxzList.add("系统中重要数据未采用合规的密码技术进行保护");
             jlList.add("不符合");
         } else if (csjm.contains("非国密")) {
             syqkList.add("适用");
-            xtxzList.add("系统中重要数据未采用国密技术进行保护");
+            xtxzList.add("系统中重要数据未采用合规的国密技术进行保护");
             jlList.add("不符合");
         } else {
             syqkList.add("适用");
@@ -1948,9 +1972,6 @@ public class Service1Impl implements Service1 {
         return c7;
     }
 
-    public Chaptre8input getC8() {
-        return c8;
-    }
 
     private Chaptre1input c1;
     private Chaptre2input c2;
@@ -1959,5 +1980,4 @@ public class Service1Impl implements Service1 {
     private Chaptre5input c5;
     private Chaptre6input c6;
     private Chaptre7input c7;
-    private Chaptre8input c8;
 }

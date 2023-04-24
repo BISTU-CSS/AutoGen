@@ -1,8 +1,7 @@
 package com.autogen.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.autogen.dao.entity.Information;
-import com.autogen.dao.entity.JsonResult;
+import com.autogen.util.JsonResult;
 import com.autogen.dao.entity.input.Concent;
 import com.autogen.dao.entity.input.InputInformation;
 import com.autogen.dao.entity.input.QuestionNaire;
@@ -10,7 +9,6 @@ import com.autogen.service.InformationService;
 import com.autogen.service.Service1;
 import com.autogen.util.Convert;
 import com.autogen.util.MyJSON;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.InputStreamResource;
@@ -19,7 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -57,12 +54,12 @@ public class atgController {
         QuestionNaire questionNaire = new QuestionNaire();
         MyJSON.parsingJSON(data, questionNaire);
         Concent concent = Convert.convertToSence(questionNaire);
-//        System.out.println(data);
+//        System.out.println(concent);
         service1.BasicTemplate(questionNaire, concent);
         service1.generate();
 
-        FileSystemResource file = new FileSystemResource("/home/ubuntu/Desktop/code_package/complete_example.docx");
-//        FileSystemResource file = new FileSystemResource("D:\\IDEA\\AutoGen\\example.docx");
+//        FileSystemResource file = new FileSystemResource("/home/ubuntu/Desktop/code_package/complete_example.docx");
+        FileSystemResource file = new FileSystemResource("D:\\IDEA\\AutoGen\\example.docx");
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
         //这里定制下载文件的名称
@@ -82,8 +79,8 @@ public class atgController {
         QuestionNaire questionNaire = new QuestionNaire();
         MyJSON.parsingJSON(data,questionNaire);
         informationService.exportSBQD(questionNaire.getSbqd(),questionNaire.getSys_name());
-        FileSystemResource file = new FileSystemResource("/home/ubuntu/Desktop/code_package/设备清单.xlsx");
-//        FileSystemResource file = new FileSystemResource("D:\\IDEA\\AutoGen\\设备清单.xlsx");
+//        FileSystemResource file = new FileSystemResource("/home/ubuntu/Desktop/code_package/设备清单.xlsx");
+        FileSystemResource file = new FileSystemResource("D:\\IDEA\\AutoGen\\sbqd.xlsx");
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
         //这里定制下载文件的名称

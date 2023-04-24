@@ -8,7 +8,6 @@ import com.autogen.dao.entity.cp4.Chaptre4input;
 import com.autogen.dao.entity.cp5.Chaptre5input;
 import com.autogen.dao.entity.cp6.Chaptre6input;
 import com.autogen.dao.entity.cp7.Chaptre7input;
-import com.autogen.dao.entity.cp8.Chaptre8input;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 import java.io.IOException;
@@ -63,11 +62,4 @@ public interface AutoGenerator {
      * @throws IOException
      */
     XWPFDocument chapter_seven_generator(Chaptre7input input) throws IOException;
-    /**
-     * 生成第八章
-     * @param input 第八章用到的变量
-     * @return
-     * @throws IOException
-     */
-    XWPFDocument chapter_eight_generator(Chaptre8input input) throws IOException;
 }
