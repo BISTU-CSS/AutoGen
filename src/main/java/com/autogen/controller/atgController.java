@@ -79,7 +79,7 @@ public class atgController {
         QuestionNaire questionNaire = new QuestionNaire();
         MyJSON.parsingJSON(data,questionNaire);
         informationService.exportSBQD(questionNaire.getSbqd(),questionNaire.getSys_name());
-//        FileSystemResource file = new FileSystemResource("/home/ubuntu/Desktop/code_package/设备清单.xlsx");
+//        FileSystemResource file = new FileSystemResource("/home/ubuntu/Desktop/code_package/sbqd.xlsx");
         FileSystemResource file = new FileSystemResource("D:\\IDEA\\AutoGen\\sbqd.xlsx");
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");

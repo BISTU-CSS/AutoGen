@@ -50,7 +50,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         JsonResult jsonResult = new JsonResult(code,msg);
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(jsonResult);
-        System.out.println(json);
+//        System.out.println(json);
         httpResponse.getWriter().print(json);
     }
 

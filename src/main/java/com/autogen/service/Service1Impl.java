@@ -826,21 +826,21 @@ public class Service1Impl implements Service1 {
         syqkList.add("适用");
         syqkList.add("适用");
         if ("国密电子".equals(table23.getMj())) {
-            xtxzList.add("目前机房已经是合规的国密电子门禁，符合GM/T 0036要求的基于密码技术的电子门禁系统，采用密码技术保证进出机房人员的身份鉴别");
-            xtxzList.add("目前机房已经合规，符合GM/T 0036要求的基于密码技术的电子门禁系统，采用密码技术保证电子门禁系统进出数据记录的存储完整性");
+            xtxzList.add("目前机房已经是合规的电子门禁，保护物理访问控制身份鉴别信息。符合该标准的电子门禁系统使用SM4等算法进行密钥分散，实现门禁卡的一卡一密，并基于SM4等算法鉴别人员身份");
+            xtxzList.add("目前机房已经是合规的电子门禁，电子门禁系统进出记录应严格进行完整性保护，完整的进出记录是实现安全管理、事后追责的重要基础。合规的电子门禁系统使用HMAC-SM3算法或数字签名等技术对记录进行完整性保护，保证进出数据记录的存储完整性");
             jlList.add("符合");
             jlList.add("符合");
         } else {
-            xtxzList.add("目前机房的电子门禁是不符合GM/T 0036要求的基于密码技术的电子门禁系统，未采用密码技术保证进出机房人员的身份鉴别");
-            xtxzList.add("系统目前未采用合规的电子门禁系统，不符合GM/T 0036要求，未采用密码技术保证电子门禁系统进出数据记录的存储完整性");
+            xtxzList.add("目前机房的电子门禁未采用合规的电子门禁系统，未采用密码技术保证进出机房人员的身份鉴别");
+            xtxzList.add("目前机房的电子门禁未采用合规的电子门禁系统，未采用密码技术保证电子门禁系统进出数据记录的存储完整性");
             jlList.add("不符合");
             jlList.add("不符合");
         }
         if ("国密".equals(table23.getSpjk())) {
-            xtxzList.add("目前机房已经是合规的国密视频监控系统，采用密码技术保证视频监控系统视频监控数据的存储完整性");
+            xtxzList.add("目前机房已经是合规的视频监控系统，视频监控系统的音像记录应严格进行完整性保护，完整的音像记录是实现安全管理、事后追责的重要基础。使用HMAC-SM3或数字签名等技术对记录进行完整性保护，保证视频监控音像记录数据的存储完整性");
             jlList.add("符合");
         } else {
-            xtxzList.add("目前机房未采用合规的国密视频监控系统，未采用密码技术保证视频监控系统视频监控数据的存储完整性");
+            xtxzList.add("目前机房未采用合规的视频监控系统，未采用密码技术保证视频监控系统视频监控数据的存储完整性");
             jlList.add("不符合");
         }
     }
@@ -862,7 +862,7 @@ public class Service1Impl implements Service1 {
         fxdjList.add("中");
         fxdjList.add("高");
         fxdjList.add("中");
-        fxdjList.add("高");
+        fxdjList.add("-");
         syqkList.add("适用");
         xtxzList.add("未采用合规的密码技术对通信实体进行身份鉴别");
         jlList.add("不符合");
@@ -904,7 +904,7 @@ public class Service1Impl implements Service1 {
         fxdjList.add("高");
         fxdjList.add("高");
         fxdjList.add("中");
-        fxdjList.add("中");
+        fxdjList.add("-");
         fxdjList.add("中");
         fxdjList.add("中");
         syqkList.add("适用");
@@ -950,7 +950,7 @@ public class Service1Impl implements Service1 {
         fxdjList.add("高");
         fxdjList.add("高");
         fxdjList.add("中");
-        fxdjList.add("中");
+        fxdjList.add("-");
         fxdjList.add("中");
         fxdjList.add("中");
         syqkList.add("适用");
@@ -1019,7 +1019,7 @@ public class Service1Impl implements Service1 {
         yqList.add("宜");
         fxdjList.add("高");
         fxdjList.add("中");
-        fxdjList.add("中");
+        fxdjList.add("-");
         fxdjList.add("高");
         fxdjList.add("高");
         fxdjList.add("中");
@@ -1141,11 +1141,11 @@ public class Service1Impl implements Service1 {
 
         if ("没有需求".equals(table27.getBkfr())) {
             syqkList.add("不适用");
-            xtxzList.add("系统不需要保证不可否认性");
+            xtxzList.add("系统不涉及不可否认性");
             jlList.add("不适用");
         } else if ("有需求&未做".equals(table27.getBkfr())) {
             syqkList.add("适用");
-            xtxzList.add("系统需要保证不可否认性但还未保证");
+            xtxzList.add("系统涉及不可否认性但还未采用合规的密码技术保证");
             jlList.add("不符合");
         } else if ("有需求&已做".equals(table27.getBkfr())) {
             syqkList.add("适用");

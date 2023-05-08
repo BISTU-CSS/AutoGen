@@ -169,7 +169,7 @@ public class ExportDevice {
         addMergeCellBorder(new CellRangeAddress(deviceList.size() + 4, deviceList.size() + 4, 0, 13), sheet);
 
         try {
-//            File file = new File("/home/ubuntu/Desktop/code_package/设备清单.xlsx");
+//            File file = new File("/home/ubuntu/Desktop/code_package/sbqd.xlsx");
             File file = new File("sbqd.xlsx");
             FileOutputStream out = new FileOutputStream(file);
             workbook.write(out);

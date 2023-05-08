@@ -500,13 +500,22 @@ public class Convert {
                 list.add("52-06-4");
                 list.add("52-06-5");
             } else if ("1".equals(table24.getType()) && "2".equals(table24.getTxzt())) {
-                if (sbqdStrList.contains("SSL VPN安全网关")) {
-                    wlhtx.setWlhtx_xdmc(table24.getCpdx());
-                    list.add("52-07-1");
-                    list.add("52-07-2");
-                    list.add("52-07-3");
-                    list.add("52-07-4");
-                    list.add("52-07-5");
+                if (sbqdStrList.contains("SSL VPN安全网关") && (!table24.getCpdx().contains("公众用户"))) {
+                    if (table24.getCpdx().contains("公众用户")){
+                        wlhtx.setWlhtx_xdmc(table24.getCpdx());
+                        list.add("52-08-1");
+                        list.add("52-08-2");
+                        list.add("52-08-3");
+                        list.add("52-08-4");
+                        list.add("52-08-5");
+                    }else {
+                        wlhtx.setWlhtx_xdmc(table24.getCpdx());
+                        list.add("52-07-1");
+                        list.add("52-07-2");
+                        list.add("52-07-3");
+                        list.add("52-07-4");
+                        list.add("52-07-5");
+                    }
                 } else {
                     wlhtx.setWlhtx_xdmc(table24.getCpdx());
                     list.add("52-08-1");
@@ -754,11 +763,12 @@ public class Convert {
                             if (!sfjbList.contains("41-00-1")){
                                 sfjbList.add("41-00-1");
                             }
-                        } else {
-                            if (!sfjbList.contains("41-00-2")){
-                                sfjbList.add("41-00-2");
-                            }
                         }
+//                        else {
+//                            if (!sfjbList.contains("41-00-2")){
+//                                sfjbList.add("41-00-2");
+//                            }
+//                        }
                     } else if ((!("1".equals(questionNaire.getSys_sshy()) || "4".equals(questionNaire.getSys_sshy())) && table22.getYh().equals("3"))||table22.getYh().equals("4")){
                         if (!sfjbList.contains("41-03-1")){
                             sfjbList.add("41-03-1");

@@ -23,11 +23,9 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public JsonResult login(LoginDTO loginDTO) {
         if (StringUtils.isEmpty(loginDTO.getLoginName())){
-            System.out.println("账号不能为空");
             return new JsonResult(null,"账号不能为空");
         }
         if (StringUtils.isEmpty(loginDTO.getPassword())){
-            System.out.println("密码不能为空");
             return new JsonResult(null,"密码不能为空");
         }
         User user = userMapper.selectOne(new QueryWrapper<User>().eq("login_name",loginDTO.getLoginName()));
@@ -38,10 +36,9 @@ public class LoginServiceImpl implements LoginService {
             //使用jwt的情况下，会生成一个jwt token,jwt token里会包含用户的信息
             loginVO.setToken(UUID.randomUUID().toString());
             loginVO.setUser(user);
-            System.out.println(user);
             return new JsonResult(loginVO,"ok");
         }
-        System.out.println("查无此人");
+//        System.out.println("查无此人");
         return new JsonResult(null,"查无此人");
     }
 
