@@ -1,4 +1,4 @@
-package com.autogen.dao.entity.table;
+package com.autogen.dao.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,8 +9,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Table23 {
-    private int index;
-    private String cpdx;
-    private String ms;
+public class Risk {
+    private ZBData risk;
 }

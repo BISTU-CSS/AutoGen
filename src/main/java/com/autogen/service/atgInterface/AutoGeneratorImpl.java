@@ -69,10 +69,10 @@ public class AutoGeneratorImpl implements AutoGenerator {
             put(ReplaceSymbol.sys_djbh, input.sys_djbh);
             put(ReplaceSymbol.table22, input.table22List);
             put(ReplaceSymbol.table23, input.table23List);
-            put(ReplaceSymbol.table241, input.table241List);
-            put(ReplaceSymbol.table242, input.table242List);
-            put(ReplaceSymbol.table243, input.table243List);
-            put(ReplaceSymbol.table244, input.table244List);
+//            put(ReplaceSymbol.table241, input.table241List);
+//            put(ReplaceSymbol.table242, input.table242List);
+//            put(ReplaceSymbol.table243, input.table243List);
+//            put(ReplaceSymbol.table244, input.table244List);
             put(ReplaceSymbol.table25, input.table25List);
             put(ReplaceSymbol.table261, input.table261List);
             put(ReplaceSymbol.table262, input.table262List);
@@ -90,22 +90,7 @@ public class AutoGeneratorImpl implements AutoGenerator {
     public XWPFDocument chapter_three_generator(Chaptre3input input) throws IOException {
 
         XWPFDocument doc = IOManager.readFile(path + "3.docx");
-        LoopRowTableRenderPolicy policy = new LoopRowTableRenderPolicy();
-        Configure config = Configure.builder().bind("table31",policy).bind("table32",policy)
-                .bind("table33",policy).bind("table34",policy).bind("table35",policy)
-                .bind("table36",policy).bind("table37",policy).bind("table38",policy).build();
-        XWPFTemplate template = XWPFTemplate.compile(doc,config).render(new HashMap<String, Object>() {
-            {
-                put(ReplaceSymbol.table31,input.table31List);
-                put(ReplaceSymbol.table32,input.table32List);
-                put(ReplaceSymbol.table33,input.table33List);
-                put(ReplaceSymbol.table34,input.table34List);
-                put(ReplaceSymbol.table35,input.table35List);
-                put(ReplaceSymbol.table36,input.table36List);
-                put(ReplaceSymbol.table37,input.table37List);
-                put(ReplaceSymbol.table38,input.table38List);
-            }
-        });
+        XWPFTemplate template = XWPFTemplate.compile(doc).render(input.cpdxRisk);
         return template.getXWPFDocument();
     }
 

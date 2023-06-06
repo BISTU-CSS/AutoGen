@@ -28,10 +28,6 @@ public class ReplaceSymbol {
     public static String sys_djbh = "djbh";
     public static String table22 = "table22";
     public static String table23 = "table23";
-    public static String table241 = "table241";
-    public static String table242 = "table242";
-    public static String table243 = "table243";
-    public static String table244 = "table244";
     public static String table25 = "table25";
     public static String table261 = "table261";
     public static String table262 = "table262";
@@ -46,14 +42,7 @@ public class ReplaceSymbol {
 
     //第三章会用到的
     //public static String sys_name = "sys_name";
-    public static String table31 = "table31";
-    public static String table32 = "table32";
-    public static String table33 = "table33";
-    public static String table34 = "table34";
-    public static String table35 = "table35";
-    public static String table36 = "table36";
-    public static String table37 = "table37";
-    public static String table38 = "table38";
+    public static String wlhhjRiskList = "wlhhjRiskList";
 //    public static String wulifengxian = "wulifengxian";
 //    public static String wuliyingyong = "wuliyingyong";
 //    public static String wangluofengxian = "wangluofengxian";

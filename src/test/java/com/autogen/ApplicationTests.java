@@ -1,71 +1,95 @@
 package com.autogen;
 
-import com.autogen.dao.Mapper.DeviceMapper;
-import com.autogen.dao.Mapper.ScenceMapper;
-import com.autogen.dao.entity.Device;
-import com.autogen.dao.entity.ScencePo;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.autogen.dao.entity.CPDXData;
+import com.autogen.dao.entity.ZBData;
+import com.autogen.service.fileapi.IOManager;
+import com.deepoove.poi.XWPFTemplate;
+import com.deepoove.poi.data.*;
+import com.deepoove.poi.data.style.CellStyle;
+import com.deepoove.poi.data.style.RowStyle;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 @SpringBootTest
 public class ApplicationTests {
-//
-//    @Autowired
-//    private ScenceMapper scenceMapper;
-//    private DeviceMapper deviceMapper;
-//    @Test
-//    void contextLoads() {
-////        List<ScencePo> list = scenceMapper.selectList(new QueryWrapper<ScencePo>().eq("wildcard","222"));
-////        List<Map<String,Object>> mapList = scenceMapper.selectMaps(new QueryWrapper<ScencePo>().eq("wildcard","222"));
-////        System.out.println(mapList);
-//
-//        Map<String,Object> map = new HashMap<>();
-//        QuestionNaire questionNaire =new QuestionNaire();
-//        questionNaire.setWlhhj_sfjb("11-05-1");
-//        map.put("222",scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard","222").eq("scence",questionNaire.getWlhhj_sfjb())));
-//       // System.out.println("map :" + map.get("222").getDescription());
-//
-//        List<String>list = new ArrayList<>();
-//        list.add("41-00-1");
-//        list.add("41-01-1");
-//        questionNaire.setYyhsj_sfjb(list);
-//        for (int i=0;i<questionNaire.yyhsj_sfjb.size();i++) {
-//            map.put("*534list" + i, scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("wildcard", "*534list").eq("scence",questionNaire.yyhsj_sfjb.get(i))).getDescription());
-//        }
-//        String str = "";
-//        String temp = "";
-//        for (int i=0;i<questionNaire.yyhsj_sfjb.size();i++) {
-//            str = map.get("*534list"+i).toString();
-//            if (0!=i){
-//                temp = map.get("*534list"+i).toString();
-//                str += temp.substring(temp.indexOf("：")+1);
-//            }
-//            System.out.println("*534list"+i+":" + map.get("*534list"+i).toString());
-//        }
-//        System.out.println(str);
-//
-//    }
-//
 
-//
-//
-//    @Test
-//    public void aaa() {
-//        ScencePo scencePo = new ScencePo();
-//        Device device = new Device();
-//
-//        scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", "11-00-1"));
-//        if (scencePo != null) {
-//            System.out.println(scencePo);
-//        }
-//        device = deviceMapper.selectOne(new QueryWrapper<Device>().eq("id","1"));
-//        if (device != null){
-//            System.out.println(device);
-//        }
-//    }
+    @Test
+    public void test1() throws IOException {
+        String path = "D:\\IDEA\\AutoGen\\src\\main\\resources\\WordTemplate\\";
+        XWPFDocument doc = IOManager.readFile(path + "aaa.docx");
+        XWPFTemplate template = XWPFTemplate.compile(doc).render(
+                new HashMap<String, Object>() {{
+                    put("title", "Hi, poi-tl Word模板引擎");
+                    RowRenderData row0 = Rows.of("层面", "测评对象", "测评对象", "测评指标").center().bgColor("4472C4").create();
+                    RowRenderData row1 = Rows.of("没有数据", null, null, null).center().create();
+                    RowRenderData row2 = Rows.of("物理和环境安全", "机房一", "身份鉴别", "描述").center().create();
+                    RowRenderData row3 = Rows.of(null, null, "电子门禁", "描述").center().create();
+                    RowRenderData row4 = Rows.of(null, null, "视频监控", "描述").center().create();
+                    RowRenderData row5 = Rows.of(null, "机房二", "身份鉴别", "描述").center().create();
+                    RowRenderData row6 = Rows.of(null, null, "电子门禁", "描述").center().create();
+                    RowRenderData row7 = Rows.of(null, null, "视频监控", "描述").center().create();
+                    MergeCellRule rule = MergeCellRule.builder()
+                            .map(MergeCellRule.Grid.of(1, 0), MergeCellRule.Grid.of(1, 2))
+                            .map(MergeCellRule.Grid.of(2, 0), MergeCellRule.Grid.of(7, 0))
+                            .map(MergeCellRule.Grid.of(2, 1), MergeCellRule.Grid.of(4, 1))
+                            .map(MergeCellRule.Grid.of(5, 1), MergeCellRule.Grid.of(7, 1))
+                            .build();
+                    put("table", Tables.of(row0, row1, row2, row3, row4, row5, row6, row7).mergeRule(rule).create());
+
+                }});
+        IOManager.writeFile(template.getXWPFDocument(), "bbb.docx");
+    }
+
+    ;
+
+    @Test
+    public void test2() throws IOException {
+        String path = "D:\\IDEA\\AutoGen\\src\\main\\resources\\WordTemplate\\";
+        XWPFDocument doc = IOManager.readFile(path + "aaa.docx");
+
+        List<CPDXData> cpdxDataList = new ArrayList<>();
+        CPDXData cpdxData = new CPDXData();
+        cpdxData.setIndex(1);
+        cpdxData.setName("机房一");
+        String str = "身份鉴别描述";
+        TextRenderData textRenderData = new TextRenderData("身份鉴别" + str);
+        str = "电子门禁描述";
+        TextRenderData textRenderData2 = new TextRenderData("电子门禁记录" + str);
+        System.out.println(textRenderData);
+        cpdxData.setDescription(Numberings.of(textRenderData, textRenderData2).create());
+        cpdxDataList.add(cpdxData);
+        cpdxData.setIndex(2);
+        cpdxData.setName("机房二");
+        cpdxDataList.add(cpdxData);
+        ZBData zbData = new ZBData();
+//        zbData.setWlhtxRiskList(cpdxDataList);
+        System.out.println(cpdxDataList);
+        System.out.println(zbData);
+
+        XWPFTemplate template = XWPFTemplate.compile(doc).render(zbData);
+        IOManager.writeFile(template.getXWPFDocument(), "bbb.docx");
+    }
+
+    @Test
+    public void test3(){
+        String s1="Programming";
+        String s2= new String("Programming");
+        String s3="Program";
+        String s4="ming";
+        String s5="program” +“ming";
+        String s6= s3+s4;
+        System.out.println(s1==s2);
+        System.out.println(s1==s5);
+        System.out.println(s1==s6);
+    }
+
+
 }

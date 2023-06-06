@@ -10,10 +10,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Table22 {
-    private String ywyy;        //业务应用（系统名）
-    private String yh;          //用户
-    private String dlfs;        //登录方式
-    private String sfrz;        //身份认证方式
-    private String szwl;        //所在网络
-    private String sl;          //数量
+    private String jfmc;
+    private String jflx;
+    private String mj;
+    private String sfrz;
+    private String spjk;
+    private String zjsb;
 }

@@ -24,10 +24,6 @@ public class Chaptre2input {
     public String sys_djbh;
     public List<InputTable22> table22List;
     public List<InputTable23> table23List;
-    public List<InputTable24> table241List;
-    public List<InputTable24> table242List;
-    public List<InputTable24> table243List;
-    public List<InputTable24> table244List;
     public List<InputTable25> table25List;
     public List<InputTable26> table261List;
     public List<InputTable26> table262List;
