@@ -37,14 +37,17 @@ public class Concent {
 
     //物理和环境安全
     private List<Wlhhj> wlhhjList;
+    private List<Wlhhj> wlhhjRiskList;
 
     //网络和通信安全
     private List<Wlhtx> wlhtxList;
+    private List<Wlhtx> wlhtxRiskList;
 
     //设备和计算安全
     private List<Sbhjs> sbhjsList;
 
     //应用和数据安全
     private List<Yyhsj> yyhsjList;
+    private List<Yyhsj> yyhsjRiskList;
 
 }

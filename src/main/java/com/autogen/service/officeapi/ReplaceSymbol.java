@@ -8,6 +8,7 @@ public class ReplaceSymbol {
     public static String sys_name = "sysname";     //系统名称/项目名称
     public static String sys_unit = "sysunit";     //责任单位
     public static String sys_date = "sysdate";     //日期
+    public static String s1 = "s1";                //项目背景
 
     //第二章会用到的
     //public static String sys_name = "sys_name";
@@ -42,7 +43,7 @@ public class ReplaceSymbol {
 
     //第三章会用到的
     //public static String sys_name = "sys_name";
-    public static String wlhhjRiskList = "wlhhjRiskList";
+    public static String risk = "risk";
 //    public static String wulifengxian = "wulifengxian";
 //    public static String wuliyingyong = "wuliyingyong";
 //    public static String wangluofengxian = "wangluofengxian";
@@ -60,6 +61,7 @@ public class ReplaceSymbol {
 //    public static String sys_name = "sys_name";
     public static String img51 = "img51";
     public static String s51 = "51";
+    public static String solution = "solution";
     public static String table51 = "table51";
     public static String table52 = "table52";
     public static String table53 = "table53";

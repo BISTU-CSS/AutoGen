@@ -5,5 +5,6 @@ public class Chaptre1input {
     public String sys_name;
     public String sys_unit;
     public String sys_date;
+    public String s1;
 
 }

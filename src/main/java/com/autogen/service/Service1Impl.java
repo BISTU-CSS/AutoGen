@@ -67,6 +67,7 @@ public class Service1Impl implements Service1 {
         c1.sys_unit = (String) map.get("sysunit");
         SimpleDateFormat date = new SimpleDateFormat("yyyy年MM月dd日");
         c1.sys_date = date.format(new Date());
+        c1.s1 = (String) map.get("s1");
 
         //第二章
         c2.sys_name = (String) map.get("sysname");
@@ -102,8 +103,7 @@ public class Service1Impl implements Service1 {
 
 
         //第三章
-        c3.cpdxRisk = (Risk) map.get("riskList");
-
+        c3.risk = (ZBData) map.get("riskList");
 
 
         //第四章
@@ -113,10 +113,7 @@ public class Service1Impl implements Service1 {
         c5.sys_name = (String) map.get("sysname");
         c5.img51 = (String) map.get("img51");
         c5.s51 = (String) map.get("51");
-        c5.table51List = (List<Table5Util>) map.get("table51");
-        c5.table52List = (List<Table5Util>) map.get("table52");
-        c5.table53List = (List<Table5Util>) map.get("table53");
-        c5.table54List = (List<Table5Util>) map.get("table54");
+        c5.solution = (FAData) map.get("solutionList");
         c5.table57List = (List<Table57>) map.get("table57");
         c5.table58List = (List<Table59Util>) map.get("table58");
         c5.table59List = (List<Table59Util>) map.get("table59");
@@ -156,6 +153,23 @@ public class Service1Impl implements Service1 {
     @Transactional
     public Map<String, Object> selectDes(QuestionNaire questionNaire, Concent concent) {
         Map<String, Object> map = new HashMap<>();
+        ScencePo scencePo = null;
+
+        if (questionNaire.getSys_sshy().equals("医疗")) {
+            //医疗
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", "s1-1"));
+        } else if (questionNaire.getSys_sshy().equals("教育")) {
+            //教育
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", "s1-2"));
+        } else if (questionNaire.getSys_sshy().equals("政务")) {
+            //政务云
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", "s1-3"));
+        } else {
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", "s1-4"));
+        }
+
+
+        map.put("s1", scencePo.getDescription());
         cp2Des(map, questionNaire);
         cp3Des(map, questionNaire, concent);
         cp5Des(map, concent);
@@ -165,9 +179,9 @@ public class Service1Impl implements Service1 {
             Table57 table57 = new Table57();
 //            Device device = deviceMapper.selectOne(new QueryWrapper<Device>().eq("name", concent.getSbqd().get(i).getName()).eq("model",concent.getSbqd().get(i).getJbxh()));
             Device device = null;
-            if (concent.getSbqd().get(i).getName().equals("服务器密码机")||concent.getSbqd().get(i).getName().equals("签名验签服务器")||concent.getSbqd().get(i).getName().equals("云服务器密码机")){
-                device = deviceMapper.selectOne(new QueryWrapper<Device>().eq("name", concent.getSbqd().get(i).getName()).eq("model",concent.getSbqd().get(i).getJbxh()));
-            }else {
+            if (concent.getSbqd().get(i).getName().equals("服务器密码机") || concent.getSbqd().get(i).getName().equals("签名验签服务器") || concent.getSbqd().get(i).getName().equals("云服务器密码机")) {
+                device = deviceMapper.selectOne(new QueryWrapper<Device>().eq("name", concent.getSbqd().get(i).getName()).eq("model", concent.getSbqd().get(i).getJbxh()));
+            } else {
                 device = deviceMapper.selectOne(new QueryWrapper<Device>().eq("name", concent.getSbqd().get(i).getName()));
             }
             if (device != null) {
@@ -229,7 +243,7 @@ public class Service1Impl implements Service1 {
         List<Table23> table23List = new ArrayList<>();
         for (int i = 0; i < questionNaire.getInputTable24List().size(); i++) {
             Table23 table23 = new Table23();
-            table23.setIndex(i+1);
+            table23.setIndex(i + 1);
             table23.setCpdx(questionNaire.getInputTable24List().get(i).getCpdx());
             table23.setMs("");
             table23List.add(table23);
@@ -311,91 +325,143 @@ public class Service1Impl implements Service1 {
         List<CPDXData> wlhtxRiskList = new ArrayList<>();
         List<CPDXData> sbhjsRiskList = new ArrayList<>();
         List<CPDXData> yyhsjRiskList = new ArrayList<>();
-        Risk risk = new Risk();
         ZBData zbData = new ZBData();
         List<String> sbList = new ArrayList<>();
         sbList.add("堡垒机");
         sbList.add("应用服务器、数据库服务器以及数据库管理系统");
         sbList.add("整机类密码产品");
         sbList.add("系统类密码产品");
-        TextRenderData textRenderData = new TextRenderData("身份鉴别：未使用密码技术对进入机房人员进行身份鉴别，存在非授权人员进入物理环境，对软硬件设备和数据进行直接破坏的风险。");
+        ScencePo scencePo = new ScencePo();
+
 
         //物理风险分析
-        for (int i=0;i<concent.getWlhhjList().size();i++){
+        for (int i = 0; i < concent.getWlhhjRiskList().size(); i++) {
+            TextRenderData textRenderData = new TextRenderData();
+            Wlhhj wlhhj = concent.getWlhhjRiskList().get(i);
             Numberings.NumberingBuilder of = Numberings.of(NumberingFormat.DECIMAL_PARENTHESES);
             CPDXData cpdxData = new CPDXData();
-            for (int j=0;j<3;j++){
-                //查询
-                textRenderData.setText("身份鉴别：未使用密码技术对进入机房人员进行身份鉴别，存在非授权人员进入物理环境，对软硬件设备和数据进行直接破坏的风险。");
-                of.addItem(textRenderData);
-            }
-            cpdxData.setIndex(i+1);
-            cpdxData.setName(concent.getWlhhjList().get(i).getWlhhj_jfmc());
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", wlhhj.getWlhhj_sfjb()));
+            textRenderData.setText("身份鉴别：" + scencePo.getDescription());
+            of.addItem(textRenderData);
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", wlhhj.getWlhhj_dzmj()));
+            textRenderData = new TextRenderData("电子门禁记录数据存储完整性：" + scencePo.getDescription());
+            of.addItem(textRenderData);
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", wlhhj.getWlhhj_spjk()));
+            textRenderData = new TextRenderData("视频监控记录数据存储完整性：" + scencePo.getDescription());
+            of.addItem(textRenderData);
+            cpdxData.setIndex(i + 1);
+            cpdxData.setName(wlhhj.getWlhhj_jfmc());
             cpdxData.setDescription(of.create());
             wlhhjRiskList.add(cpdxData);
         }
         zbData.setWlhhjRiskList(wlhhjRiskList);
 
         //网络风险分析
-        for (int i=0;i<concent.getWlhtxList().size();i++){
+        for (int i = 0; i < concent.getWlhtxRiskList().size(); i++) {
+            TextRenderData textRenderData = new TextRenderData();
+            Wlhtx wlhtx = concent.getWlhtxRiskList().get(i);
+            List<String> zb = new ArrayList<>();
+            zb.add("身份鉴别：");
+            zb.add("通信数据完整性：");
+            zb.add("通信过程中重要数据的机密性：");
+            zb.add("网络边界访问控制信息的完整性：");
+            zb.add("安全接入认证：");
             Numberings.NumberingBuilder of = Numberings.of(NumberingFormat.DECIMAL_PARENTHESES);
             CPDXData cpdxData = new CPDXData();
-            for (int j=0;j<5;j++){
-                //查询
-                textRenderData.setText("身份鉴别：未使用密码技术对进入机房人员进行身份鉴别，存在非授权人员进入物理环境，对软硬件设备和数据进行直接破坏的风险。");
+            for (int j = 0; j < 5; j++) {
+                scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", wlhtx.getWlhtx_xd().get(j)));
+                textRenderData = new TextRenderData(zb.get(j) + scencePo.getDescription());
                 of.addItem(textRenderData);
             }
-            cpdxData.setIndex(i+1);
+            cpdxData.setIndex(i + 1);
             cpdxData.setName(concent.getWlhtxList().get(i).getWlhtx_xdmc());
             cpdxData.setDescription(of.create());
             wlhtxRiskList.add(cpdxData);
         }
         zbData.setWlhtxRiskList(wlhtxRiskList);
 
-        //设备风险分析
-
-        for (int i=0;i<4;i++){
-            Numberings.NumberingBuilder of = Numberings.of(NumberingFormat.DECIMAL_PARENTHESES);
-            CPDXData cpdxData = new CPDXData();
-            for (int j=0;j<5;j++){
-                //查询
-                textRenderData.setText("身份鉴别：未使用密码技术对进入机房人员进行身份鉴别，存在非授权人员进入物理环境，对软硬件设备和数据进行直接破坏的风险。");
-                of.addItem(textRenderData);
-            }
-            cpdxData.setIndex(i+1);
-            cpdxData.setName(sbList.get(i));
-            cpdxData.setDescription(of.create());
-            sbhjsRiskList.add(cpdxData);
-        }
-        zbData.setSbhjsRiskList(sbhjsRiskList);
+        //设备风险分析，目前是固定的文字
+//        for (int i=0;i<4;i++){
+//            TextRenderData textRenderData = new TextRenderData();
+//            Numberings.NumberingBuilder of = Numberings.of(NumberingFormat.DECIMAL_PARENTHESES);
+//            CPDXData cpdxData = new CPDXData();
+//            textRenderData = new TextRenderData("身份鉴别：本系统现阶段针对其上各设备均采用用户名+口令方式登录，未采用密码技术对通信实体进行身份鉴别，无法保证登录人员身份的真实性。");
+//            of.addItem(textRenderData);
+//            textRenderData = new TextRenderData("远程通道管理安全：本系统现阶段通过非国密堡垒机进行各设备的远程管理，未采用合规的密码技术实现登录堡垒机的远程通道以及由堡垒机登录到各设备的通道安全。");
+//            of.addItem(textRenderData);
+//            textRenderData = new TextRenderData("系统资源访问控制信息完整性：本系统内各设备未采用密码技术保证系统资源访问控制信息的完整性，存在系统资源访问控制信息被非授权篡改的风险。");
+//            of.addItem(textRenderData);
+//            textRenderData = new TextRenderData("重要信息资源安全标记完整性：无重要信息资源安全标记。");
+//            of.addItem(textRenderData);
+//            textRenderData = new TextRenderData("日志记录完整性：本系统内各设备未采用密码技术保证其上日志记录完整性，存在设备日志记录被非授权篡改风险。");
+//            of.addItem(textRenderData);
+//            textRenderData = new TextRenderData("重要可执行程序完整性、重要可执行程序来源真实性：本系统内各设备未采用密码技术保证重要可执行程序完整性，无法保证重要可执行程序来源的真实性。");
+//            of.addItem(textRenderData);
+//            cpdxData.setIndex(i+1);
+//            cpdxData.setName(sbList.get(i));
+//            cpdxData.setDescription(of.create());
+//            sbhjsRiskList.add(cpdxData);
+//        }
+//        zbData.setSbhjsRiskList(sbhjsRiskList);
 
         //应用风险分析
-        for (int i=0;i<concent.getYyhsjList().size();i++){
+        for (int i = 0; i < concent.getYyhsjRiskList().size(); i++) {
+            TextRenderData textRenderData = new TextRenderData();
+            Yyhsj yyhsj = concent.getYyhsjRiskList().get(i);
             Numberings.NumberingBuilder of = Numberings.of(NumberingFormat.DECIMAL_PARENTHESES);
             CPDXData cpdxData = new CPDXData();
-            for (int j=0;j<8;j++){
-                //查询
-                textRenderData.setText("身份鉴别：未使用密码技术对进入机房人员进行身份鉴别，存在非授权人员进入物理环境，对软硬件设备和数据进行直接破坏的风险。");
-                of.addItem(textRenderData);
-            }
-            cpdxData.setIndex(i+1);
-            cpdxData.setName(concent.getYyhsjList().get(i).getYyhsj_ywmc());
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", yyhsj.getYyhsj_sfjb().get(0)));
+            textRenderData.setText("身份鉴别：" + scencePo.getDescription());
+            of.addItem(textRenderData);
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", yyhsj.getYyhsj_fwkz()));
+            textRenderData = new TextRenderData("访问控制信息完整性：" + scencePo.getDescription());
+            of.addItem(textRenderData);
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", yyhsj.getYyhsj_xxzy()));
+            textRenderData = new TextRenderData("重要信息资源安全标记完整性：" + scencePo.getDescription());
+            of.addItem(textRenderData);
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", yyhsj.getYyhsj_ccjmx()));
+            textRenderData = new TextRenderData("重要数据存储机密性：" + scencePo.getDescription());
+            of.addItem(textRenderData);
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", yyhsj.getYyhsj_ccwzx()));
+            textRenderData = new TextRenderData("重要数据存储完整性：" + scencePo.getDescription());
+            of.addItem(textRenderData);
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", yyhsj.getYyhsj_csjmx()));
+            textRenderData = new TextRenderData("重要数据传输机密性：" + scencePo.getDescription());
+            of.addItem(textRenderData);
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", yyhsj.getYyhsj_cswzx()));
+            textRenderData = new TextRenderData("重要数据传输完整性：" + scencePo.getDescription());
+            of.addItem(textRenderData);
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", yyhsj.getYyhsj_bkfr()));
+            textRenderData = new TextRenderData("不可否认性：" + scencePo.getDescription());
+            of.addItem(textRenderData);
+
+            cpdxData.setIndex(i + 1);
+            cpdxData.setName(yyhsj.getYyhsj_ywmc());
             cpdxData.setDescription(of.create());
             yyhsjRiskList.add(cpdxData);
         }
         zbData.setYyhsjRiskList(yyhsjRiskList);
-        risk.setRisk(zbData);
-        map.put("riskList",risk);
+        map.put("riskList", zbData);
 
     }
 
     @Override
     @Transactional
     public void cp5Des(Map<String, Object> map, Concent concent) {
-        List<Table5Util> table51List = new ArrayList<>();
-        List<Table5Util> table52List = new ArrayList<>();
-        List<Table5Util> table53List = new ArrayList<>();
-        List<Table5Util> table54List = new ArrayList<>();
+        List<CPDXData> wlhhjFAList = new ArrayList<>();
+        List<CPDXData> wlhtxFAList = new ArrayList<>();
+        List<CPDXData> sbhjsFAList = new ArrayList<>();
+        List<CPDXData> yyhsjFAList = new ArrayList<>();
+        FAData faData = new FAData();
+        List<String> sbList = new ArrayList<>();
+        sbList.add("堡垒机");
+        sbList.add("通用类产品：包含应用服务器、数据库服务器及数据库管理系统。由堡垒机进行统一运维");
+        sbList.add("整机类密码产品：包括【手动填入】，由堡垒机进行统一运维");
+        sbList.add("系统类密码产品：包括【手动填入】，由堡垒机进行统一运维");
+//        List<Table5Util> table51List = new ArrayList<>();
+//        List<Table5Util> table52List = new ArrayList<>();
+//        List<Table5Util> table53List = new ArrayList<>();
+//        List<Table5Util> table54List = new ArrayList<>();
         List<Table57> table57List = new ArrayList<>();
         List<Table59Util> table58List = new ArrayList<>();
         List<Table59Util> table59List = new ArrayList<>();
@@ -434,90 +500,165 @@ public class Service1Impl implements Service1 {
         map.put("51", temp);
 
         for (int i = 0; i < concent.getWlhhjList().size(); i++) {
-            zbList = new ArrayList<>();
-            cpList = new ArrayList<>();
-            msList = new ArrayList<>();
-            jlList = new ArrayList<>();
-            table51Init(concent, zbList, cpList, msList, jlList, i);
-            for (int j = 0; j < 3; j++) {
-                Table5Util table5 = new Table5Util();
-                if (j == 0) {
-                    table5.setCpdx(concent.getWlhhjList().get(i).getWlhhj_jfmc());
-                }
-                table5.setZb(zbList.get(j));
-                table5.setMmcp(cpList.get(j));
-                table5.setFams(msList.get(j));
-                table5.setJl(jlList.get(j));
-                table51List.add(table5);
-            }
+            Numberings.NumberingBuilder of = Numberings.of(NumberingFormat.DECIMAL_PARENTHESES);
+            Wlhhj wlhhj = concent.getWlhhjList().get(i);
+            TextRenderData textRenderData = new TextRenderData();
+            CPDXData cpdxData = new CPDXData();
+//            zbList = new ArrayList<>();
+//            cpList = new ArrayList<>();
+//            msList = new ArrayList<>();
+//            jlList = new ArrayList<>();
+//            table51Init(concent, zbList, cpList, msList, jlList, i);
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", wlhhj.getWlhhj_sfjb()));
+            textRenderData.setText("身份鉴别：" + scencePo.getDescription());
+            of.addItem(textRenderData);
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", wlhhj.getWlhhj_dzmj()));
+            textRenderData = new TextRenderData("电子门禁记录数据存储完整性：" + scencePo.getDescription());
+            of.addItem(textRenderData);
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", wlhhj.getWlhhj_spjk()));
+            textRenderData = new TextRenderData("视频监控记录数据存储完整性：" + scencePo.getDescription());
+            of.addItem(textRenderData);
+
+            cpdxData.setIndex(i + 1);
+            cpdxData.setName(wlhhj.getWlhhj_jfmc());
+            cpdxData.setDescription(of.create());
+            wlhhjFAList.add(cpdxData);
         }
-        map.put("table51", table51List);
+        faData.setWlhhjFAList(wlhhjFAList);
+
+
         for (int i = 0; i < concent.getWlhtxList().size(); i++) {
-            zbList = new ArrayList<>();
-            cpList = new ArrayList<>();
-            msList = new ArrayList<>();
-            jlList = new ArrayList<>();
-            table52Init(concent, zbList, cpList, msList, jlList, i);
+            Numberings.NumberingBuilder of = Numberings.of(NumberingFormat.DECIMAL_PARENTHESES);
+            CPDXData cpdxData = new CPDXData();
+            Wlhtx wlhtx = concent.getWlhtxList().get(i);
+            TextRenderData textRenderData = new TextRenderData();
+//            zbList = new ArrayList<>();
+//            cpList = new ArrayList<>();
+//            msList = new ArrayList<>();
+//            jlList = new ArrayList<>();
+//            table52Init(concent, zbList, cpList, msList, jlList, i);
+//            for (int j = 0; j < 5; j++) {
+//                textRenderData.setText("身份鉴别：未使用密码技术对进入机房人员进行身份鉴别，存在非授权人员进入物理环境，对软硬件设备和数据进行直接破坏的风险。");
+//                of.addItem(textRenderData);
+//                Table5Util table5 = new Table5Util();
+//                if (j == 0) {
+//                    table5.setCpdx(concent.getWlhtxList().get(i).getWlhtx_xdmc());
+//                }
+//                table5.setZb(zbList.get(j));
+//                table5.setMmcp(cpList.get(j));
+//                table5.setFams(msList.get(j));
+//                table5.setJl(jlList.get(j));
+//                table52List.add(table5);
+//            }
+            List<String> zb = new ArrayList<>();
+            zb.add("身份鉴别：");
+            zb.add("通信数据完整性：");
+            zb.add("通信过程中重要数据的机密性：");
+            zb.add("网络边界访问控制信息的完整性：");
+            zb.add("安全接入认证：");
             for (int j = 0; j < 5; j++) {
-                Table5Util table5 = new Table5Util();
-                if (j == 0) {
-                    table5.setCpdx(concent.getWlhtxList().get(i).getWlhtx_xdmc());
-                }
-                table5.setZb(zbList.get(j));
-                table5.setMmcp(cpList.get(j));
-                table5.setFams(msList.get(j));
-                table5.setJl(jlList.get(j));
-                table52List.add(table5);
+                scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", wlhtx.getWlhtx_xd().get(j)));
+                textRenderData = new TextRenderData(zb.get(j) + scencePo.getDescription());
+                of.addItem(textRenderData);
             }
+            cpdxData.setIndex(i + 1);
+            cpdxData.setName(concent.getWlhtxList().get(i).getWlhtx_xdmc());
+            cpdxData.setDescription(of.create());
+            wlhtxFAList.add(cpdxData);
         }
-        map.put("table52", table52List);
+        faData.setWlhtxFAList(wlhtxFAList);
+//        map.put("table52", table52List);
+
         for (int i = 0; i < concent.getSbhjsList().size(); i++) {
-            zbList = new ArrayList<>();
-            cpList = new ArrayList<>();
-            msList = new ArrayList<>();
-            jlList = new ArrayList<>();
-            table53Init(concent, zbList, cpList, msList, jlList, i);
-            for (int j = 0; j < 6; j++) {
-                Table5Util table5 = new Table5Util();
-                if (j == 0) {
-                    table5.setCpdx(concent.getSbhjsList().get(i).getSbhjs_sbmc());
-                }
-                table5.setZb(zbList.get(j));
-                table5.setMmcp(cpList.get(j));
-                table5.setFams(msList.get(j));
-                table5.setJl(jlList.get(j));
-                table53List.add(table5);
-            }
+            Numberings.NumberingBuilder of = Numberings.of(NumberingFormat.DECIMAL_PARENTHESES);
+            CPDXData cpdxData = new CPDXData();
+            Sbhjs sbhjs = concent.getSbhjsList().get(i);
+            TextRenderData textRenderData = new TextRenderData();
+//            zbList = new ArrayList<>();
+//            cpList = new ArrayList<>();
+//            msList = new ArrayList<>();
+//            jlList = new ArrayList<>();
+//            table53Init(concent, zbList, cpList, msList, jlList, i);
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", sbhjs.getSbhjs_sfjb()));
+            textRenderData = new TextRenderData("身份鉴别：" + scencePo.getDescription());
+            of.addItem(textRenderData);
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", sbhjs.getSbhjs_ycgl()));
+            textRenderData = new TextRenderData("远程管理通道安全：" + scencePo.getDescription());
+            of.addItem(textRenderData);
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", sbhjs.getSbhjs_xtzy()));
+            textRenderData = new TextRenderData("系统资源访问控制信息完整性：" + scencePo.getDescription());
+            of.addItem(textRenderData);
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", sbhjs.getSbhjs_zyxx()));
+            textRenderData = new TextRenderData("重要信息资源安全标记完整性：" + scencePo.getDescription());
+            of.addItem(textRenderData);
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", sbhjs.getSbhjs_rzjl()));
+            textRenderData = new TextRenderData("日志记录完整性：" + scencePo.getDescription());
+            of.addItem(textRenderData);
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", sbhjs.getSbhjs_zykz()));
+            textRenderData = new TextRenderData("重要可执行程序完整性、重要可执行程序来源真实性：" + scencePo.getDescription());
+            of.addItem(textRenderData);
+            cpdxData.setIndex(i + 1);
+            cpdxData.setName(sbhjs.getSbhjs_sbmc());
+            cpdxData.setDescription(of.create());
+            sbhjsFAList.add(cpdxData);
         }
-        map.put("table53", table53List);
+        faData.setSbhjsFAList(sbhjsFAList);
+//        map.put("table53", table53List);
         for (int i = 0; i < concent.getYyhsjList().size(); i++) {
-            zbList = new ArrayList<>();
-            cpList = new ArrayList<>();
-            msList = new ArrayList<>();
-            jlList = new ArrayList<>();
-            table54Init(concent, zbList, cpList, msList, jlList, i);
-            for (int j = 0; j < 8; j++) {
-                Table5Util table5 = new Table5Util();
-                if (j == 0) {
-                    table5.setCpdx(concent.getYyhsjList().get(i).getYyhsj_ywmc());
-                }
-                table5.setZb(zbList.get(j));
-                table5.setMmcp(cpList.get(j));
-                table5.setFams(msList.get(j));
-                table5.setJl(jlList.get(j));
-                table54List.add(table5);
+            Numberings.NumberingBuilder of = Numberings.of(NumberingFormat.DECIMAL_PARENTHESES);
+            CPDXData cpdxData = new CPDXData();
+            Yyhsj yyhsj = concent.getYyhsjList().get(i);
+            StringBuilder description = new StringBuilder("");
+            TextRenderData textRenderData = new TextRenderData();
+//            zbList = new ArrayList<>();
+//            cpList = new ArrayList<>();
+//            msList = new ArrayList<>();
+//            jlList = new ArrayList<>();
+//            table54Init(concent, zbList, cpList, msList, jlList, i);
+            for (int j = 0; j < yyhsj.getYyhsj_sfjb().size(); j++) {
+                scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", yyhsj.getYyhsj_sfjb().get(j)));
+                description.append(scencePo.getDescription());
             }
+            textRenderData = new TextRenderData("身份鉴别：" + description);
+            of.addItem(textRenderData);
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", yyhsj.getYyhsj_fwkz()));
+            textRenderData = new TextRenderData("访问控制信息完整性：" + scencePo.getDescription());
+            of.addItem(textRenderData);
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", yyhsj.getYyhsj_xxzy()));
+            textRenderData = new TextRenderData("重要信息资源安全标记完整性：" + scencePo.getDescription());
+            of.addItem(textRenderData);
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", yyhsj.getYyhsj_ccjmx()));
+            textRenderData = new TextRenderData("重要数据存储机密性：" + scencePo.getDescription());
+            of.addItem(textRenderData);
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", yyhsj.getYyhsj_ccwzx()));
+            textRenderData = new TextRenderData("重要数据存储完整性：" + scencePo.getDescription());
+            of.addItem(textRenderData);
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", yyhsj.getYyhsj_csjmx()));
+            textRenderData = new TextRenderData("重要数据传输机密性：" + scencePo.getDescription());
+            of.addItem(textRenderData);
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", yyhsj.getYyhsj_cswzx()));
+            textRenderData = new TextRenderData("重要数据传输完整性：" + scencePo.getDescription());
+            of.addItem(textRenderData);
+            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", yyhsj.getYyhsj_bkfr()));
+            textRenderData = new TextRenderData("不可否认性：" + scencePo.getDescription());
+            of.addItem(textRenderData);
+
+            cpdxData.setIndex(i + 1);
+            cpdxData.setName(concent.getYyhsjList().get(i).getYyhsj_ywmc());
+            cpdxData.setDescription(of.create());
+            yyhsjFAList.add(cpdxData);
         }
-        map.put("table54", table54List);
+        faData.setYyhsjFAList(yyhsjFAList);
+        map.put("solutionList", faData);
         Numberings.NumberingBuilder nb = Numberings.ofDecimalParentheses();
         List<String> list = new ArrayList<>();
         for (int i = 0; i < concent.getSbqd().size(); i++) {
             Table57 table57 = new Table57();
 //            Device device = deviceMapper.selectOne(new QueryWrapper<Device>().eq("name", concent.getSbqd().get(i).getName()).eq("model",concent.getSbqd().get(i).getJbxh()));
             Device device = null;
-            if (concent.getSbqd().get(i).getName().equals("服务器密码机")||concent.getSbqd().get(i).getName().equals("签名验签服务器")||concent.getSbqd().get(i).getName().equals("云服务器密码机")){
-                device = deviceMapper.selectOne(new QueryWrapper<Device>().eq("name", concent.getSbqd().get(i).getName()).eq("model",concent.getSbqd().get(i).getJbxh()));
-            }else {
+            if (concent.getSbqd().get(i).getName().equals("服务器密码机") || concent.getSbqd().get(i).getName().equals("签名验签服务器") || concent.getSbqd().get(i).getName().equals("云服务器密码机")) {
+                device = deviceMapper.selectOne(new QueryWrapper<Device>().eq("name", concent.getSbqd().get(i).getName()).eq("model", concent.getSbqd().get(i).getJbxh()));
+            } else {
                 device = deviceMapper.selectOne(new QueryWrapper<Device>().eq("name", concent.getSbqd().get(i).getName()));
             }
             if (device != null) {
@@ -798,10 +939,10 @@ public class Service1Impl implements Service1 {
         xtxzList.add("未采用合规的密码技术建立远程管理通道");
         jlList.add("不符合");
         syqkList.add("适用");
-        if ((table26.getType().equals("1")||table26.getType().equals("2"))&&table26.getSmzs().equals("是")){
+        if ((table26.getType().equals("1") || table26.getType().equals("2")) && table26.getSmzs().equals("是")) {
             xtxzList.add("具有资质的密码设备满足此需求");
             jlList.add("符合");
-        }else {
+        } else {
             xtxzList.add("未采用合规的密码技术对系统访问控制信息的完整性进行保护");
             jlList.add("不符合");
         }
@@ -809,18 +950,18 @@ public class Service1Impl implements Service1 {
         xtxzList.add("系统无重要信息资源安全标记");
         jlList.add("不适用");
         syqkList.add("适用");
-        if ((table26.getType().equals("1")||table26.getType().equals("2"))&&table26.getSmzs().equals("是")){
+        if ((table26.getType().equals("1") || table26.getType().equals("2")) && table26.getSmzs().equals("是")) {
             xtxzList.add("具有资质的密码设备满足此需求");
             jlList.add("符合");
-        }else {
+        } else {
             xtxzList.add("未采用合规的密码技术保证日志记录的完整性");
             jlList.add("不符合");
         }
         syqkList.add("适用");
-        if ((table26.getType().equals("1")||table26.getType().equals("2"))&&table26.getSmzs().equals("是")){
+        if ((table26.getType().equals("1") || table26.getType().equals("2")) && table26.getSmzs().equals("是")) {
             xtxzList.add("具有资质的密码设备满足此需求");
             jlList.add("符合");
-        }else {
+        } else {
             xtxzList.add("未采用合规的密码技术实现可执行程序的完整性和来源的真实性");
             jlList.add("不符合");
         }
@@ -1081,22 +1222,22 @@ public class Service1Impl implements Service1 {
         }
         StringBuilder stringBuilder = new StringBuilder();
 
-        for (int j = 0; j < sbhjs.getSbhjs_xtzy().size(); j++) {
-            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", sbhjs.getSbhjs_xtzy().get(j)));
-            if (scencePo != null) {
-                cpList.add(scencePo.getCpzh());
-                if (j == 0 && scencePo.getDescription().equals("具有资质的密码设备满足此需求")) {
-                    stringBuilder.append("具有资质的密码设备满足此需求");
-                    break;
-                }
-                stringBuilder.append(j + 1 + "、");
-                stringBuilder.append(scencePo.getDescription());
-            } else {
-                cpList.add("数据查询出错");
-                msList.add("数据查询出错");
-                jlList.add("数据查询出错");
-            }
-        }
+//        for (int j = 0; j < sbhjs.getSbhjs_xtzy().size(); j++) {
+//            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", sbhjs.getSbhjs_xtzy().get(j)));
+//            if (scencePo != null) {
+//                cpList.add(scencePo.getCpzh());
+//                if (j == 0 && scencePo.getDescription().equals("具有资质的密码设备满足此需求")) {
+//                    stringBuilder.append("具有资质的密码设备满足此需求");
+//                    break;
+//                }
+//                stringBuilder.append(j + 1 + "、");
+//                stringBuilder.append(scencePo.getDescription());
+//            } else {
+//                cpList.add("数据查询出错");
+//                msList.add("数据查询出错");
+//                jlList.add("数据查询出错");
+//            }
+//        }
         String xtzy = new String(stringBuilder);
         msList.add(xtzy);
         if (scencePo != null) {
@@ -1154,7 +1295,7 @@ public class Service1Impl implements Service1 {
         for (int j = 0; j < yyhsj.getYyhsj_sfjb().size(); j++) {
             scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", yyhsj.getYyhsj_sfjb().get(j)));
             if (scencePo != null) {
-                description.append(scencePo.getDescription()).append('\n');
+                description.append(scencePo.getDescription());
                 jl = scencePo.getJl();
                 //利用set去重
                 set.addAll(Arrays.asList(scencePo.getCpzh().split("、")));
@@ -1194,11 +1335,9 @@ public class Service1Impl implements Service1 {
         description = new StringBuilder();
         cpzh = "";
         jl = "";
-        for (int j = 0; j < concent.getYyhsjList().get(i).getYyhsj_csjmx().size(); j++) {
-            scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", yyhsj.getYyhsj_csjmx().get(j)));
-            if (scencePo != null) {
-                description.append(scencePo.getDescription());
-            }
+        scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", yyhsj.getYyhsj_csjmx()));
+        if (scencePo != null) {
+            description.append(scencePo.getDescription());
         }
         if (concent.getYyhsjList().get(i).getYyhsj_csjmx().contains("44-00-1") || concent.getYyhsjList().get(i).getYyhsj_csjmx().contains("44-01-1")) {
             cpzh = "国密安全密码应用中间件、服务器密码机";
@@ -1330,7 +1469,7 @@ public class Service1Impl implements Service1 {
             cpzbList.add("数据查询出错");
             dycpList.add("数据查询出错");
         }
-        scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", sbhjs.getSbhjs_xtzy().get(0)));
+        scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", sbhjs.getSbhjs_xtzy()));
         if (scencePo != null) {
             cpzbList.add(scencePo.getCpzb());
             dycpList.add(scencePo.getDycp());
@@ -1399,7 +1538,7 @@ public class Service1Impl implements Service1 {
             cpzbList.add("数据查询出错");
             dycpList.add("数据查询出错");
         }
-        scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", yyhsj.getYyhsj_csjmx().get(0)));
+        scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", yyhsj.getYyhsj_csjmx()));
         if (scencePo != null) {
             cpzbList.add(scencePo.getCpzb());
             dycpList.add(scencePo.getDycp());

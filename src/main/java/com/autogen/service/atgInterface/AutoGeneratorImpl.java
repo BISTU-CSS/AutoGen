@@ -21,8 +21,9 @@ import java.util.HashMap;
 
 public class AutoGeneratorImpl implements AutoGenerator {
 
-//    String path = "/etc/autogen/";
+    //    String path = "/etc/autogen/";
     String path = "D:\\IDEA\\AutoGen\\src\\main\\resources\\WordTemplate\\";
+
     @Override
     public XWPFDocument chapter_one_generator(Chaptre1input input) throws IOException {
         XWPFDocument doc = IOManager.readFile(path + "1.docx");
@@ -32,6 +33,7 @@ public class AutoGeneratorImpl implements AutoGenerator {
             put(ReplaceSymbol.sys_name, input.sys_name);
             put(ReplaceSymbol.sys_unit, input.sys_unit);
             put(ReplaceSymbol.sys_date, input.sys_date);
+            put(ReplaceSymbol.s1, input.s1);
         }});
         return template.getXWPFDocument();
     }
@@ -42,13 +44,13 @@ public class AutoGeneratorImpl implements AutoGenerator {
         XWPFDocument doc = IOManager.readFile(path + "2.docx");
         LoopRowTableRenderPolicy policy1 = new LoopRowTableRenderPolicy();
         LoopRowTableRenderPolicy policy2 = new LoopRowTableRenderPolicy(true);
-        Configure config = Configure.builder().bind("table22", policy1).bind("table23",policy1)
-                .bind("table241",policy2).bind("table242",policy2)
-                .bind("table243",policy2).bind("table244",policy2)
-                .bind("table25",policy1)
-                .bind("table261",policy2).bind("table262",policy2)
-                .bind("table263",policy2).bind("table264",policy2).bind("table265",policy2)
-                .bind("table27",policy1).bind("table28",policy1).build();
+        Configure config = Configure.builder().bind("table22", policy1).bind("table23", policy1)
+                .bind("table241", policy2).bind("table242", policy2)
+                .bind("table243", policy2).bind("table244", policy2)
+                .bind("table25", policy1)
+                .bind("table261", policy2).bind("table262", policy2)
+                .bind("table263", policy2).bind("table264", policy2).bind("table265", policy2)
+                .bind("table27", policy1).bind("table28", policy1).build();
         XWPFTemplate template = XWPFTemplate.compile(doc, config).render(new HashMap<String, Object>() {{
             put(ReplaceSymbol.sys_name, input.sys_name);
             put(ReplaceSymbol.sys_unit, input.sys_unit);
@@ -90,7 +92,9 @@ public class AutoGeneratorImpl implements AutoGenerator {
     public XWPFDocument chapter_three_generator(Chaptre3input input) throws IOException {
 
         XWPFDocument doc = IOManager.readFile(path + "3.docx");
-        XWPFTemplate template = XWPFTemplate.compile(doc).render(input.cpdxRisk);
+        XWPFTemplate template = XWPFTemplate.compile(doc).render(new HashMap<String,Object>(){{
+            put(ReplaceSymbol.risk,input.risk);
+        }});
         return template.getXWPFDocument();
     }
 
@@ -107,21 +111,19 @@ public class AutoGeneratorImpl implements AutoGenerator {
     public XWPFDocument chapter_five_generator(Chaptre5input input) throws IOException {
         XWPFDocument doc = IOManager.readFile(path + "5.docx");
         LoopRowTableRenderPolicy policy = new LoopRowTableRenderPolicy();
-        Configure config = Configure.builder().bind("table51", policy).bind("table52", policy).bind("table53",policy).bind("table54",policy)
-                .bind("table57",policy).bind("table58",policy).bind("table59", policy).bind("table510", policy).bind("table511", policy).build();
+        Configure config = Configure.builder().bind("table51", policy).bind("table52", policy).bind("table53", policy).bind("table54", policy)
+                .bind("table57", policy).bind("table58", policy).bind("table59", policy).bind("table510", policy).bind("table511", policy).build();
+//        XWPFTemplate template =  XWPFTemplate.compile(doc,config).render(input);
         XWPFTemplate template = XWPFTemplate.compile(doc, config).render(new HashMap<String, Object>() {{
             put(ReplaceSymbol.sys_name, input.sys_name);
             put(ReplaceSymbol.s51, input.s51);
 //            put(ReplaceSymbol.img51, Pictures.ofLocal(input.img51).create());
-            put(ReplaceSymbol.table51,input.table51List);
-            put(ReplaceSymbol.table52,input.table52List);
-            put(ReplaceSymbol.table53,input.table53List);
-            put(ReplaceSymbol.table54,input.table54List);
-            put(ReplaceSymbol.table57,input.table57List);
-            put(ReplaceSymbol.table58,input.table58List);
-            put(ReplaceSymbol.table59,input.table59List);
-            put(ReplaceSymbol.table510,input.table510List);
-            put(ReplaceSymbol.table511,input.table511List);
+            put(ReplaceSymbol.solution, input.solution);
+            put(ReplaceSymbol.table57, input.table57List);
+            put(ReplaceSymbol.table58, input.table58List);
+            put(ReplaceSymbol.table59, input.table59List);
+            put(ReplaceSymbol.table510, input.table510List);
+            put(ReplaceSymbol.table511, input.table511List);
             put(ReplaceSymbol.s582, input.s582);
 
         }});
@@ -134,7 +136,7 @@ public class AutoGeneratorImpl implements AutoGenerator {
         XWPFTemplate template = XWPFTemplate.compile(doc);
         template.render(new HashMap<String, Object>() {{
             put(ReplaceSymbol.sys_name, input.system_name);
-            put(ReplaceSymbol.s6,input.s6);
+            put(ReplaceSymbol.s6, input.s6);
         }});
         XWPFTemplate template2 = XWPFTemplate.compile(template.getXWPFDocument()).render(new HashMap<String, Object>() {{
             put(ReplaceSymbol.sys_name, input.system_name);
@@ -145,12 +147,12 @@ public class AutoGeneratorImpl implements AutoGenerator {
     @Override
     public XWPFDocument chapter_seven_generator(Chaptre7input input) throws IOException {
         XWPFDocument doc = IOManager.readFile(path + "7.docx");
-                LoopRowTableRenderPolicy policy = new LoopRowTableRenderPolicy();
+        LoopRowTableRenderPolicy policy = new LoopRowTableRenderPolicy();
         Configure config = Configure.builder().bind("table8", policy).build();
-        XWPFTemplate template = XWPFTemplate.compile(doc,config);
+        XWPFTemplate template = XWPFTemplate.compile(doc, config);
         template.render(new HashMap<String, Object>() {{
             put(ReplaceSymbol.sys_name, input.system_name);
-            put(ReplaceSymbol.table8,input.table8List);
+            put(ReplaceSymbol.table8, input.table8List);
         }});
         return template.getXWPFDocument();
     }

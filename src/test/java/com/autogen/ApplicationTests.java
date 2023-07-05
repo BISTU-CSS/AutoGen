@@ -71,6 +71,9 @@ public class ApplicationTests {
         cpdxDataList.add(cpdxData);
         ZBData zbData = new ZBData();
 //        zbData.setWlhtxRiskList(cpdxDataList);
+
+
+
         System.out.println(cpdxDataList);
         System.out.println(zbData);
 
