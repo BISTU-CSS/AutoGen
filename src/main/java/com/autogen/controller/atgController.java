@@ -1,10 +1,12 @@
 package com.autogen.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.autogen.dao.entity.input.*;
+import com.autogen.dao.entity.pf._1_WLHHJAQ;
+import com.autogen.dao.entity.pf._2_WLHTXAQ;
+import com.autogen.dao.entity.pf._3_SBHJSAQ;
+import com.autogen.dao.entity.pf._4_YYHSJAQ;
 import com.autogen.util.JsonResult;
-import com.autogen.dao.entity.input.Concent;
-import com.autogen.dao.entity.input.InputInformation;
-import com.autogen.dao.entity.input.QuestionNaire;
 import com.autogen.service.InformationService;
 import com.autogen.service.Service1;
 import com.autogen.util.Convert;
@@ -143,6 +145,25 @@ public class atgController {
         }else {
             return new JsonResult(null, "ok");
         }
+    }
+
+    // 评分系统
+    @PostMapping("/api/culate")
+    public void culateScore(@RequestBody JSONObject data){
+        QuestionNaire questionNaire = new QuestionNaire();
+        MyJSON.parsingJSON(data, questionNaire);
+        Concent concent = Convert.convertToSence(questionNaire);
+        List<Wlhhj> wlhhjlist = concent.getWlhhjList();
+        List<_1_WLHHJAQ> wlhhj = service1.getWlhhjData(wlhhjlist);
+        List<Wlhtx> wlhtxlist = concent.getWlhtxList();
+        List<_2_WLHTXAQ> wlhtx = service1.getWlhtxData(wlhtxlist);
+        List<Sbhjs> sbhjslist = concent.getSbhjsList();
+        List<_3_SBHJSAQ> sbhjs = service1.getSbhjsData(sbhjslist);
+        List<Yyhsj> yyhsjlist = concent.getYyhsjList();
+        List<_4_YYHSJAQ> yyhsj = service1.getYyhsjData(yyhsjlist);
+        service1.genExcel(wlhhj,wlhtx,sbhjs,yyhsj);
+        System.out.println("111");
+
     }
 
 }

@@ -2,6 +2,10 @@ package com.autogen.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.autogen.dao.entity.input.*;
+import com.autogen.dao.entity.pf._1_WLHHJAQ;
+import com.autogen.dao.entity.pf._2_WLHTXAQ;
+import com.autogen.dao.entity.pf._3_SBHJSAQ;
+import com.autogen.dao.entity.pf._4_YYHSJAQ;
 import com.autogen.dao.entity.table.Table59Util;
 import org.springframework.transaction.annotation.Transactional;
 

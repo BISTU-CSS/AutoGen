@@ -47,7 +47,6 @@ public class Service1Impl implements Service1 {
     @Autowired
     InformationMapper informationMapper;
 
-
     @Override
     @Transactional
     public void BasicTemplate(QuestionNaire questionNaire, Concent concent) {

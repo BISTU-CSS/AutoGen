@@ -714,5 +714,22 @@ public class Convert {
             yyhsjList.add(yyhsj);
         }
     }
+    //ck根据符合、不符和、部分符合、不适用返回
+    public static String[]  ConvertStateToScoreStr(String str){
+        String[] res;
+        if(str.equals("符合")){
+            res= new String[]{"√", "√", "√"};
+        } else if (str.equals("不符合，缓解")) {
+            res= new String[]{"√", "√", "×"};
+        } else if (str.equals("不符合")) {
+            res= new String[]{"×", "×", "×"};
+        } else if (str.equals("不适用")) {
+            res= new String[]{"/", "/", "/"};
+        }else{
+            res = new String[]{"?", "?", "?"};
+        }
+
+        return res;
+    }
 
 }
