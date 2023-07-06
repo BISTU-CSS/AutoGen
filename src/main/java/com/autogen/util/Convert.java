@@ -725,7 +725,9 @@ public class Convert {
             res= new String[]{"×", "×", "×"};
         } else if (str.equals("不适用")) {
             res= new String[]{"/", "/", "/"};
-        }else{
+        } else if (str.equals("部分符合")) {
+            res= new String[]{"√", "×", "×"};
+        } else{
             res = new String[]{"?", "?", "?"};
         }
 

@@ -6,6 +6,7 @@ import com.autogen.dao.entity.pf._1_WLHHJAQ;
 import com.autogen.dao.entity.pf._2_WLHTXAQ;
 import com.autogen.dao.entity.pf._3_SBHJSAQ;
 import com.autogen.dao.entity.pf._4_YYHSJAQ;
+import com.autogen.service.ServicePF;
 import com.autogen.util.JsonResult;
 import com.autogen.service.InformationService;
 import com.autogen.service.Service1;
@@ -25,6 +26,8 @@ import java.util.List;
 public class atgController {
     @Autowired
     Service1 service1;
+    @Autowired
+    ServicePF servicePF;
 
 
 //    private static QuestionNaire questionNaire = new QuestionNaire();
@@ -154,14 +157,14 @@ public class atgController {
         MyJSON.parsingJSON(data, questionNaire);
         Concent concent = Convert.convertToSence(questionNaire);
         List<Wlhhj> wlhhjlist = concent.getWlhhjList();
-        List<_1_WLHHJAQ> wlhhj = service1.getWlhhjData(wlhhjlist);
+        List<_1_WLHHJAQ> wlhhj = servicePF.getWlhhjData(wlhhjlist);
         List<Wlhtx> wlhtxlist = concent.getWlhtxList();
-        List<_2_WLHTXAQ> wlhtx = service1.getWlhtxData(wlhtxlist);
+        List<_2_WLHTXAQ> wlhtx = servicePF.getWlhtxData(wlhtxlist);
         List<Sbhjs> sbhjslist = concent.getSbhjsList();
-        List<_3_SBHJSAQ> sbhjs = service1.getSbhjsData(sbhjslist);
+        List<_3_SBHJSAQ> sbhjs = servicePF.getSbhjsData(sbhjslist);
         List<Yyhsj> yyhsjlist = concent.getYyhsjList();
-        List<_4_YYHSJAQ> yyhsj = service1.getYyhsjData(yyhsjlist);
-        service1.genExcel(wlhhj,wlhtx,sbhjs,yyhsj);
+        List<_4_YYHSJAQ> yyhsj = servicePF.getYyhsjData(yyhsjlist);
+        servicePF.genExcel(wlhhj,wlhtx,sbhjs,yyhsj);
         System.out.println("111");
 
     }

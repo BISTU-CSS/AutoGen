@@ -8,6 +8,8 @@ import com.autogen.dao.entity.pf._1_WLHHJAQ;
 import com.autogen.dao.entity.pf._2_WLHTXAQ;
 import com.autogen.dao.entity.pf._3_SBHJSAQ;
 import com.autogen.dao.entity.pf._4_YYHSJAQ;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 

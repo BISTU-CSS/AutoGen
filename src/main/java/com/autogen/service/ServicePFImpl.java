@@ -13,11 +13,19 @@ import com.autogen.dao.entity.pf._2_WLHTXAQ;
 import com.autogen.dao.entity.pf._3_SBHJSAQ;
 import com.autogen.dao.entity.pf._4_YYHSJAQ;
 import com.autogen.util.Convert;
+import com.autogen.util.ExcelInfoUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.spire.xls.ExcelVersion;
+import com.spire.xls.Workbook;
+import com.spire.xls.Worksheet;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Service
+@Slf4j
 public class ServicePFImpl implements ServicePF{
     @Autowired
     ScenceMapper scenceMapper;
@@ -63,7 +71,7 @@ public class ServicePFImpl implements ServicePF{
         for(int i = 0;i<sbhjsList.size();++i){
             String[] sfjb = Convert.ConvertStateToScoreStr(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence",sbhjsList.get(i).getSbhjs_sfjb())).getCpzb());
             String[] ycgltdaq = Convert.ConvertStateToScoreStr(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence",sbhjsList.get(i).getSbhjs_ycgl())).getCpzb());
-            String[] xtzyfwkzxxwzx = Convert.ConvertStateToScoreStr(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence",sbhjsList.get(i).getSbhjs_xtzy().get(0))).getCpzb());
+            String[] xtzyfwkzxxwzx = Convert.ConvertStateToScoreStr(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence",sbhjsList.get(i).getSbhjs_xtzy())).getCpzb());
             String[] zyxxzyaqbjwzx = Convert.ConvertStateToScoreStr(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence",sbhjsList.get(i).getSbhjs_zyxx())).getCpzb());
             String[] rzjlwzx = Convert.ConvertStateToScoreStr(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence",sbhjsList.get(i).getSbhjs_rzjl())).getCpzb());
             String[] zykzxcx = Convert.ConvertStateToScoreStr(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence",sbhjsList.get(i).getSbhjs_zykz())).getCpzb());
@@ -81,7 +89,7 @@ public class ServicePFImpl implements ServicePF{
             String[] sfjb = Convert.ConvertStateToScoreStr(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence",yyhsjList.get(i).getYyhsj_sfjb().get(0))).getCpzb());
             String[] fwkz = Convert.ConvertStateToScoreStr(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence",yyhsjList.get(i).getYyhsj_fwkz())).getCpzb());
             String[] xxzy = Convert.ConvertStateToScoreStr(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence",yyhsjList.get(i).getYyhsj_xxzy())).getCpzb());;
-            String[] csjmx = Convert.ConvertStateToScoreStr(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence",yyhsjList.get(i).getYyhsj_csjmx().get(0))).getCpzb());;
+            String[] csjmx = Convert.ConvertStateToScoreStr(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence",yyhsjList.get(i).getYyhsj_csjmx())).getCpzb());;
             String[] ccjmx = Convert.ConvertStateToScoreStr(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence",yyhsjList.get(i).getYyhsj_ccjmx())).getCpzb());;
             String[] cswzx = Convert.ConvertStateToScoreStr(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence",yyhsjList.get(i).getYyhsj_cswzx())).getCpzb());;
             String[] ccwzx = Convert.ConvertStateToScoreStr(scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence",yyhsjList.get(i).getYyhsj_ccwzx())).getCpzb());;
