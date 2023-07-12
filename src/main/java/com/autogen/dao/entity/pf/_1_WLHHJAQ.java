@@ -27,4 +27,21 @@ public class _1_WLHHJAQ {
         }
         return str;
     }
+    public int[] bsyRes(String[] sfjb, String[] dzmjjlsjdccwzx, String[] spjkjlsjdccwzx){
+        int[] res = new int[3];
+        for(int i = 0;i < 3;i++){
+            res[i] = 1;
+        }
+        if(sfjb[0].equals("/")){
+            res[0] = 0;
+        }
+        if(dzmjjlsjdccwzx[0].equals("/")){
+            res[1] = 0;
+        }
+        if(spjkjlsjdccwzx[0].equals("/")){
+            res[2] = 0;
+        }
+
+        return res;
+    }
 }

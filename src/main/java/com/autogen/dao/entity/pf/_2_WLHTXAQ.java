@@ -20,4 +20,27 @@ public class _2_WLHTXAQ {
         this.wlbjfwkzxxdwzx = wlbjfwkzxxdwzx;
         this.aqjrrz = aqjrrz;
     }
+    //不适用判断
+    public int[] bsyRes(String[] sfjb, String[] txsjwzx, String[] txgczzysjdjmx, String[] wlbjfwkzxxdwzx, String[] aqjrrz){
+        int[] res = new int[5];
+        for(int i = 0;i < 5;i++){
+            res[i] = 1;
+        }
+        if(sfjb[0].equals("/")){
+            res[0] = 0;
+        }
+        if(txsjwzx[0].equals("/")){
+            res[1] = 0;
+        }
+        if(txgczzysjdjmx[0].equals("/")){
+            res[2] = 0;
+        }
+        if(wlbjfwkzxxdwzx[0].equals("/")){
+            res[3] = 0;
+        }
+        if(aqjrrz[0].equals("/")){
+            res[4] = 0;
+        }
+        return res;
+    }
 }

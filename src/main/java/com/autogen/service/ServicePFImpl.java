@@ -20,6 +20,7 @@ import com.spire.xls.Workbook;
 import com.spire.xls.Worksheet;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,6 +28,18 @@ import java.util.List;
 @Service
 @Slf4j
 public class ServicePFImpl implements ServicePF{
+    static double  getDAKScore(String []dak){//获取dak分数
+        if(dak[0].equals("/")){
+            return 0;
+        }
+        int count =0;
+        for(int i =1;i<3;i++){
+            if(dak[i].equals("√")){
+                count++;
+            }
+        }
+        return  dak[0].equals("×")?0:0.25*(1<<count);
+    }
     @Autowired
     ScenceMapper scenceMapper;
     @Autowired
@@ -102,11 +115,33 @@ public class ServicePFImpl implements ServicePF{
     }
 
     @Override
-    public void genExcel(List<_1_WLHHJAQ> wlhhj, List<_2_WLHTXAQ> wlhtx, List<_3_SBHJSAQ> sbhjs, List<_4_YYHSJAQ> yyhsj) {
+    public void genExcel(List<_1_WLHHJAQ> wlhhj, List<_2_WLHTXAQ> wlhtx, List<_3_SBHJSAQ> sbhjs, List<_4_YYHSJAQ> yyhsj,String dbjb) {
         //1.获取文件中的相关信息
         Workbook workbook = new Workbook();
         workbook.loadFromFile("./src/main/resources/MergeCells.xlsx");
         Worksheet worksheet = workbook.getWorksheets().get(0);
+        //设置等保级别
+        if (dbjb.equals("0")){
+            worksheet.getRange().get("D1").setText("第一级");
+            worksheet.getRange().get("D7").setText("第一级");
+            worksheet.getRange().get("D15").setText("第一级");
+            worksheet.getRange().get("D24").setText("第一级");
+        } else if (dbjb.equals("1")) {
+            worksheet.getRange().get("D1").setText("第二级");
+            worksheet.getRange().get("D7").setText("第二级");
+            worksheet.getRange().get("D15").setText("第二级");
+            worksheet.getRange().get("D24").setText("第二级");
+        } else if (dbjb.equals("2")) {
+            worksheet.getRange().get("D1").setText("第三级");
+            worksheet.getRange().get("D7").setText("第三级");
+            worksheet.getRange().get("D15").setText("第三级");
+            worksheet.getRange().get("D24").setText("第三级");
+        } else if (dbjb.equals("3")) {
+            worksheet.getRange().get("D1").setText("第四级");
+            worksheet.getRange().get("D7").setText("第四级");
+            worksheet.getRange().get("D15").setText("第四级");
+            worksheet.getRange().get("D24").setText("第四级");
+        }
         //物理表格
         for(int i = 0;i<wlhhj.size();i++){
             worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[i*3+4]+"2").setText(wlhhj.get(i).cpdx);
@@ -193,5 +228,312 @@ public class ServicePFImpl implements ServicePF{
         }
 
         workbook.saveToFile("ReplaceData.xlsx", ExcelVersion.Version2016);
+    }
+
+    @Override
+    public double gen_PF(String name) {
+        //1.获取文件中的相关信息
+        Workbook workbook = new Workbook();
+//
+        workbook.loadFromFile(name);
+        Worksheet worksheet = workbook.getWorksheets().get(0);
+        //目前计算等级三的分数
+        //获取等保级别
+        String dbjb = worksheet.getRange().get("D1").getText();
+        //默认为3级
+        int dbjbIdex = 2;
+        if(dbjb.equals("第一级")){
+            dbjbIdex =0;
+        } else if (dbjb.equals("第二级")) {
+            dbjbIdex =1;
+        } else if (dbjb.equals("第三级")) {
+            dbjbIdex =2;
+        } else if (dbjb.equals("第四级")) {
+            dbjbIdex =3;
+        }
+
+        //物理层面计算分数
+
+        //存储不同密评等级的物理环境层面的测评单元的权值
+        double []wlhhjWeigth3 =  ExcelInfoUtil.CPZB_weight_ARRAY[dbjbIdex][0];
+        int cpdxCount = 0;
+        //获取测评对象个数，i=4从e开始取
+        for(int i = 4; !(worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[i]+"2").getText().isEmpty()); i=i+3){
+            cpdxCount++;
+        }
+        List<_1_WLHHJAQ> wlhhjList = new ArrayList<>();
+        double sfjbScore=0;
+        double dzmjwzxScore=0;
+        double spjkjlwzxScore=0;
+
+        //按照测评对象取数据
+        //每次循环取一个对象
+        for(int i=0;i<cpdxCount;++i){
+            int target = 3*i+4;
+            //读取excel数据
+            String cpdxName = worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target]+"2").getText();
+            String []sfjb = new String[]{worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target]+"4").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+1]+"4").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+2]+"4").getNumberText()};
+            String []dzmjwzx = new String[]{worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target]+"5").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+1]+"5").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+2]+"5").getNumberText()};
+            String []spjkjlwzx = new String[]{worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target]+"6").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+1]+"6").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+2]+"6").getNumberText()};
+            _1_WLHHJAQ wlhhj = new _1_WLHHJAQ(cpdxName,sfjb,dzmjwzx,spjkjlwzx);
+            //计算每个测评指标的dak分数 得到S（i,j,k）的分值并累加
+            sfjbScore +=getDAKScore(sfjb);
+            dzmjwzxScore += getDAKScore(dzmjwzx);
+            spjkjlwzxScore += getDAKScore(spjkjlwzx);
+            wlhhjList.add(wlhhj);
+            int[] res=wlhhj.bsyRes(sfjb,dzmjwzx,spjkjlwzx);
+            for(int j = 0;j<3;j++){
+                if(res[j]==0){
+                    wlhhjWeigth3[j] = 0;
+                }
+            }
+
+        }
+        //将S（i,j,k）的分值累加结果除以测评对象个数算出Si，j
+        sfjbScore/=cpdxCount;
+        dzmjwzxScore/=cpdxCount;
+        spjkjlwzxScore/=cpdxCount;
+        double []wlhhjCpzbScore = {sfjbScore,dzmjwzxScore,spjkjlwzxScore};
+        double wlhhjScore =0;
+        double weight = 0;
+
+        //根据权值计算物理层面总分
+        for(int i =0;i<wlhhjWeigth3.length;i++){
+            wlhhjScore= wlhhjCpzbScore[i]*wlhhjWeigth3[i]+wlhhjScore;
+            weight += wlhhjWeigth3[i];
+        }
+        //物理和环境层面的分数
+        wlhhjScore = wlhhjScore/weight*10;
+
+
+        //网络层面计算分数
+
+        //权重值
+        double []wlhtxWeigth3 =  ExcelInfoUtil.CPZB_weight_ARRAY[dbjbIdex][1];
+        cpdxCount = 0;
+        //获取测评对象个数，i=4从e开始取
+        for(int i = 4; !(worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[i]+"8").getText().isEmpty()); i=i+3){
+            cpdxCount++;
+        }
+
+        List<_2_WLHTXAQ> wlhtxList = new ArrayList<>();
+        double wlSfjbScore = 0;
+        double wlTxsjwzxScore = 0;
+        double wlTxjmxScore = 0;
+        double wlFfkzxxwzxScore = 0;
+        double wlAqjrrzScore = 0;
+        //按照测评对象取数据
+        //每次循环取一个对象
+        for(int i=0;i<cpdxCount;++i){
+            int target = 3*i+4;
+            //读取excel数据
+            String cpdxName = worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target]+"8").getText();
+            String []Sfjb = new String[]{worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target]+"10").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+1]+"10").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+2]+"10").getNumberText()};
+            String []Txsjwzx = new String[]{worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target]+"11").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+1]+"11").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+2]+"11").getNumberText()};
+            String []Txjmx = new String[]{worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target]+"12").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+1]+"12").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+2]+"12").getNumberText()};
+            String []Ffkzxxwzx = new String[]{worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target]+"13").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+1]+"13").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+2]+"13").getNumberText()};;
+            String []Aqjrrz = new String[]{worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target]+"14").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+1]+"14").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+2]+"14").getNumberText()};;
+
+            _2_WLHTXAQ wlhtx = new _2_WLHTXAQ(cpdxName,Sfjb,Txsjwzx,Txjmx,Ffkzxxwzx,Aqjrrz);
+            //计算每个测评指标的dak分数 得到S（i,j,k）的分值并累加
+            wlSfjbScore +=getDAKScore(Sfjb);
+            wlTxsjwzxScore += getDAKScore(Txsjwzx);
+            wlTxjmxScore += getDAKScore(Txjmx);
+            wlFfkzxxwzxScore += getDAKScore(Ffkzxxwzx);
+            wlAqjrrzScore += getDAKScore(Aqjrrz);
+            wlhtxList.add(wlhtx);
+            //检查不适用的测评指标，将权重置为0
+            int[] res=wlhtx.bsyRes(Sfjb,Txsjwzx,Txjmx,Ffkzxxwzx,Aqjrrz);
+            for(int j = 0;j<5;j++){
+                if(res[j]==0){
+                    wlhtxWeigth3[j] = 0;
+                }
+            }
+
+        }
+        //将S（i,j,k）的分值累加结果除以测评对象个数算出Si，j
+        wlSfjbScore/=cpdxCount;
+        wlTxsjwzxScore/=cpdxCount;
+        wlTxjmxScore/=cpdxCount;
+        wlFfkzxxwzxScore/=cpdxCount;
+        wlAqjrrzScore/=cpdxCount;
+
+
+        double []wlhtxCpzbScore = {wlSfjbScore,wlTxsjwzxScore,wlTxjmxScore,wlFfkzxxwzxScore,wlAqjrrzScore};
+        double wlhtxScore =0;
+        weight = 0;
+        //存储不同密评等级的网络层面的测评单元的权值
+
+
+        //根据权值计算网络层面总分
+
+        for(int i =0;i<wlhtxWeigth3.length;i++){
+            wlhtxScore= wlhtxCpzbScore[i]*wlhtxWeigth3[i]+wlhtxScore;
+            weight += wlhtxWeigth3[i];
+        }
+        //网络和通信层面的分数
+        wlhtxScore = wlhtxScore/weight*20;
+
+
+
+        //设备层面计算分数
+        cpdxCount = 0;
+
+        //存储不同密评等级的设备层面的测评单元的权值
+        double []sbhjsWeigth3 =  ExcelInfoUtil.CPZB_weight_ARRAY[dbjbIdex][2];
+        //获取测评对象个数，i=4从e开始取
+        for(int i = 4; !(worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[i]+"16").getText().isEmpty()); i=i+3){
+            cpdxCount++;
+        }
+        List<_3_SBHJSAQ> sbhjsList = new ArrayList<>();
+        double sbSfjbScore = 0;
+        double sbYcgltdScore = 0;
+        double sbFfkzxxwzxScore = 0;
+        double sbZyxxzyaqbjScore = 0;
+        double sbRzjlwzxScore = 0;
+        double sbZzkzxcxScore = 0;
+        //按照测评对象取数据
+        //每次循环取一个对象
+        for(int i=0;i<cpdxCount;++i){
+            int target = 3*i+4;
+            //读取excel数据
+            String cpdxName = worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target]+"16").getText();
+            String []Sfjb = new String[]{worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target]+"18").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+1]+"18").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+2]+"18").getNumberText()};
+            String []Ycgltd = new String[]{worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target]+"19").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+1]+"19").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+2]+"19").getNumberText()};
+            String []Ffkzxxwzx = new String[]{worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target]+"20").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+1]+"20").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+2]+"20").getNumberText()};
+            String []Zyxxzyaqbj = new String[]{worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target]+"21").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+1]+"21").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+2]+"21").getNumberText()};;
+            String []Rzjlwzx = new String[]{worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target]+"22").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+1]+"22").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+2]+"22").getNumberText()};;
+            String []Zzkzxcx = new String[]{worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target]+"23").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+1]+"23").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+2]+"23").getNumberText()};;
+
+            _3_SBHJSAQ sbhjs = new _3_SBHJSAQ(cpdxName,Sfjb,Ycgltd,Ffkzxxwzx,Zyxxzyaqbj,Rzjlwzx,Zzkzxcx);
+            //计算每个测评指标的dak分数 得到S（i,j,k）的分值并累加
+            sbSfjbScore +=getDAKScore(Sfjb);
+            sbYcgltdScore += getDAKScore(Ycgltd);
+            sbFfkzxxwzxScore += getDAKScore(Ffkzxxwzx);
+            sbZyxxzyaqbjScore += getDAKScore(Zyxxzyaqbj);
+            sbRzjlwzxScore += getDAKScore(Rzjlwzx);
+            sbZzkzxcxScore += getDAKScore(Zzkzxcx);
+
+            sbhjsList.add(sbhjs);
+            int[] res=sbhjs.bsyRes(Sfjb,Ycgltd,Ffkzxxwzx,Zyxxzyaqbj,Rzjlwzx,Zzkzxcx);
+            for(int j = 0;j<6;j++){
+                if(res[j]==0){
+                    sbhjsWeigth3[j] = 0;
+                }
+            }
+
+        }
+        //将S（i,j,k）的分值累加结果除以测评对象个数算出Si，j
+        sbSfjbScore/=cpdxCount;
+        sbYcgltdScore/=cpdxCount;
+        sbFfkzxxwzxScore/=cpdxCount;
+        sbZyxxzyaqbjScore/=cpdxCount;
+        sbRzjlwzxScore/=cpdxCount;
+        sbZzkzxcxScore/=cpdxCount;
+
+
+
+        double []sbhjsCpzbScore = {sbSfjbScore,sbYcgltdScore,sbFfkzxxwzxScore,sbZyxxzyaqbjScore,sbRzjlwzxScore,sbZzkzxcxScore};
+        double sbhjsScore =0;
+        weight = 0;
+
+        //根据权值计算设备层面总分
+        for(int i =0;i<sbhjsWeigth3.length;i++){
+            sbhjsScore= sbhjsCpzbScore[i]*sbhjsWeigth3[i]+sbhjsScore;
+            weight += sbhjsWeigth3[i];
+        }
+        //设备层面的分数
+        sbhjsScore = sbhjsScore/weight*10;
+
+
+
+        //应用层面计算分数
+        cpdxCount = 0;
+
+        //存储不同密评等级的应用层面的测评单元的权值
+        double []yyhsjWeigth3 =  ExcelInfoUtil.CPZB_weight_ARRAY[dbjbIdex][3];
+        //获取测评对象个数，i=4从e开始取
+        for(int i = 4; !(worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[i]+"25").getText().isEmpty()); i=i+3){
+            cpdxCount++;
+        }
+        List<_4_YYHSJAQ> yyhsjList = new ArrayList<>();
+        double yySfjbScore = 0;
+
+        double yyFfkzxxwzxScore = 0;
+        double yyzyxxzyaqbjScore = 0;
+
+        double yycsjmxScore = 0;
+        double yyccjmxScore = 0;
+        double yycswzxScore = 0;
+        double yyccwzxScore = 0;
+        double yybkfrxScore = 0;
+
+        //按照测评对象取数据
+        //每次循环取一个对象
+        for(int i=0;i<cpdxCount;++i){
+            int target = 3*i+4;
+
+            String cpdxName = worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target]+"25").getText();
+            String []Sfjb = new String[]{worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target]+"27").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+1]+"27").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+2]+"27").getNumberText()};
+            String []Ffkzxxwzx = new String[]{worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target]+"28").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+1]+"28").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+2]+"28").getNumberText()};
+            String []zyxxzyaqbj = new String[]{worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target]+"29").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+1]+"29").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+2]+"29").getNumberText()};
+            String []csjmx = new String[]{worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target]+"30").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+1]+"30").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+2]+"30").getNumberText()};;
+            String []ccjmx = new String[]{worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target]+"31").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+1]+"31").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+2]+"31").getNumberText()};;
+            String []cswzx = new String[]{worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target]+"32").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+1]+"32").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+2]+"32").getNumberText()};;
+            String []ccwzx = new String[]{worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target]+"33").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+1]+"33").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+2]+"33").getNumberText()};;
+            String []bkfrx = new String[]{worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target]+"34").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+1]+"34").getNumberText(),worksheet.getRange().get(ExcelInfoUtil.COLUMN_RANGE_ARRAY[target+2]+"34").getNumberText()};;
+            _4_YYHSJAQ yyhsj = new _4_YYHSJAQ(cpdxName,Sfjb,Ffkzxxwzx,zyxxzyaqbj,csjmx,ccjmx,cswzx,ccwzx,bkfrx);
+            //计算每个测评指标的dak分数 得到S（i,j,k）的分值并累加
+            yySfjbScore +=getDAKScore(Sfjb);
+            yyFfkzxxwzxScore += getDAKScore(Ffkzxxwzx);
+            yyzyxxzyaqbjScore += getDAKScore(zyxxzyaqbj);
+            yycsjmxScore += getDAKScore(csjmx);
+            yyccjmxScore += getDAKScore(ccjmx);
+            yycswzxScore += getDAKScore(cswzx);
+            yyccwzxScore += getDAKScore(ccwzx);
+            yybkfrxScore += getDAKScore(bkfrx);
+
+            yyhsjList.add(yyhsj);
+
+            int[] res=yyhsj.bsyRes(Sfjb,Ffkzxxwzx,zyxxzyaqbj,csjmx,ccjmx,cswzx,ccwzx,bkfrx);
+            for(int j = 0;j<8;j++){
+                if(res[j]==0){
+                    yyhsjWeigth3[j] = 0;
+                }
+            }
+
+        }
+        //将S（i,j,k）的分值累加结果除以测评对象个数算出Si，j
+        yySfjbScore /=cpdxCount;
+        yyFfkzxxwzxScore /=cpdxCount;
+        yyzyxxzyaqbjScore /=cpdxCount;
+        yycsjmxScore /=cpdxCount;
+        yyccjmxScore /=cpdxCount;
+        yycswzxScore /=cpdxCount;
+        yyccwzxScore /=cpdxCount;
+        yybkfrxScore /=cpdxCount;
+
+
+
+
+        double []yyhsjCpzbScore = {yySfjbScore,yyFfkzxxwzxScore,yyzyxxzyaqbjScore,yycsjmxScore,yyccjmxScore,yycswzxScore,yyccwzxScore,yybkfrxScore};
+        double yyhsjScore =0;
+        weight = 0;
+
+
+        //根据权值计算应用层面总分
+        for(int i =0;i<yyhsjWeigth3.length;i++){
+            yyhsjScore= yyhsjCpzbScore[i]*yyhsjWeigth3[i]+yyhsjScore;
+            weight += yyhsjWeigth3[i];
+        }
+
+        //应用层面的分数
+        yyhsjScore = yyhsjScore/weight*30;
+
+        double Score = wlhhjScore+wlhtxScore+sbhjsScore+yyhsjScore;
+        System.out.println(wlhhjScore+wlhtxScore+sbhjsScore+yyhsjScore);
+
+
+        return Score;
     }
 }

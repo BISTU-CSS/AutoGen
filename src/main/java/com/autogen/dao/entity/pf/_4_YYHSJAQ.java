@@ -28,4 +28,35 @@ public class _4_YYHSJAQ {
         this.zysjccwzx = zysjccwzx;
         this.bkfrx = bkfrx;
     }
+    public int[] bsyRes(String[] sfjb, String[] fwkzxxwzx, String[] zyxxzyaqbjwzx, String[] zysjcsjmx, String[] zysjccjmx, String[] zysjcswzx, String[] zysjccwzx, String[] bkfrx){
+        int[] res = new int[8];
+        for(int i = 0;i < 8;i++){
+            res[i] = 1;
+        }
+        if(sfjb[0].equals("/")){
+            res[0] = 0;
+        }
+        if(fwkzxxwzx[0].equals("/")){
+            res[1] = 0;
+        }
+        if(zyxxzyaqbjwzx[0].equals("/")){
+            res[2] = 0;
+        }
+        if(zysjcsjmx[0].equals("/")){
+            res[3] = 0;
+        }
+        if(zysjccjmx[0].equals("/")){
+            res[4] = 0;
+        }
+        if(zysjcswzx[0].equals("/")){
+            res[5] = 0;
+        }
+        if(zysjccwzx[0].equals("/")){
+            res[6] = 0;
+        }
+        if(bkfrx[0].equals("/")){
+            res[7] = 0;
+        }
+        return res;
+    }
 }

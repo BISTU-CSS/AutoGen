@@ -9,6 +9,7 @@ import com.autogen.dao.entity.pf._2_WLHTXAQ;
 import com.autogen.dao.entity.pf._3_SBHJSAQ;
 import com.autogen.dao.entity.pf._4_YYHSJAQ;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,5 +27,13 @@ public interface ServicePF {
     //生成表格所需数据-应用
     List<_4_YYHSJAQ> getYyhsjData(List<Yyhsj> yyhsjList);
 
-    void genExcel(List<_1_WLHHJAQ> wlhhj,List<_2_WLHTXAQ> wlhtx,List<_3_SBHJSAQ> sbhjs,List<_4_YYHSJAQ> yyhsj);
+    void genExcel(List<_1_WLHHJAQ> wlhhj,List<_2_WLHTXAQ> wlhtx,List<_3_SBHJSAQ> sbhjs,List<_4_YYHSJAQ> yyhsj,String dbjb);
+
+    /**
+     * （前端接口）根据用户上传的excel文件，生成对应的评分单
+     * @param name 项目名
+     * @param excelFile 用户修改好的excel文件
+     * @return 评分单，格式未定
+     */
+    double gen_PF(String name);
 }
