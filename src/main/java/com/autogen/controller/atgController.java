@@ -184,7 +184,9 @@ public class atgController {
 //    }
     // 根据json生成评分excel
     @PostMapping("/api/culate")
-    public ResponseEntity<Object> culateScore(@RequestBody JSONObject data) throws Exception{
+    public ResponseEntity<Object> culateScore(@RequestBody JSONObject xmmc) throws Exception{
+        String sysname = xmmc.getString("xmmc");
+        JSONObject data = servicePF.getJSONData(sysname);
         QuestionNaire questionNaire = new QuestionNaire();
         MyJSON.parsingJSON(data, questionNaire);
         Concent concent = Convert.convertToSence(questionNaire);
@@ -200,7 +202,7 @@ public class atgController {
         //生成excel的方法，默认放在这里：ReplaceData.xlsx
         servicePF.genExcel(wlhhj,wlhtx,sbhjs,yyhsj,dbjb);
         //将这个文件上传回二进制流
-        FileSystemResource file = new FileSystemResource("ReplaceData.xlsx");
+        FileSystemResource file = new FileSystemResource("D:\\idea\\AutoGen\\pingfen.xlsx");
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
         //这里定制下载文件的名称
@@ -212,7 +214,6 @@ public class atgController {
                 .contentLength(file.contentLength())
                 .contentType(MediaType.parseMediaType("application/octet-stream"))//以二进制流的形式返回
                 .body(new InputStreamResource(file.getInputStream()));
-
     }
     /**
      * 根据上传的Excel文件，得到最后的评分细节表格

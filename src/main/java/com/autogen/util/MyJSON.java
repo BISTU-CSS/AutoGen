@@ -13,7 +13,6 @@ public class MyJSON {
         questionNaire.setSys_sshy(jsonObject.getString("sys_sshy"));
         questionNaire.setSys_sshy_qt(jsonObject.getString("sys_sshy_qt"));
         questionNaire.setSys_xmlx(jsonObject.getString("sys_xmlx"));
-
         questionNaire.setSys_name(jsonObject.getString("sys_name"));
         questionNaire.setSys_unit(jsonObject.getString("sys_unit"));
         questionNaire.setSys_dbjb(jsonObject.getString("sys_dbjb"));

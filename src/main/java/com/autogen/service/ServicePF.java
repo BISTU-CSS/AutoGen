@@ -1,5 +1,6 @@
 package com.autogen.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.autogen.dao.entity.input.Sbhjs;
 import com.autogen.dao.entity.input.Wlhhj;
 import com.autogen.dao.entity.input.Wlhtx;
@@ -29,10 +30,11 @@ public interface ServicePF {
 
     void genExcel(List<_1_WLHHJAQ> wlhhj,List<_2_WLHTXAQ> wlhtx,List<_3_SBHJSAQ> sbhjs,List<_4_YYHSJAQ> yyhsj,String dbjb);
 
+    JSONObject getJSONData(String sysname);
+
     /**
      * （前端接口）根据用户上传的excel文件，生成对应的评分单
      * @param name 项目名
-     * @param excelFile 用户修改好的excel文件
      * @return 评分单，格式未定
      */
     double gen_PF(String name);

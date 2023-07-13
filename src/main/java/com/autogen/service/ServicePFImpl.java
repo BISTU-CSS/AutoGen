@@ -1,8 +1,11 @@
 package com.autogen.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.autogen.dao.Mapper.DeviceMapper;
 import com.autogen.dao.Mapper.InformationMapper;
 import com.autogen.dao.Mapper.ScenceMapper;
+import com.autogen.dao.entity.Information;
 import com.autogen.dao.entity.ScencePo;
 import com.autogen.dao.entity.input.Sbhjs;
 import com.autogen.dao.entity.input.Wlhhj;
@@ -227,7 +230,14 @@ public class ServicePFImpl implements ServicePF{
 
         }
 
-        workbook.saveToFile("ReplaceData.xlsx", ExcelVersion.Version2016);
+        workbook.saveToFile("pingfen.xlsx", ExcelVersion.Version2016);
+    }
+
+    @Override
+    public JSONObject getJSONData(String sysname) {
+        Information information = informationMapper.selectOne(new QueryWrapper<Information>().eq("xmmc",sysname));
+        String json = "{\"data\":"+information.getData() + "}";
+        return JSONObject.parseObject(json);
     }
 
     @Override
@@ -531,7 +541,7 @@ public class ServicePFImpl implements ServicePF{
         yyhsjScore = yyhsjScore/weight*30;
 
         double Score = wlhhjScore+wlhtxScore+sbhjsScore+yyhsjScore;
-        System.out.println(wlhhjScore+wlhtxScore+sbhjsScore+yyhsjScore);
+        //System.out.println(wlhhjScore+wlhtxScore+sbhjsScore+yyhsjScore);
 
 
         return Score;
