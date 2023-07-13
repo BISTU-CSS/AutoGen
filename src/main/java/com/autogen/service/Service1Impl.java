@@ -36,6 +36,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -692,17 +693,19 @@ public class Service1Impl implements Service1 {
         map.put("table57", table57List);
         List<String> cpzbList = null;
         List<String> dycpList = null;
+        String dycp = "";
         List<List<Table59Util>> cpzbListList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < concent.getWlhhjList().size(); j++) {
                 zbList = new ArrayList<>();
                 cpzbList = new ArrayList<>();
                 dycpList = new ArrayList<>();
+                dycp = "";
                 table58Init(concent, zbList, cpzbList, dycpList, j);
                 Table59Util table59Util = new Table59Util();
                 if (j == 0) {
                     table59Util.setZb(zbList.get(i));
-                    table59Util.setDycp(dycpList.get(i));
+                    table59Util.setDycp(dycp);
                 } else {
                     table59Util.setZb("");
                     table59Util.setDycp("");
@@ -719,11 +722,12 @@ public class Service1Impl implements Service1 {
                 zbList = new ArrayList<>();
                 cpzbList = new ArrayList<>();
                 dycpList = new ArrayList<>();
+                dycp = "";
                 table59Init(concent, zbList, cpzbList, dycpList, j);
                 Table59Util table59Util = new Table59Util();
                 if (j == 0) {
                     table59Util.setZb(zbList.get(i));
-                    table59Util.setDycp(dycpList.get(i));
+                    table59Util.setDycp(dycp);
                 } else {
                     table59Util.setZb("");
                     table59Util.setDycp("");
@@ -740,11 +744,12 @@ public class Service1Impl implements Service1 {
                 zbList = new ArrayList<>();
                 cpzbList = new ArrayList<>();
                 dycpList = new ArrayList<>();
+                dycp = "";
                 table510Init(concent, zbList, cpzbList, dycpList, j);
                 Table59Util table59Util = new Table59Util();
                 if (j == 0) {
                     table59Util.setZb(zbList.get(i));
-                    table59Util.setDycp(dycpList.get(i));
+                    table59Util.setDycp(dycp);
                 } else {
                     table59Util.setZb("");
                     table59Util.setDycp("");
@@ -761,11 +766,12 @@ public class Service1Impl implements Service1 {
                 zbList = new ArrayList<>();
                 cpzbList = new ArrayList<>();
                 dycpList = new ArrayList<>();
+                dycp = "";
                 table511Init(concent, zbList, cpzbList, dycpList, j);
                 Table59Util table59Util = new Table59Util();
                 if (j == 0) {
                     table59Util.setZb(zbList.get(i));
-                    table59Util.setDycp(dycpList.get(i));
+                    table59Util.setDycp(dycp);
                 } else {
                     table59Util.setZb("");
                     table59Util.setDycp("");

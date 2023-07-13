@@ -14,11 +14,13 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Builder
 @Accessors(chain = true)
-@TableName("user")
+@TableName("user_info")
 public class User {
     @TableId(value = "id",type =  IdType.AUTO)
     private int id;
     private String loginName;  //用户名
     private String userName;   //姓名
     private String password;   //口令
+    private String authority;  //权限
+    private String teacher;    //负责老师
 }

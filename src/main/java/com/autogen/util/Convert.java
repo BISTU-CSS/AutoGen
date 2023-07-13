@@ -614,7 +614,7 @@ public class Convert {
                 sbhjs.setSbhjs_rzjl("74-02-1");
                 sbhjs.setSbhjs_zykz("75-02-1");
             }
-            if (sbhjs.getSbhjs_sbmc().equals("协同签名系统") || sbhjs.getSbhjs_sbmc().equals("安全电子签章系统") || sbhjs.getSbhjs_sbmc().equals("数字证书认证系统")) {
+            if (sbhjs.getSbhjs_sbmc().equals("协同签名系统") ||sbhjs.getSbhjs_sbmc().equals("密钥管理系统")|| sbhjs.getSbhjs_sbmc().equals("安全电子签章系统") || sbhjs.getSbhjs_sbmc().equals("数字证书认证系统")) {
                 sbhjs.setSbhjs_sfjb("70-03-1");
                 sbhjs.setSbhjs_ycgl("71-03-1");
                 sbhjs.setSbhjs_xtzy("72-03-1");

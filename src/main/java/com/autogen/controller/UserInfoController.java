@@ -48,7 +48,6 @@ public class UserInfoController {
             Map<String,Object> res =  userInfoService.findPage(pageNum,pageSize,user_name);
             return new JsonResult(res, "ok");
         }catch (Exception e){
-            System.out.println(e);
             return new JsonResult(null, "error");
         }
     }

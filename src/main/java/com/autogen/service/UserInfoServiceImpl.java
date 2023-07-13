@@ -25,7 +25,7 @@ public class UserInfoServiceImpl implements UserInfoService{
     @Override
     @Transactional
     public int addOrUpdate(UserInfo userInfo){
-        System.out.println(userInfo);
+        //System.out.println(userInfo);
         if(userInfo.getId() == null){ //UserInfo没有id，表示新增
             return userInfoMapper.insert(userInfo);
         } else {

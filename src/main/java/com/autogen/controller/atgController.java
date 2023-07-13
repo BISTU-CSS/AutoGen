@@ -72,7 +72,7 @@ public class atgController {
         QuestionNaire questionNaire = new QuestionNaire();
         MyJSON.parsingJSON(data, questionNaire);
         Concent concent = Convert.convertToSence(questionNaire);
-//        System.out.println(concent);
+        //System.out.println(concent);
         service1.BasicTemplate(questionNaire, concent);
         service1.generate();
 
