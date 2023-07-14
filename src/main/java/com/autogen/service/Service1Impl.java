@@ -579,6 +579,7 @@ public class Service1Impl implements Service1 {
 //            msList = new ArrayList<>();
 //            jlList = new ArrayList<>();
 //            table53Init(concent, zbList, cpList, msList, jlList, i);
+            System.out.println(sbhjs);
             scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", sbhjs.getSbhjs_sfjb()));
             textRenderData = new TextRenderData("身份鉴别：" + scencePo.getDescription());
             of.addItem(textRenderData);

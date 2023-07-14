@@ -593,7 +593,7 @@ public class Convert {
                     || sbhjs.getSbhjs_sbmc().equals("智能密码钥匙") || sbhjs.getSbhjs_sbmc().equals("可信浏览器")
                     || sbhjs.getSbhjs_sbmc().equals("国密设备证书") || sbhjs.getSbhjs_sbmc().equals("云安全管理平台（CSMP）")
                     || sbhjs.getSbhjs_sbmc().equals("国密电子监控系统") || sbhjs.getSbhjs_sbmc().equals("国密门禁系统")
-                    || sbhjs.getSbhjs_sbmc().equals("密码应用技术服务") || sbhjs.getSbhjs_sbmc().equals("国密SSL证书证书")) {
+                    || sbhjs.getSbhjs_sbmc().equals("密码应用技术服务") || sbhjs.getSbhjs_sbmc().equals("国密SSL证书")) {
                 continue;
             }
             if (sbhjs.getSbhjs_sbmc().equals("国密堡垒机")) {
