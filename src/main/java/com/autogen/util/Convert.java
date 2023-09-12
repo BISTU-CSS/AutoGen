@@ -20,53 +20,57 @@ public class Convert {
             add("工控");
         }};
         List<String> sys_xmlx = new ArrayList<String>() {{
-            add("单系统模式");
-            add("多系统模式");
-            add("云租户模式");
-            add("云租户+云平台模式");
+            add("非云平台");
+            add("云平台过密评");
+            add("云租户过密评");
+
+//            add("单系统模式");
+//            add("多系统模式");
+//            add("云租户模式");
+//            add("云租户+云平台模式");
         }};
-        List<String> sys_xtjg = new ArrayList<String>() {{
-            add("C/S架构");
-            add("B/S架构");
-        }};
-        List<String> sys_xtjs = new ArrayList<String>() {{
-            add("未建设");
-            add("正在建设");
-            add("已上线");
-        }};
+//        List<String> sys_xtjg = new ArrayList<String>() {{
+//            add("C/S架构");
+//            add("B/S架构");
+//        }};
+//        List<String> sys_xtjs = new ArrayList<String>() {{
+//            add("未建设");
+//            add("正在建设");
+//            add("已上线");
+//        }};
         List<String> sys_dbjb = new ArrayList<String>() {{
             add("二级");
             add("三级");
-            add("四级");
+//            add("四级");
         }};
-        List<String> sys_mpsc = new ArrayList<String>() {{
-            add("首次");
-            add("做过,未通过");
-            add("做过,已通过");
-        }};
-        List<String> sys_mmzd = new ArrayList<String>() {{
-            add("未建设");
-            add("已建设");
-        }};
-        List<String> sys_ysbs = new ArrayList<String>() {{
-            add("在云上");
-            add("不在云上");
-        }};
-        List<String> sys_rzys = new ArrayList<String>() {{
-            add("云平台已过密评");
-            add("云平台尚未过密评");
-            add("");
-        }};
-        List<String> mpjb_fwd = new ArrayList<String>() {{
-            add("HTTPS");
-            add("HTTP");
-            add("其他");
-        }};
-        List<String> mpjb_ydd = new ArrayList<String>() {{
-            add("无");
-            add("手机APP");
-            add("微信小程序");
-        }};
+//        List<String> sys_mpsc = new ArrayList<String>() {{
+//            add("首次");
+//            add("做过,未通过");
+//            add("做过,已通过");
+//        }};
+//        List<String> sys_mmzd = new ArrayList<String>() {{
+//            add("未建设");
+//            add("已建设");
+//        }};
+//        List<String> sys_ysbs = new ArrayList<String>() {{
+//            add("在云上");
+//            add("不在云上");
+//        }};
+//        List<String> sys_rzys = new ArrayList<String>() {{
+//            add("云平台已过密评");
+//            add("云平台尚未过密评");
+//            add("");
+//        }};
+//        List<String> mpjb_fwd = new ArrayList<String>() {{
+//            add("HTTPS");
+//            add("HTTP");
+//            add("其他");
+//        }};
+//        List<String> mpjb_ydd = new ArrayList<String>() {{
+//            add("无");
+//            add("手机APP");
+//            add("微信小程序");
+//        }};
         List<String> mpjb_sfrz = new ArrayList<String>() {{
             add("人工登记");
             add("IC卡");
@@ -110,6 +114,7 @@ public class Convert {
             add("PC客户端");
             add("手机APP");
             add("微信小程序");
+            add("SSH后台登录");
         }};
         List<String> sys_xtyh_sfrz = new ArrayList<String>() {{
             add("U盘证书");
@@ -124,11 +129,11 @@ public class Convert {
             add("专网");
             add("内网");
         }};
-        List<String> sys_wlhhj_jflx = new ArrayList<String>() {{
-            add("新机房");
-            add("旧机房");
-            add("租机房");
-        }};
+//        List<String> sys_wlhhj_jflx = new ArrayList<String>() {{
+//            add("新机房");
+//            add("旧机房");
+//            add("租机房");
+//        }};
         List<String> sys_wlhhj_mj = new ArrayList<String>() {{
             add("国密电子");
             add("普通电子");
@@ -218,15 +223,17 @@ public class Convert {
             questionNaire.setSys_sshy(setString(questionNaire.getSys_sshy(), sys_sshy));
         }
         questionNaire.setSys_xmlx(setString(questionNaire.getSys_xmlx(), sys_xmlx));
-        questionNaire.setSys_xtjg(setString(questionNaire.getSys_xtjg(), sys_xtjg));
-        questionNaire.setSys_xtjs(setString(questionNaire.getSys_xtjs(), sys_xtjs));
+//        questionNaire.setSys_xtjg(setString(questionNaire.getSys_xtjg(), sys_xtjg));
+//        questionNaire.setSys_xtjs(setString(questionNaire.getSys_xtjs(), sys_xtjs));
         questionNaire.setSys_dbjb(setString(questionNaire.getSys_dbjb(), sys_dbjb));
-        questionNaire.setSys_mpsc(setString(questionNaire.getSys_mpsc(), sys_mpsc));
-        questionNaire.setSys_mmzd(setString(questionNaire.getSys_mmzd(), sys_mmzd));
-        questionNaire.setSys_ysbs(setString(questionNaire.getSys_ysbs(), sys_ysbs));
-        questionNaire.setSys_rzys(setString(questionNaire.getSys_rzys(), sys_rzys));
-        questionNaire.setMpjb_fwd(setString(questionNaire.getMpjb_fwd(), mpjb_fwd));
-        questionNaire.setMpjb_ydd(setList(questionNaire.getMpjb_ydd(), mpjb_ydd));
+//        questionNaire.setSys_mpsc(setString(questionNaire.getSys_mpsc(), sys_mpsc));
+//        questionNaire.setSys_mmzd(setString(questionNaire.getSys_mmzd(), sys_mmzd));
+//        questionNaire.setSys_ysbs(setString(questionNaire.getSys_ysbs(), sys_ysbs));
+//        questionNaire.setSys_rzys(setString(questionNaire.getSys_rzys(), sys_rzys));
+//        questionNaire.setMpjb_fwd(setString(questionNaire.getMpjb_fwd(), mpjb_fwd));
+//        questionNaire.setMpjb_ydd(setList(questionNaire.getMpjb_ydd(), mpjb_ydd));
+
+
         List<InputTable22> table22List = new ArrayList<>();
         for (int i = 0; i < questionNaire.getInputTable22List().size(); i++) {
             InputTable22 table22 = new InputTable22();
@@ -239,15 +246,17 @@ public class Convert {
             table22List.add(table22);
         }
         questionNaire.setInputTable22List(table22List);
+
+
         List<InputTable23> table23List = new ArrayList<>();
         for (int i = 0; i < questionNaire.getInputTable23List().size(); i++) {
             InputTable23 table23 = new InputTable23();
             table23.setJfmc(questionNaire.getInputTable23List().get(i).getJfmc());
-            table23.setJflx(setString(questionNaire.getInputTable23List().get(i).getJflx(), sys_wlhhj_jflx));
+//            table23.setJflx(setString(questionNaire.getInputTable23List().get(i).getJflx(), sys_wlhhj_jflx));
             table23.setMj(setString(questionNaire.getInputTable23List().get(i).getMj(), sys_wlhhj_mj));
             table23.setSfrz(setList(questionNaire.getInputTable23List().get(i).getSfrz(), sys_wlhhj_sfrz));
             table23.setSpjk(setString(questionNaire.getInputTable23List().get(i).getSpjk(), sys_wlhhj_spjk));
-            table23.setZjsb(setString(questionNaire.getInputTable23List().get(i).getZjsb(), sf));
+//            table23.setZjsb(setString(questionNaire.getInputTable23List().get(i).getZjsb(), sf));
             table23List.add(table23);
         }
         questionNaire.setInputTable23List(table23List);
@@ -257,9 +266,9 @@ public class Convert {
             table24.setType(questionNaire.getInputTable24List().get(i).getType());
             table24.setTxzt(setString(questionNaire.getInputTable24List().get(i).getTxzt(), sys_wlhtx_txzt));
             table24.setSfrz(setList(questionNaire.getInputTable24List().get(i).getSfrz(), sys_wlhtx_sfrz));
-            table24.setZysj(setString(questionNaire.getInputTable24List().get(i).getZysj(), sf));
+//            table24.setZysj(setString(questionNaire.getInputTable24List().get(i).getZysj(), sf));
             table24.setSl(questionNaire.getInputTable24List().get(i).getSl());
-            table24.setSm(questionNaire.getInputTable24List().get(i).getSm());
+//            table24.setSm(questionNaire.getInputTable24List().get(i).getSm());
             table24.setCpdx(questionNaire.getInputTable24List().get(i).getCpdx());
             table24List.add(table24);
         }
@@ -298,7 +307,7 @@ public class Convert {
             InputTable27 table27 = new InputTable27();
             table27.setYwyy(questionNaire.getInputTable27List().get(i).getYwyy());
             table27.setGnms(questionNaire.getInputTable27List().get(i).getGnms());
-            table27.setFwfs(setString(questionNaire.getInputTable27List().get(i).getFwfs(), mpjb_fwd));
+//            table27.setFwfs(setString(questionNaire.getInputTable27List().get(i).getFwfs(), mpjb_fwd));
             table27.setBkfr(setString(questionNaire.getInputTable27List().get(i).getBkfr(), sys_ywyy_bkfr));
             table27.setJtqk1(questionNaire.getInputTable27List().get(i).getJtqk1());
             table27.setDzqm(setString(questionNaire.getInputTable27List().get(i).getDzqm(), sys_ywyy_bkfr));

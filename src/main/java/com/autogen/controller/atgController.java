@@ -72,12 +72,13 @@ public class atgController {
         QuestionNaire questionNaire = new QuestionNaire();
         MyJSON.parsingJSON(data, questionNaire);
         Concent concent = Convert.convertToSence(questionNaire);
-        //System.out.println(concent);
+        System.out.println(questionNaire);
+        System.out.println(concent);
         service1.BasicTemplate(questionNaire, concent);
         service1.generate();
 
 //        FileSystemResource file = new FileSystemResource("/home/ubuntu/Desktop/code_package/complete_example.docx");
-        FileSystemResource file = new FileSystemResource("D:\\IDEA\\AutoGen\\example.docx");
+        FileSystemResource file = new FileSystemResource("C:\\Users\\wei\\Desktop\\automatic generation\\AutoGen\\example.docx");
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
         //这里定制下载文件的名称
@@ -98,7 +99,7 @@ public class atgController {
         MyJSON.parsingJSON(data,questionNaire);
         informationService.exportSBQD(questionNaire.getSbqd(),questionNaire.getSys_name());
 //        FileSystemResource file = new FileSystemResource("/home/ubuntu/Desktop/code_package/sbqd.xlsx");
-        FileSystemResource file = new FileSystemResource("D:\\IDEA\\AutoGen\\sbqd.xlsx");
+        FileSystemResource file = new FileSystemResource("C:\\Users\\wei\\Desktop\\automatic generation\\AutoGen\\sbqd.xlsx");
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
         //这里定制下载文件的名称

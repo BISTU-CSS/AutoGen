@@ -1,5 +1,5 @@
 package com.autogen.service.atgInterface;
-
+//生成逻辑
 
 import com.autogen.dao.entity.cp1.Chaptre1input;
 import com.autogen.dao.entity.cp2.Chaptre2input;

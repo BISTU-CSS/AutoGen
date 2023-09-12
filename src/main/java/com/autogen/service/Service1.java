@@ -1,5 +1,5 @@
 package com.autogen.service;
-
+//生成逻辑
 import com.alibaba.fastjson.JSONObject;
 import com.autogen.dao.entity.input.*;
 import com.autogen.dao.entity.pf._1_WLHHJAQ;

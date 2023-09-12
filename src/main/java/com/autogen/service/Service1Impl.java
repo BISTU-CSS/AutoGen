@@ -89,6 +89,7 @@ public class Service1Impl implements Service1 {
         c2.sys_dbsj = (String) map.get("dbsj");
         c2.sys_cpjg = (String) map.get("cpjg");
 
+        c2.table21List = (List<InputTable22>) map.get("table21");
         c2.table22List = (List<InputTable22>) map.get("table22");
         c2.table23List = (List<InputTable23>) map.get("table23");
         c2.table25List = (List<InputTable25>) map.get("table25");
@@ -119,6 +120,8 @@ public class Service1Impl implements Service1 {
         c5.table59List = (List<Table59Util>) map.get("table59");
         c5.table510List = (List<Table59Util>) map.get("table510");
         c5.table511List = (List<Table59Util>) map.get("table511");
+        c5.table512List = (List<Table512>) map.get("table512");
+        c5.table513List = (List<Table513>) map.get("table513");
         c5.s582 = (NumberingRenderData) map.get("s582");
 
 //
@@ -228,6 +231,20 @@ public class Service1Impl implements Service1 {
         map.put("sxsj", questionNaire.getSys_sxsj());
         map.put("dbsj", questionNaire.getSys_dbsj());
         map.put("cpjg", questionNaire.getSys_cpjg());
+
+        List<Table21> table21List = new ArrayList<>();
+        for (int i = 0; i < questionNaire.getInputTable22List().size(); i++) {
+            Table21 table21 = new Table21();
+            table21.setYwyy(questionNaire.getInputTable22List().get(i).getYwyy());
+            table21.setYh(questionNaire.getInputTable22List().get(i).getYh());
+            table21.setDlfs(StringUtils.strip(questionNaire.getInputTable22List().get(i).getDlfs().toString(),"[]"));
+            table21.setSfrz(StringUtils.strip(questionNaire.getInputTable22List().get(i).getSfrz().toString(), "[]"));
+            table21.setSzwl(StringUtils.strip(questionNaire.getInputTable22List().get(i).getSzwl().toString(),"[]"));
+            table21List.add(table21);
+        }
+        map.put("table21", table21List);
+
+
         List<Table22> table22List = new ArrayList<>();
         for (int i = 0; i < questionNaire.getInputTable23List().size(); i++) {
             Table22 table22 = new Table22();
@@ -240,6 +257,7 @@ public class Service1Impl implements Service1 {
             table22List.add(table22);
         }
         map.put("table22", table22List);
+
         List<Table23> table23List = new ArrayList<>();
         for (int i = 0; i < questionNaire.getInputTable24List().size(); i++) {
             Table23 table23 = new Table23();
@@ -579,7 +597,7 @@ public class Service1Impl implements Service1 {
 //            msList = new ArrayList<>();
 //            jlList = new ArrayList<>();
 //            table53Init(concent, zbList, cpList, msList, jlList, i);
-            System.out.println(sbhjs);
+//            System.out.println(sbhjs);
             scencePo = scenceMapper.selectOne(new QueryWrapper<ScencePo>().eq("scence", sbhjs.getSbhjs_sfjb()));
             textRenderData = new TextRenderData("身份鉴别：" + scencePo.getDescription());
             of.addItem(textRenderData);
@@ -651,6 +669,8 @@ public class Service1Impl implements Service1 {
         }
         faData.setYyhsjFAList(yyhsjFAList);
         map.put("solutionList", faData);
+        map.put("table512",table512Init(concent));
+        map.put("table513",table513Init(concent));
         Numberings.NumberingBuilder nb = Numberings.ofDecimalParentheses();
         List<String> list = new ArrayList<>();
         for (int i = 0; i < concent.getSbqd().size(); i++) {
@@ -784,10 +804,85 @@ public class Service1Impl implements Service1 {
         }
         cpzbListList.add(table511List);
         map.put("table511", table511List);
+
         Information information = informationMapper.selectOne(new QueryWrapper<Information>().eq("xmmc", concent.getSys_name()));
         if (information != null) {
             informationMapper.update(null, new UpdateWrapper<Information>().set("score", calculateScore(cpzbListList, concent)).eq("xmmc", concent.getSys_name()));
         }
+
+    }
+
+    public List<Table512> table512Init(Concent concent){
+        List<Table512> table512List=new ArrayList<>();
+        Table512 table512_1=new Table512();
+        Table512 table512_2=new Table512();
+
+        boolean flag=false;
+        for(int i=0;i<concent.getYyhsjList().size();i++){
+            if(!concent.getYyhsjList().get(i).yyhsj_bkfr.equals("87-00-1")){
+                flag=true;
+            }
+        }
+        if(flag){
+            table512_1.setId(10);
+            table512_1.setName("不可否认性私钥");
+            table512_1.setSf("SM2");
+            table512_1.setYt("用于实现数据原发行为的不可否认性和数据接收行为的不可否认性");
+            table512_1.setLocation("签名验签服务器");
+            table512List.add(table512_1);
+
+            table512_2.setId(11);
+            table512_2.setName("不可否认性公钥");
+            table512_2.setSf("SM2");
+            table512_2.setYt("以证书形式使用，用于实现数据原发行为的不可否认性和数据接收行为的不可否认性");
+            table512_2.setLocation("密码应用中间件数据库");
+            table512List.add(table512_2);
+
+        }
+        return table512List;
+
+    }
+
+    public List<Table513> table513Init(Concent concent){
+        List<Table513> table513List=new ArrayList<>();
+        Table513 table513_1=new Table513();
+        Table513 table513_2=new Table513();
+
+        boolean flag=false;
+        for(int i=0;i<concent.getYyhsjList().size();i++){
+            if(!concent.getYyhsjList().get(i).yyhsj_bkfr.equals("87-00-1")){
+                flag=true;
+            }
+        }
+        if(flag){
+            table513_1.setId(12);
+            table513_1.setName("不可否认性私钥");
+            table513_1.setProduction("由签名验签服务器内部产生");
+            table513_1.setStorage("由签名验服务器内部存储");
+            table513_1.setFf("不涉及");
+            table513_1.setDrhdc("不涉及");
+            table513_1.setUse("由签名验签服务器内部使用");
+            table513_1.setBfhhf("由签名验签服务器内部备份恢复");
+            table513_1.setGd("不涉及");
+            table513_1.setXh("由签名验签服务器内部销毁");
+
+            table513List.add(table513_1);
+
+            table513_2.setId(13);
+            table513_2.setName("不可否认性公钥");
+            table513_2.setProduction("由签名验签服务器内部产生，由CA签发为公钥证书形式");
+            table513_2.setStorage("以公钥证书形式存储");
+            table513_2.setFf("以公钥证书形式分发");
+            table513_2.setDrhdc("以公钥证书导入导出");
+            table513_2.setUse("以公钥证书形式使用");
+            table513_2.setBfhhf("不涉及、由CA备份和恢复");
+            table513_2.setGd("不涉及、 由CA归档");
+            table513_2.setXh("不涉及、 由CA销毁");
+            table513List.add(table513_2);
+
+        }
+        return table513List;
+
     }
 
     @Override

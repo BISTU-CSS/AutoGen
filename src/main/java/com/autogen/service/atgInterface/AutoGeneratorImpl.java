@@ -22,7 +22,7 @@ import java.util.HashMap;
 public class AutoGeneratorImpl implements AutoGenerator {
 
     //    String path = "/etc/autogen/";
-    String path = "D:\\IDEA\\AutoGen\\src\\main\\resources\\WordTemplate\\";
+    String path = "C:\\Users\\wei\\Desktop\\automatic generation\\AutoGen\\src\\main\\resources\\WordTemplate\\";
 
     @Override
     public XWPFDocument chapter_one_generator(Chaptre1input input) throws IOException {
@@ -50,7 +50,8 @@ public class AutoGeneratorImpl implements AutoGenerator {
                 .bind("table25", policy1)
                 .bind("table261", policy2).bind("table262", policy2)
                 .bind("table263", policy2).bind("table264", policy2).bind("table265", policy2)
-                .bind("table27", policy1).bind("table28", policy1).build();
+                .bind("table27", policy1).bind("table28", policy1)
+                .bind("table21", policy1).build();
         XWPFTemplate template = XWPFTemplate.compile(doc, config).render(new HashMap<String, Object>() {{
             put(ReplaceSymbol.sys_name, input.sys_name);
             put(ReplaceSymbol.sys_unit, input.sys_unit);
@@ -69,6 +70,9 @@ public class AutoGeneratorImpl implements AutoGenerator {
             put(ReplaceSymbol.sys_fwd, input.sys_fwd);
             put(ReplaceSymbol.sys_ydd, input.sys_ydd);
             put(ReplaceSymbol.sys_djbh, input.sys_djbh);
+
+            put(ReplaceSymbol.table21, input.table21List);
+
             put(ReplaceSymbol.table22, input.table22List);
             put(ReplaceSymbol.table23, input.table23List);
 //            put(ReplaceSymbol.table241, input.table241List);
@@ -112,7 +116,8 @@ public class AutoGeneratorImpl implements AutoGenerator {
         XWPFDocument doc = IOManager.readFile(path + "5.docx");
         LoopRowTableRenderPolicy policy = new LoopRowTableRenderPolicy();
         Configure config = Configure.builder().bind("table51", policy).bind("table52", policy).bind("table53", policy).bind("table54", policy)
-                .bind("table57", policy).bind("table58", policy).bind("table59", policy).bind("table510", policy).bind("table511", policy).build();
+                .bind("table57", policy).bind("table58", policy).bind("table59", policy).bind("table510", policy).bind("table511", policy)
+                .bind("table512",policy).bind("table513",policy).build();
 //        XWPFTemplate template =  XWPFTemplate.compile(doc,config).render(input);
         XWPFTemplate template = XWPFTemplate.compile(doc, config).render(new HashMap<String, Object>() {{
             put(ReplaceSymbol.sys_name, input.sys_name);
@@ -124,6 +129,10 @@ public class AutoGeneratorImpl implements AutoGenerator {
             put(ReplaceSymbol.table59, input.table59List);
             put(ReplaceSymbol.table510, input.table510List);
             put(ReplaceSymbol.table511, input.table511List);
+//            System.out.println(input.table512List);
+            put(ReplaceSymbol.table512, input.table512List);
+            put(ReplaceSymbol.table513, input.table513List);
+
             put(ReplaceSymbol.s582, input.s582);
 
         }});

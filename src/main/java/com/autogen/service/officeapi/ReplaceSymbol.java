@@ -27,6 +27,8 @@ public class ReplaceSymbol {
     public static String sys_fwd = "fwd";
     public static String sys_ydd = "ydd";
     public static String sys_djbh = "djbh";
+
+    public static String table21 = "table21";
     public static String table22 = "table22";
     public static String table23 = "table23";
     public static String table25 = "table25";
@@ -71,6 +73,9 @@ public class ReplaceSymbol {
     public static String table59 = "table59";
     public static String table510 = "table510";
     public static String table511 = "table511";
+    public static String table512 = "table512";
+    public static String table513 = "table513";
+
     public static String s582 = "s582";
 
 
