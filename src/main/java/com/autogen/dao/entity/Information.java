@@ -26,4 +26,5 @@ public class Information {
     private String data;
     private String xgsj;
     private String score;
+    private int  archive;
 }

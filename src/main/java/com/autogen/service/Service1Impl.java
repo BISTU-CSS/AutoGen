@@ -501,18 +501,21 @@ public class Service1Impl implements Service1 {
         if (scencePo != null) {
             temp = scencePo.getDescription();
             if ("img51-1".equals(scencePo.getScence())) {
-                map.put("img51", "/etc/autogen/image/img51-1.png");
+//                map.put("img51", "/etc/autogen/image/img51-1.png");
+                map.put("img51", "/home/ubuntu/fangan/autogen/filetemplate/img51-1.png");
             } else if ("img51-2".equals(scencePo.getScence())) {
-                map.put("img51", "/etc/autogen/image/img51-2.png");
+//                map.put("img51", "/etc/autogen/image/img51-2.png");
+                map.put("img51", "/home/ubuntu/fangan/autogen/filetemplate/img51-1.png");
             } else if ("img51-3".equals(scencePo.getScence())) {
-                map.put("img51", "/etc/autogen/image/img51-3.png");
+//                map.put("img51", "/etc/autogen/image/img51-3.png");
+                map.put("img51", "/home/ubuntu/fangan/autogen/filetemplate/img51-1.png");
             }
 //            if ("img51-1".equals(scencePo.getScence())){
-//                map.put("img51","D:\\idea\\AutoGen\\src\\main\\resources\\img51-1.png");
+//                map.put("img51","D:\\桌面\\auto\\AutoGen\\src\\main\\resources\\img51-1.png");
 //            }else if ("img51-2".equals(scencePo.getScence())){
-//                map.put("img51","D:\\idea\\AutoGen\\src\\main\\resources\\img51-2.png");
+//                map.put("img51","D:\\桌面\\auto\\AutoGen\\src\\main\\resources\\img51-2.png");
 //            }else if ("img51-3".equals(scencePo.getScence())){
-//                map.put("img51","D:\\idea\\AutoGen\\src\\main\\resources\\img51-3.png");
+//                map.put("img51","D:\\桌面\\auto\\AutoGen\\src\\main\\resources\\img51-3.png");
 //            }
         }
         map.put("51", temp);

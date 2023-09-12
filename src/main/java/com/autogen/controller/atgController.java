@@ -6,7 +6,9 @@ import com.autogen.dao.entity.pf._1_WLHHJAQ;
 import com.autogen.dao.entity.pf._2_WLHTXAQ;
 import com.autogen.dao.entity.pf._3_SBHJSAQ;
 import com.autogen.dao.entity.pf._4_YYHSJAQ;
+import com.autogen.service.FileService;
 import com.autogen.service.ServicePF;
+import com.autogen.util.FileUtil;
 import com.autogen.util.JsonResult;
 import com.autogen.service.InformationService;
 import com.autogen.service.Service1;
@@ -32,7 +34,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -77,8 +81,9 @@ public class atgController {
         service1.BasicTemplate(questionNaire, concent);
         service1.generate();
 
+        FileSystemResource file = new FileSystemResource("/home/ubuntu/fangan/autogen/example.docx");
 //        FileSystemResource file = new FileSystemResource("/home/ubuntu/Desktop/code_package/complete_example.docx");
-        FileSystemResource file = new FileSystemResource("C:\\Users\\wei\\Desktop\\automatic generation\\AutoGen\\example.docx");
+//        FileSystemResource file = new FileSystemResource("D:\\桌面\\auto\\AutoGen\\example.docx");
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
         //这里定制下载文件的名称
@@ -98,8 +103,9 @@ public class atgController {
         QuestionNaire questionNaire = new QuestionNaire();
         MyJSON.parsingJSON(data,questionNaire);
         informationService.exportSBQD(questionNaire.getSbqd(),questionNaire.getSys_name());
+        FileSystemResource file = new FileSystemResource("/home/ubuntu/fangan/autogen/files/sbqd.xlsx");
 //        FileSystemResource file = new FileSystemResource("/home/ubuntu/Desktop/code_package/sbqd.xlsx");
-        FileSystemResource file = new FileSystemResource("C:\\Users\\wei\\Desktop\\automatic generation\\AutoGen\\sbqd.xlsx");
+//        FileSystemResource file = new FileSystemResource("D:\\桌面\\auto\\AutoGen\\sbqd.xlsx");
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
         //这里定制下载文件的名称
@@ -203,7 +209,8 @@ public class atgController {
         //生成excel的方法，默认放在这里：ReplaceData.xlsx
         servicePF.genExcel(wlhhj,wlhtx,sbhjs,yyhsj,dbjb);
         //将这个文件上传回二进制流
-        FileSystemResource file = new FileSystemResource("D:\\idea\\AutoGen\\pingfen.xlsx");
+//        FileSystemResource file = new FileSystemResource("D:\\桌面\\auto\\AutoGen\\pingfen.xlsx");
+        FileSystemResource file = new FileSystemResource("/home/ubuntu/fangan/autogen/files/pingfen.xlsx");
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
         //这里定制下载文件的名称
@@ -216,6 +223,51 @@ public class atgController {
                 .contentType(MediaType.parseMediaType("application/octet-stream"))//以二进制流的形式返回
                 .body(new InputStreamResource(file.getInputStream()));
     }
+
+
+    @Autowired
+    FileService fileService;
+
+    //fileupload
+    @PostMapping("/api/upload")
+    public JsonResult upload(@RequestParam("xmmc") String xmmc, @RequestParam("file") MultipartFile file) throws IOException {
+        // MultipartFile 转 File
+        File resultFile = FileUtil.MultipartFileToFile(file);
+        //System.out.println(getFileNameNoEx(resultFile.getName()));
+
+        boolean flag = fileService.upload(resultFile, xmmc);
+        resultFile.delete();
+        if (flag) {
+            return new JsonResult(null, "ok");
+        }
+        return new JsonResult(null, "error");
+    }
+
+    //filesearch
+    @PostMapping("/api/search")
+    public JsonResult search(String xmmc) {
+        List<String> list=new ArrayList<>();
+        try {
+            //搜索所有文件，从未归档里搜，“.”在这里为通配符用来查找所有文件
+            Map<String,String> map = fileService.searchFile(0, ".");
+            for (Map.Entry<String,String> entry:map.entrySet()){
+                list.add(entry.getKey());
+            }
+            return new JsonResult(list,"ok");
+        }catch (Exception e){
+            return new JsonResult(null, "error");
+        }
+    }
+
+
+
+
+
+
+
+
+
+
     /**
      * 根据上传的Excel文件，得到最后的评分细节表格
      * @apiNote 参考的是https://blog.csdn.net/qq_57390446/article/details/127797971的api例
