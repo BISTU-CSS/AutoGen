@@ -18,6 +18,7 @@ import com.spire.xls.Workbook;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.io.FileUtils;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -81,9 +82,9 @@ public class atgController {
         service1.BasicTemplate(questionNaire, concent);
         service1.generate();
 
-        FileSystemResource file = new FileSystemResource("/home/ubuntu/fangan/autogen/example.docx");
+//        FileSystemResource file = new FileSystemResource("/home/ubuntu/fangan/autogen/example.docx");
 //        FileSystemResource file = new FileSystemResource("/home/ubuntu/Desktop/code_package/complete_example.docx");
-//        FileSystemResource file = new FileSystemResource("D:\\桌面\\auto\\AutoGen\\example.docx");
+        FileSystemResource file = new FileSystemResource("D:\\桌面\\auto\\AutoGen\\example.docx");
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
         //这里定制下载文件的名称
@@ -103,9 +104,9 @@ public class atgController {
         QuestionNaire questionNaire = new QuestionNaire();
         MyJSON.parsingJSON(data,questionNaire);
         informationService.exportSBQD(questionNaire.getSbqd(),questionNaire.getSys_name());
-        FileSystemResource file = new FileSystemResource("/home/ubuntu/fangan/autogen/files/sbqd.xlsx");
+//        FileSystemResource file = new FileSystemResource("/home/ubuntu/fangan/autogen/files/sbqd.xlsx");
 //        FileSystemResource file = new FileSystemResource("/home/ubuntu/Desktop/code_package/sbqd.xlsx");
-//        FileSystemResource file = new FileSystemResource("D:\\桌面\\auto\\AutoGen\\sbqd.xlsx");
+        FileSystemResource file = new FileSystemResource("D:\\桌面\\auto\\AutoGen\\sbqd.xlsx");
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
         //这里定制下载文件的名称
@@ -209,8 +210,8 @@ public class atgController {
         //生成excel的方法，默认放在这里：ReplaceData.xlsx
         servicePF.genExcel(wlhhj,wlhtx,sbhjs,yyhsj,dbjb);
         //将这个文件上传回二进制流
-//        FileSystemResource file = new FileSystemResource("D:\\桌面\\auto\\AutoGen\\pingfen.xlsx");
-        FileSystemResource file = new FileSystemResource("/home/ubuntu/fangan/autogen/files/pingfen.xlsx");
+        FileSystemResource file = new FileSystemResource("D:\\桌面\\auto\\AutoGen\\pingfen.xlsx");
+//        FileSystemResource file = new FileSystemResource("/home/ubuntu/fangan/autogen/files/pingfen.xlsx");
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
         //这里定制下载文件的名称
@@ -271,52 +272,53 @@ public class atgController {
     /**
      * 根据上传的Excel文件，得到最后的评分细节表格
      * @apiNote 参考的是https://blog.csdn.net/qq_57390446/article/details/127797971的api例
-     * @param multipartFile Excel文件（需要由getPointExcel获得）
+     * @param file Excel文件（需要由getPointExcel获得）
      * @return 文件的下载链接
      * @throws IOException
      */
     @PostMapping("/api/FSdownload")
-    public double getPointFile(MultipartFile multipartFile) throws IOException {   //传入应该是一个文件，参数未定
-          //测试MultipartFile
-//        File excelFile = new File("ReplaceData.xlsx");
-//        FileItemFactory factory = new DiskFileItemFactory(16, null);
-//        FileItem item = factory.createItem("fieldName", "text/plain", true, excelFile.getName());
-//        int bytesRead = 0;
-//        byte[] buffer = new byte[8192];
-//        try {
-//            FileInputStream fis = new FileInputStream(excelFile);
-//            OutputStream os = item.getOutputStream();
-//            while ((bytesRead = fis.read(buffer, 0, 8192)) != -1) {
-//                os.write(buffer, 0, bytesRead);
-//            }
-//            os.close();
-//            fis.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        multipartFile = new CommonsMultipartFile(item);
+    public JsonResult getPointFile(@RequestParam("xmmc") String xmmc, @RequestParam("file") MultipartFile file) throws IOException {   //传入应该是一个文件，参数未定
+//      测试MultipartFile
+//        File excelFile = new File("D:\\pingfen.xlsx");
+        File excelFile = FileUtil.MultipartFileToFile(file);
+        FileItemFactory factory = new DiskFileItemFactory(16, null);
+        FileItem item = factory.createItem("fieldName", "text/plain", true, excelFile.getName());
+        int bytesRead = 0;
+        byte[] buffer = new byte[8192];
+        try {
+            FileInputStream fis = new FileInputStream(excelFile);
+            OutputStream os = item.getOutputStream();
+            while ((bytesRead = fis.read(buffer, 0, 8192)) != -1) {
+                os.write(buffer, 0, bytesRead);
+            }
+            os.close();
+            fis.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        MultipartFile m = new CommonsMultipartFile(item);
 
 
 
         //记得改路径
-        String realPath = "E:\\autogenProject\\AutoGen";
+        String realPath = "D:\\下载\\Documents\\";
 
         File folder=new File(realPath);
         if(!folder.isDirectory()){
             folder.mkdirs();
         }
-        String oldname = multipartFile.getOriginalFilename();
+        String oldname = m.getOriginalFilename();
         String newname = "genExcel.xlsx";
-        System.out.println(realPath+"\\"+newname);
+        System.out.println(realPath+newname);
         //将multipartfile转为excel文件
-        multipartFile.transferTo(new File(folder, newname));
+        m.transferTo(new File(folder, newname));
 
         //get excel file
         FileSystemResource fs_file = null;
         //根据excel文件得到评分
         double score = servicePF.gen_PF(realPath+"\\"+newname);     //分数文件
-
-        return score;
+        System.out.println(score);
+        return new JsonResult(score, "ok");
     }
 
 }

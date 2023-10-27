@@ -21,8 +21,8 @@ import java.util.HashMap;
 
 public class AutoGeneratorImpl implements AutoGenerator {
 
-    String path = "/home/ubuntu/fangan/autogen/filetemplate/";
-//    String path = "D:\\桌面\\auto\\AutoGen\\src\\main\\resources\\WordTemplate\\";
+//    String path = "/home/ubuntu/fangan/autogen/filetemplate/";
+    String path = "D:\\桌面\\auto\\AutoGen\\src\\main\\resources\\WordTemplate\\";
 
     @Override
     public XWPFDocument chapter_one_generator(Chaptre1input input) throws IOException {
