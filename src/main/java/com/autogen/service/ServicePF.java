@@ -37,5 +37,5 @@ public interface ServicePF {
      * @param name 项目名
      * @return 评分单，格式未定
      */
-    double gen_PF(String name);
+    double[] gen_PF(String name);
 }

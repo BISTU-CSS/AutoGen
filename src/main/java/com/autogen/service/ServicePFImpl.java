@@ -241,7 +241,7 @@ public class ServicePFImpl implements ServicePF{
     }
 
     @Override
-    public double gen_PF(String name) {
+    public double[] gen_PF(String name) {
         //1.获取文件中的相关信息
         Workbook workbook = new Workbook();
 //
@@ -540,10 +540,14 @@ public class ServicePFImpl implements ServicePF{
         //应用层面的分数
         yyhsjScore = yyhsjScore/weight*30;
 
-        double Score = wlhhjScore+wlhtxScore+sbhjsScore+yyhsjScore;
+        //double Score = wlhhjScore+wlhtxScore+sbhjsScore+yyhsjScore;
         //System.out.println(wlhhjScore+wlhtxScore+sbhjsScore+yyhsjScore);
+        double[] score=new double[4];
+        score[0]=wlhhjScore;
+        score[1]=wlhtxScore;
+        score[2]=sbhjsScore;
+        score[3]=yyhsjScore;
 
-
-        return Score;
+        return score;
     }
 }

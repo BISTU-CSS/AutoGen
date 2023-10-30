@@ -316,8 +316,8 @@ public class atgController {
         //get excel file
         FileSystemResource fs_file = null;
         //根据excel文件得到评分
-        double score = servicePF.gen_PF(realPath+"\\"+newname);     //分数文件
-        System.out.println(score);
+        double[] score = servicePF.gen_PF(realPath+"\\"+newname);     //分数文件
+        //System.out.println(score);
         return new JsonResult(score, "ok");
     }
 
